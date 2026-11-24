@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Portrait for Madia, a game-only character (icon.map: w5shmadi.spr, the dialog's speaker icon): no show footage and no actor, so no FaceID and no
+# likeness score. Same technique as laraq and griems: the Krea 2 Turbo variant paints the face from the game portrait as layout (lightly blurred), then the
+# grab sets that person into the game portrait's frame (face box fitted, BiRefNet matte, graded only 0.15 toward the game figure, whose few lit pixels are gold and would turn her skin orange, the portrait's own
+# backdrop: the black or dark one, found from the pixels joined to the picture edge) and the pixel step makes the 64x64 avatar. The game head is almost black, and InsightFace finds no face in it however it is brightened; the box is measured by hand on a brightened, gridded copy (circlet at y 11, mouth at y 32). Published under the object ids in speakers: the subtitle
+# looks its speaker up by the game's object name.
+id: avatar.madia
+kind: avatar
+object: madia
+speakers: [frigis.madia]
+base: { sprite: w5shmadi.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 6 }
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+grab:
+  from: krea2
+  gameFace: [13, 11, 32, 36]
+  backdrop: dark
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.15
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 77204, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, Madia, a woman guarding a temple on the planet Frigis, head and shoulders with room above the head, slight three-
+      quarter view, dark brown skin, a gold circlet across the brow with gold-rimmed eyes, a tall red and gold ornament rising above
+      her head, a solemn commanding expression, dark robes with green shoulders, nothing pinned or fastened on them, no pins, no
+      insignia, no badge, warm key light from the right, plain black background, painted 1990s adventure game portrait
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark
+    denoise: 0.8
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.7 }]

@@ -1,0 +1,9 @@
+difficulty 0
+wait 1000
+trace @DIR@/trace.jsonl 42
+ship 7 1
+at 30 set shields off
+at 45 set shields on
+fight 300
+trace off
+quit

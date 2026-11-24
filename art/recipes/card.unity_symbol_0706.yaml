@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the symbol of `s07` (animation 0, 3 frames, a loop): w6s7keyg.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_symbol_0706
+kind: card
+object: unity_symbol_0706
+sprite: w6s7keyg.spr
+anims: [0]
+prop: { screen: unity.s07, objects: [unity.symbol.0706], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 3 of the 3 strongest windows of frames 0 and 1 are speckle (worst shift 0.14 px, flicker median 7.3); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 97017, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a round orange and gold key symbol on a dark panel, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

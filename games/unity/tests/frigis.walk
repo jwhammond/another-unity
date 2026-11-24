@@ -1,0 +1,138 @@
+# A Final Unity, frigis (world 5): the canonical walkthrough (Plan 9). Original ids only.
+seed 42
+start 5 1 0
+advance 6
+# o_050100: talk, conversation c000 (picks 1, 0, 0), which opens the doorways
+seed 43
+pick 1
+pick 0
+pick 0
+talk 000001 050100
+advance 6
+# o_050104 to s02, then o_050202 to s07 (its timer moves the team)
+walk 000000 050104
+advance 6
+walk 000000 050202
+advance 12
+# o_050703 has greeted on arrival; conversation c001 (picks 2, 1, 5) opens the way to o_05070c
+seed 44
+pick 2
+pick 1
+pick 5
+talk 000001 050703
+advance 6
+# o_05070c to s0a; o_050a13, conversation c013: four menus (picks 0, 0, 0, 3) under seed 45
+walk 000000 05070c
+advance 15
+seed 45
+pick 0
+pick 0
+pick 0
+pick 3
+talk 000001 050a13
+advance 10
+# o_050a19 to s09
+walk 000000 050a19
+advance 10
+# o_050903 with the tricorder (o_007001), then o_050904
+use 000000 050903 007001
+# gap: o_050904 is inactive until c005@0 k5 (o_05010c, woken by o_050909 with the tricorder); this dev-start walk skips that, route/03-frigis.walk does not
+use 000000 050904 007001
+# o_050911 frees o_05090a; conversation c017 (pick 3) gives o_05090f, o_050d06 and o_050d07
+use 000000 050911
+advance 12
+seed 46
+pick 3
+talk 000001 05090a
+advance 10
+# back to s07 by o_050907 and o_050a0c
+walk 000000 050907
+advance 10
+walk 000000 050a0c
+advance 10
+# o_05090f on o_050704 opens s0d: get o_050d08, o_050d0a, o_050d09, then o_050d05
+use 000000 050704 05090f
+advance 6
+get 000000 050d08
+get 000000 050d0a
+get 000000 050d09
+use 000000 050d05
+advance 10
+# o_05070f to s02, o_050204 to s01, o_050107 to s06
+walk 000000 05070f
+advance 10
+walk 000000 050204
+advance 10
+walk 000000 050107
+advance 15
+# Data fits o_050d0a into o_050602
+use 000002 050602 050d0a
+advance 40
+# o_050d09 to o_050601, who gives o_05060f
+use 000001 050601 050d09
+advance 30
+# o_050608 to s01, o_05010a to s03; o_050d08 to o_050302, conversation c014 (pick 1)
+walk 000000 050608
+advance 12
+walk 000000 05010a
+advance 12
+pick 1
+use 000001 050302 050d08
+advance 15
+# o_05060e, played on s03, moves the team to s04
+use 000000 05060e
+advance 30
+# s04 floor: o_05060f sets pattern 1; o_05044e-o_050451 give o_05044a-o_05044d, which set patterns 2, 3, 4, 5 (hops on o_05040b, o_05040d, o_050423, o_05041d, o_050429)
+use 000000 05060f
+advance 4
+use 000000 05044e
+advance 4
+walk 000000 05040b
+advance 4
+use 000000 05044a
+advance 4
+use 000000 05044f
+advance 4
+walk 000000 05040d
+advance 4
+use 000000 05044b
+advance 4
+walk 000000 050423
+advance 4
+use 000000 05060f
+advance 4
+use 000000 050450
+advance 4
+walk 000000 050423
+advance 4
+use 000000 05044b
+advance 4
+walk 000000 05041d
+advance 4
+use 000000 05044c
+advance 4
+use 000000 050451
+advance 4
+walk 000000 05041d
+advance 4
+use 000000 05044b
+advance 4
+walk 000000 050423
+advance 4
+use 000000 05060f
+advance 4
+walk 000000 050450
+advance 4
+use 000000 05044d
+advance 4
+walk 000000 050429
+advance 4
+use 000000 05044c
+advance 4
+# s04 niche: o_050404 has an animation slot without data; ScummVM used to assert on it (fixed in scummvm-export a24fa623798).
+use 000000 050400 050d06
+advance 12
+get 000000 05050b
+# the good finish (o_050511 timer) enables t90 and beams the team up on its own: no hail is needed.
+advance 12
+end

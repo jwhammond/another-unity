@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the comm port light of `s03` (10 frames, a loop): w3s3zlit.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_com_port_light_s03
+kind: card
+object: zoo_com_port_light_s03
+sprite: w3s3zlit.spr
+anims: [0]
+prop: { screen: zoo.s03, objects: [zoo.com_port_light], anim: 0, animate: [0] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 0.00 px, flicker median 5.3): the light is a few pixels, one window per frame; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98006, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small round glowing indicator light on a control post, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

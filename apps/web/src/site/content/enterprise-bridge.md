@@ -1,0 +1,3 @@
+The bridge keeps its tableau of items, the admin menu and the viewscreen button where the original has them. The sensor records strip is now in as well: two scroll arrows and three rows. Each course you engage is recorded, newest first, and a row takes you to astrogation with that place already chosen. The strip also fills in the original's readouts: speed or light years left while travelling, the destination, the three record names and the name of the item under the pointer.
+
+The viewscreen has no buttons of its own, so there was nothing to add: a hail's conversation is the ordinary dialog. Still to do: the replay item, which in the original opens the conversation log, plays nothing from the records.

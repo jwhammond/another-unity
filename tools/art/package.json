@@ -1,0 +1,17 @@
+{
+  "name": "@another-unity/art",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@another-unity/engine": "*",
+    "@another-unity/lift": "*",
+    "@gltf-transform/core": "^4.1.1",
+    "pngjs": "^7.0.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/pngjs": "^6.0.5"
+  }
+}

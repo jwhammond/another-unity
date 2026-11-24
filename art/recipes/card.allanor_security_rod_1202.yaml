@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the security rod (stands on 1; scripts swap 1 and 2, 9 frames): w2s12rd2.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_security_rod_1202
+kind: card
+object: allanor_security_rod_1202
+sprite: w2s12rd2.spr
+anims: [1, 2]
+prop: { screen: allanor.s12, objects: [allanor.security_rod.1202], anim: 1, animate: [1, 2] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 11 to 13 of the 21 to 23 strongest windows of animation 2 are speckle (worst shift 1.04 px); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95020, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a short dark green cylindrical tube with a pale band around it, a security rod, science fiction prop, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,57 @@
+# Cloudflare Pages headers for the deploy build (docs/deploy.md). `npm run deploy:build` copies this file into the output.
+# Pages joins the headers of every rule a URL matches. Limits: 100 rules, 2000 characters a line.
+
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=()
+  Strict-Transport-Security: max-age=31536000
+  # (the game: its own scripts, styles (the loading screen's are inline, and the UI sets style attributes), images and sounds, and the
+  # blob: and data: URLs the renderer and the audio decoder make. No other origin is reachable, and no plugin, frame or form post.)
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# The page, the worker and the manifest are checked on every load: a deploy is seen at once, and the worker never serves a stale index.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/play/*
+  Cache-Control: no-cache
+/engineering/*
+  Cache-Control: no-cache
+/sw.js
+  Cache-Control: no-cache
+/au-manifest.json
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache
+  Content-Type: application/manifest+json
+/icon.svg
+  Cache-Control: public, max-age=86400
+
+# Everything under /assets/ has its content hash in its name (code, styles, art, audio, movies, models, fonts, packs): never revalidated.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Types the host might not know (with nosniff, a wrong one is an error, not a guess).
+/assets/*.webp
+  Content-Type: image/webp
+/assets/*.opus
+  Content-Type: audio/ogg
+/assets/*.ogg
+  Content-Type: audio/ogg
+/assets/*.wav
+  Content-Type: audio/wav
+/assets/*.webm
+  Content-Type: video/webm
+/assets/*.glb
+  Content-Type: model/gltf-binary
+/assets/*.wasm
+  Content-Type: application/wasm
+/assets/*.fon
+  Content-Type: application/octet-stream
+/assets/*.pack
+  Content-Type: application/octet-stream

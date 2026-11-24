@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 33 Task 6: the bridge's tactical officer repainted toward the show's likeness, over Task 5's cut-out (each frame's alpha is the cut-out's,
+# upscaled), from card.worf's settings (its sash: denoise kept low). Generic prompt: no game text, no show or actor names.
+id: bridgecrew.worf
+kind: bridgecrew
+object: worf
+sprite: brdgworf.spr
+sampling: { seed: 93001, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man standing at a console, ridged bony forehead, long dark hair, full dark beard, realistic skin, mustard gold and black
+  science fiction duty uniform with a metallic sash across the chest, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry, helmet
+denoise: 0.38
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [crew.worf.face.1, crew.worf.face.2], model: face, weight: 1.0, weightType: linear, mask: head }
+  - { refs: [crew.worf.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+hold: { tolerance: 20, feather: 12 }
+# Runs on the 4080 (2026-10-30, 24 distinct frames): 1) the whole figure at denoise 0.38 changed little (the face stayed a smear under the
+# brow); 2) with the head pass (face, denoise 0.4): eyes, nose and beard drawn, the same through the talk. Flicker median 0.7-8.9 (animation 0
+# turns the head a long way), worst pair 10.9, under card.worf's 17; the sash is the upscale's.
+face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
+# Plan 34: the grey specks of the picture on top of the head went from the mask (one frame painted again). One talk frame drew a gold fleck in
+# the open mouth; it takes the next frame's mouth (its strip's cell pixels, 4x).
+fixups:
+  - { anim: 2, frame: 3, box: [89, 77, 12, 9], from: 4 }

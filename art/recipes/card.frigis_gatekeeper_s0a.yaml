@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.gatekeeper.0a13 (screen frigis.s0a, sprite w5s7upga.spr): the gatekeeper in the doorway. A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s0a` stands it over the plate. Generic prompt: no game text. ScummVM's player plays animation 0 for it.
+id: card.frigis_gatekeeper_s0a
+kind: card
+object: frigis_gatekeeper_s0a
+sprite: w5s7upga.spr
+anims: [0]
+prop: { screen: frigis.s0a, objects: [frigis.gatekeeper.0a13], anim: 0 }
+group: 1
+sampling: { seed: 92123, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a green alien guardian face with long pointed ears looking out of a dark doorway, scaly green skin, glossy physically based materials, dramatic dark light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+# Batch 10: the gatekeeper talks (flags 5: animation 2 talks, 1 is where he goes back to), but only a still is published. The talk animation's mouths are drawn over a marked frame that is not the one animation 0
+# stands on, so speaking is a change of pose in the original, and the two bodies repainted apart differ across the switch: flicker 5.6/255 at denoise 0.3, 4.1 at 0.2 and 3.6 at 0.15, against a median 0.3
+# (the limit is the floor, 2). Three runs, nothing loosened, so the talk animation is listed and the card stays a still.

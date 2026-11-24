@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 16 Task 11: the computer screen's own background, repainted into a plate (R11, R17). Generic prompt: no game text, no trademarks.
+# Settings are plate.bridge's (Task 7): masked denoise, depth and lineart ControlNets, one style reference.
+id: plate.computer
+kind: repaint
+source: { ship: compupnl }
+sampling: { seed: 160005, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered starship console display, black glass panels, rounded coloured panel bars, brushed grey metal, physically based materials, soft lighting, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+# The alignment points are the areas' corners and the original's strongest edges.
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# R12: every LCARS bar, frame and label, traced on the decoded original (the black windows and the grey block stay repaintable):
+#   the header bar, rows 0..23; the big panel's frame around the entry window (top rows 24..52, left columns 169..189, bottom rows 358..361);
+#   the blue blocks under the list and under the entry window, with the painted scroll arrows (rows 400..479 and 358..479);
+#   the grey block's bezel left of the exits (x 320..490, y 362..479): repainted, it came out a muddy olive, so it is kept.
+keep:
+  - [0, 0, 640, 24]
+  - [169, 24, 471, 29]
+  - [169, 53, 21, 305]
+  - [169, 358, 471, 4]
+  - [169, 358, 151, 122]
+  - [0, 400, 169, 80]
+  - [320, 362, 171, 118]
+# R17: the screen's areas [x, y, width, height], traced on the decoded original:
+#   rows: the list's black field with its fifteen 23 px rows, x 14..168, y 54..399;
+#   entry: the entry window, x 190..639, y 53..357;
+#   scroll: the two painted round arrows, x 64..116 and x 219..272, y 416..464 (the buttons sit over them);
+#   exits: the grey block's three buttons, x 491..609, y 373..472.
+areas:
+  rows: [14, 54, 155, 346]
+  entry: [190, 53, 450, 305]
+  scroll: [64, 416, 209, 49]
+  exits: [491, 373, 119, 100]
+reference:
+  - { refs: [set.astrogation.sidebar.1, set.astrogation.lifeform.1], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

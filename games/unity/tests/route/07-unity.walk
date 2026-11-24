@@ -1,0 +1,8 @@
+# A Final Unity, from world 2 to world 6's beam-down (Plan 12 Task 9). Original ids only.
+# Starts aboard where 06 ends: the course (sector 313, coordinates 9-14-16) is laid in.
+seed 1
+start ship
+# (the hails at the arrival, then c006: its second option (the first ends in the game over, c006@5 k8); no battle is fought here)
+pick 1
+advance 300
+advance 260

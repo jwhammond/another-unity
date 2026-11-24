@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the big door of `s05` (animation 0 shut, 1 opening, 2 shut again, 3 closing: 21 frames each; open_ts and exit_results play all four): w2s5door.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_door_0504
+kind: card
+object: allanor_door_0504
+sprite: w2s5door.spr
+anims: [0, 1, 2, 3]
+prop: { screen: allanor.s05, objects: [allanor.door.0504], anim: 0, animate: [0, 1, 2, 3] }
+group: 2
+sampling: { seed: 95107, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a large irregular slab of blue-grey stone with a faint grid of lines, a heavy alien blast door, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8e rollout (Frigis), the blue door of `s04` (animation 0, 65 frames: the door opening onto a tunnel; the sprite's animation 1 has no entry, so `open_door`'s play of it is ignored; off at entry): w5s4door.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8e"). Generic prompt: no game text.
+id: card.frigis_blue_door_s04
+kind: card
+object: frigis_blue_door_s04
+sprite: w5s4door.spr
+anims: [0]
+prop: { screen: frigis.s04, objects: [frigis.blue_door_anim], anim: 0, animate: [0] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 2 of the 2 strongest windows of frames 0, 1, 2 and 8 are speckle (worst shift 1.36 px, flicker median 5.5); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 96007, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an oval stone doorway opening onto a dark tunnel with green light at the end, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

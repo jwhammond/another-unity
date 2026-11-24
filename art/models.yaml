@@ -1,0 +1,358 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The models Plan 14 may use: pinned by URL and sha256, and gated by the licence on each model's card (R4).
+# A file whose sha256 differs from the one here is refused. Files live in ~/pcode/unity-art-cache/models, never in git.
+# Licence policy (the user, 2026-10-18): this is a personal project, so non-commercial and gated models are ALLOWED for experiments.
+# They are role `experimental` only, each names its `family` (a recipe's `model:`), and no `selected` job may name one: the
+# allow-list above still governs what the published art uses. Experimental files live on the COMFY_URL server only
+# (`remoteOnly: true`): `art fetch` skips them, the local hash check does not apply, and their sha256 is Hugging Face's LFS oid
+# (recorded, not provable remotely; the server lists them by name). Krea 2 Turbo (family krea2: its fp8 diffusion model, its Qwen3-VL
+# text encoder and the TNG LoRA, with the Qwen-Image VAE) is on the COMFY_URL server for art avatar's krea2 variants (2026-10-19).
+# InsightFace and the IP-Adapter FaceID family: ALLOWED by the user (2026-10-19) for this personal project. The licence is
+# non-commercial (InsightFace's buffalo_l weights, which the FaceID adapters are trained on and which the server's
+# IPAdapterInsightFaceLoader downloads itself), so they are experimental (family sdxl) and the published art's allow-list never names them.
+# Unlike the other experimental files they are fetched locally too (`art fetch`, hash checked): the COMFY_URL server's insightface
+# failed to import on 2026-10-19 (numpy ABI mismatch), so art avatar runs them on the local ComfyUI, which needs `insightface` and
+# `onnxruntime` in its venv and buffalo_l under ComfyUI/models/insightface/models/.
+# Civitai style LoRAs (2026-10-19, art avatar's look experiments): non-commercial on their cards, so experimental and remote-only; their
+# sha256 is Civitai's own hash of the file. The FaceID stage still runs on the local ComfyUI, so RetroArt is also copied by hand into
+# the local cache's models/loras (from the API download URL in its note; hash checked against the one here).
+# Dropped at fetch time (card licence outside the allow-list):
+#   lineart-informative (lllyasviel/Annotators sk_model*.pth): the card says `license: other`, not MIT.
+#   Replaced by anyline-mteed, from the OpenRAIL++-M MistoLine repo.
+models:
+  sdxl-base-1.0:
+    role: checkpoint
+    file: checkpoints/sd_xl_base_1.0.safetensors
+    url: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
+    sha256: 31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b
+    licence: OpenRAIL++-M
+    licenceUrl: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md
+    note: "Card licence openrail++, ungated. Bench 2026-10-17: 30 steps 39.1 s (11.3
+      GB peak), 36.3 s with --force-fp16 (12.4 GB)."
+  sdxl-vae-fp16-fix:
+    role: vae
+    file: vae/sdxl_vae_fp16_fix.safetensors
+    url: https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors
+    sha256: 235745af8d86bf4a4c1b5b4f529868b37019a10f7c0b2e79ad0abca3a22bc6e1
+    licence: MIT
+    licenceUrl: https://huggingface.co/madebyollin/sdxl-vae-fp16-fix
+    note: Card licence mit, ungated.
+  sdxl-lightning-8step:
+    role: lora
+    file: loras/sdxl_lightning_8step_lora.safetensors
+    url: https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_8step_lora.safetensors
+    sha256: 5aa30d94cdf7950a8b53a693682650ee061eddb128c5435a8f88defea73b2ac6
+    licence: OpenRAIL++-M
+    licenceUrl: https://huggingface.co/ByteDance/SDXL-Lightning
+    note: "Card licence openrail++, ungated. Bench: with base, 8 steps 12.1 s (13.0
+      GB); 19.4 s with --force-fp16. Fastest txt2img, but cel-shaded and smeared
+      on repaints: not used for them (Task 4)."
+  cn-union-sdxl:
+    role: controlnet
+    file: controlnet/controlnet_union_sdxl_promax.safetensors
+    url: https://huggingface.co/xinsir/controlnet-union-sdxl-1.0/resolve/main/diffusion_pytorch_model_promax.safetensors
+    sha256: 9fae2e50cb431bfcbe05822b59ec2228df545ef27f711dea8949e9f4ed9f7cdc
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/xinsir/controlnet-union-sdxl-1.0
+    note: "Card licence apache-2.0, ungated. The promax weights. Bench repaint-1152
+      (depth and lineart both): 34.6 s, 12.9 GB. SELECTED (final: lab.s01 aligns
+      with it, Task 5)."
+  cn-depth-sdxl-small:
+    role: controlnet
+    file: controlnet/controlnet_depth_sdxl_small.safetensors
+    url: https://huggingface.co/diffusers/controlnet-depth-sdxl-1.0-small/resolve/main/diffusion_pytorch_model.safetensors
+    sha256: a8e62b40b28f8a444a778c9d4afd11183778cec03916afe07a959d0601053b85
+    licence: OpenRAIL++-M
+    licenceUrl: https://huggingface.co/diffusers/controlnet-depth-sdxl-1.0-small
+    note: "Card licence openrail++, ungated. Bench repaint-1152 with cn-mistoline:
+      40.2 s, 14.2 GB. Slower than the union net by more than 10%."
+  cn-mistoline:
+    role: controlnet
+    file: controlnet/mistoline_fp16.safetensors
+    url: https://huggingface.co/TheMistoAI/MistoLine/resolve/main/mistoLine_fp16.safetensors
+    sha256: 1df519349f3f2b6a3c6ff23127dd9b98a78e1f50628cf4037a5a9527c08b767c
+    licence: OpenRAIL++-M
+    licenceUrl: https://huggingface.co/TheMistoAI/MistoLine
+    note: "Card licence openrail++, ungated. Bench: see cn-depth-sdxl-small (used
+      together)."
+  depth-anything-v2-small:
+    role: annotator
+    file: annotators/depth-anything/Depth-Anything-V2-Small/depth_anything_v2_vits.pth
+    url: https://huggingface.co/depth-anything/Depth-Anything-V2-Small/resolve/main/depth_anything_v2_vits.pth
+    sha256: 715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/depth-anything/Depth-Anything-V2-Small
+    note: Card licence apache-2.0, ungated. Small only; Base and Large are not
+      Apache-2.0.
+  anyline-mteed:
+    role: annotator
+    file: annotators/TheMistoAI/MistoLine/Anyline/MTEED.pth
+    url: https://huggingface.co/TheMistoAI/MistoLine/resolve/main/Anyline/MTEED.pth
+    sha256: a3c2d8a8ce9422555c787160bd46362d761325a565333c0e3f6a53e0bae2abdb
+    licence: OpenRAIL++-M
+    licenceUrl: https://huggingface.co/TheMistoAI/MistoLine
+    note: Line extractor for the lineart ControlNet; replaces lineart-informative,
+      whose card says `other`.
+  realesrgan-x4plus:
+    role: upscaler
+    file: upscale_models/RealESRGAN_x4plus.pth
+    url: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+    sha256: 4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1
+    licence: BSD-3-Clause
+    licenceUrl: https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE
+    note: "Repository licence BSD-3-Clause (GitHub API), release asset. Bench
+      upscale-4x 640x480: 2.3 s, 5.0 GB. SELECTED: keeps texture."
+  realesrgan-x4plus-anime6b:
+    role: upscaler
+    file: upscale_models/RealESRGAN_x4plus_anime_6B.pth
+    url: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+    sha256: f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da
+    licence: BSD-3-Clause
+    licenceUrl: https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE
+    note: "Repository licence BSD-3-Clause (GitHub API), release asset. Bench
+      upscale-4x 640x480: 1.0 s, 4.8 GB. Fastest, but it posterises painted
+      backgrounds into flat blocks: vetoed on quality (Task 4)."
+  ip-adapter-plus-sdxl-vit-h:
+    role: ipadapter
+    file: ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors
+    url: https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors
+    sha256: 3f5062b8400c94b7159665b21ba5c62acdcd7682262743d7f2aefedef00e6581
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/h94/IP-Adapter
+    note: "Card licence apache-2.0, ungated (HF API 2026-10-17). Image-prompt
+      adapter on CLIP ViT-H patch tokens, no InsightFace: the style and body
+      reference (Plan 15 R4)."
+  ip-adapter-plus-face-sdxl-vit-h:
+    role: ipadapter
+    file: ipadapter/ip-adapter-plus-face_sdxl_vit-h.safetensors
+    url: https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors
+    sha256: 677ad8860204f7d0bfba12d29e6c31ded9beefdf3e4bbd102518357d31a292c1
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/h94/IP-Adapter
+    note: "Card licence apache-2.0, ungated. The CLIP-based face adapter, not the
+      FaceID family (see the experimental sdxl entries below). For the crew cards
+      (Task 9)."
+  clip-vit-h-image-encoder:
+    role: clip_vision
+    file: clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors
+    url: https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors
+    sha256: 6ca9667da1ca9e0b0f75e46bb030f7e011f44f86cbfb8d5a36590fcd7507b030
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/h94/IP-Adapter
+    note: Card licence apache-2.0, ungated. The ViT-H image encoder both plus
+      adapters need.
+  # Experimental (2026-10-18 model comparison, art/compare/2026-10-18-models.yaml). Remote only: see the header.
+  qwen-image-2512-fp8:
+    role: experimental
+    family: qwen-image
+    remoteOnly: true
+    file: diffusion_models/qwen_image_2512_fp8_e4m3fn.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_2512_fp8_e4m3fn.safetensors
+    sha256: 5dc80554d5d83390046a2f4a94ece06afb7700bf7b0aaf8bde9769793875876b
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/Qwen/Qwen-Image-2512
+    note: Card licence apache-2.0, ungated (HF API 2026-10-18). 20 GB fp8 MMDiT, more than the 4080's 16 GB, so ComfyUI offloads part.
+  qwen-2.5-vl-7b-fp8:
+    role: experimental
+    family: qwen-image
+    remoteOnly: true
+    file: text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+    sha256: cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct
+    note: Card licence apache-2.0, ungated. Qwen-Image's text encoder (CLIPLoader type qwen_image).
+  qwen-image-vae:
+    role: experimental
+    family: qwen-image
+    remoteOnly: true
+    file: vae/qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+    sha256: a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/Qwen/Qwen-Image-2512
+    note: Card licence apache-2.0, ungated.
+  qwen-image-2512-fun-cn-union:
+    role: experimental
+    family: qwen-image
+    remoteOnly: true
+    file: controlnet/Qwen-Image-2512-Fun-Controlnet-Union-2602.safetensors
+    url: https://huggingface.co/alibaba-pai/Qwen-Image-2512-Fun-Controlnet-Union/resolve/main/Qwen-Image-2512-Fun-Controlnet-Union-2602.safetensors
+    sha256: 0d1ac366efaa27dec070b3a8ebe9a41b5ebc567913dee71ed992e7032f66dc37
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/alibaba-pai/Qwen-Image-2512-Fun-Controlnet-Union
+    note: Card licence apache-2.0, ungated. Union (canny, HED, depth, MLSD, pose, scribble) with no type switch; ComfyUI core loads it
+      with ControlNetLoader (load_controlnet_qwen_fun) and it needs the VAE in ControlNetApplyAdvanced.
+  flux1-krea-dev-fp8:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: diffusion_models/flux1-krea-dev_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/FLUX.1-Krea-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-krea-dev_fp8_scaled.safetensors
+    sha256: b17a8c21703c4d6ffb0e300dd920eff3cfd35c9a72a1abaf107e3788e408b8d8
+    licence: FLUX.1-dev-Non-Commercial
+    licenceUrl: https://huggingface.co/black-forest-labs/FLUX.1-Krea-dev/blob/main/LICENSE.md
+    note: Card licence flux-1-dev-non-commercial-license; the upstream repo is gated, Comfy-Org's repack is not.
+  flux-clip-l:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: text_encoders/clip_l.safetensors
+    url: https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors
+    sha256: 660c6f5b1abae9dc498ac2d21e1347d2abdb0cf6c0c0c8576cd796491d9a6cdd
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/comfyanonymous/flux_text_encoders
+    note: Card licence apache-2.0 (the repack's card), ungated.
+  flux-t5xxl-fp8:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: text_encoders/t5xxl_fp8_e4m3fn.safetensors
+    url: https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors
+    sha256: 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/comfyanonymous/flux_text_encoders
+    note: Card licence apache-2.0, ungated.
+  flux-ae:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: vae/ae.safetensors
+    url: https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors
+    sha256: afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged
+    note: The FLUX autoencoder. The sha256 is the ungated Comfy-Org copy's (BFL's schnell repo, Apache-2.0, is gated, so its oid
+      couldn't be read); a copy from FLUX.1-dev's repo is the same weights under the non-commercial licence.
+  flux1-dev-cn-union-pro-2:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: controlnet/flux1-dev-union-pro-2.0.safetensors
+    url: https://huggingface.co/Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro-2.0/resolve/main/diffusion_pytorch_model.safetensors
+    sha256: 9d03f63f36206bab2f36aed5cfedc8693c2881397534e9d5f9ae9a0a41362517
+    licence: FLUX.1-dev-Non-Commercial
+    licenceUrl: https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/LICENSE.md
+    note: Card licence flux-1-dev-non-commercial-license, ungated. Saved under a new name on the server, so the sha256 is the repo's
+      bf16 file's (an fp8 copy would differ; not provable remotely). No mode embedding (no SetUnionControlNetType). The card's settings are
+      canny and soft edge at strength 0.7, depth at 0.8, each ending at 0.8 of the steps.
+  flux1-redux-dev:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: style_models/flux1-redux-dev.safetensors
+    url: https://huggingface.co/black-forest-labs/FLUX.1-Redux-dev/resolve/main/flux1-redux-dev.safetensors
+    sha256: a1b3bdcb4bdc58ce04874b9ca776d61fc3e914bb6beab41efb63e4e2694dca45
+    licence: FLUX.1-dev-Non-Commercial
+    licenceUrl: https://huggingface.co/black-forest-labs/FLUX.1-Redux-dev/blob/main/LICENSE.md
+    note: Gated upstream; the sha256 is from the ungated Comfy-Org/Flux1-Redux-Dev copy, whose git oid matches BFL's mirrored file.
+      The reference images' counterpart of IP-Adapter (StyleModelApply).
+  sigclip-vision-384:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: clip_vision/sigclip_vision_patch14_384.safetensors
+    url: https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors
+    sha256: 1fee501deabac72f0ed17610307d7131e3e9d1e838d0363aa3c2b97a6e03fb33
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/Comfy-Org/sigclip_vision_384
+    note: Card licence apache-2.0, ungated. Redux's image encoder.
+  ip-adapter-faceid-plusv2-sdxl:
+    role: experimental
+    family: sdxl
+    file: ipadapter/ip-adapter-faceid-plusv2_sdxl.bin
+    url: https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin
+    sha256: c6945d82b543700cc3ccbb98d363b837e9c596281607857c74b713a876daf5fb
+    licence: InsightFace-Non-Commercial
+    licenceUrl: https://huggingface.co/h94/IP-Adapter-FaceID
+    note: "Ungated; the card releases the FaceID models for non-commercial research only (InsightFace's terms). Identity from an
+      InsightFace embedding plus CLIP ViT-H (IPAdapterFaceID, weight_faceidv2), with its LoRA. The avatars' identity (art avatar)."
+  ip-adapter-faceid-plusv2-sdxl-lora:
+    role: experimental
+    family: sdxl
+    file: loras/ip-adapter-faceid-plusv2_sdxl_lora.safetensors
+    url: https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors
+    sha256: f24b4bb2dad6638a09c00f151cde84991baf374409385bcbab53c1871a30cb7b
+    licence: InsightFace-Non-Commercial
+    licenceUrl: https://huggingface.co/h94/IP-Adapter-FaceID
+    note: The Plus V2 adapter's LoRA (LoraLoaderModelOnly).
+  ip-adapter-faceid-portrait-sdxl-unnorm:
+    role: experimental
+    family: sdxl
+    file: ipadapter/ip-adapter-faceid-portrait_sdxl_unnorm.bin
+    url: https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait_sdxl_unnorm.bin
+    sha256: 220bb86e205393a3d0411631cb473caddbf35fd371be2905ca9008818170db55
+    licence: InsightFace-Non-Commercial
+    licenceUrl: https://huggingface.co/h94/IP-Adapter-FaceID
+    note: "FaceID Portrait, unnormalised (strong): InsightFace embeddings only, several faces averaged, no LoRA or CLIP vision."
+  flux-st25style-lora:
+    role: experimental
+    family: flux
+    remoteOnly: true
+    file: loras/flux_st25style_000000800.safetensors
+    url: https://civitai.com/models/683790
+    sha256: 721ea1a6f5e377eaae97875866730e9fc1db303bee785850dee7ef5f4f643483
+    licence: Civitai-Non-Commercial
+    licenceUrl: https://civitai.com/models/683790
+    note: '"90s sci-fi adventure game" (version 765329), a FLUX.1 dev LoRA for a painted early-90s VGA adventure-game look; trigger
+      word st25style. The card allows no commercial use (generation services only) and no derivatives (no merges or re-shares).'
+  sdxl-retroart-lora:
+    role: experimental
+    family: sdxl
+    remoteOnly: true
+    file: loras/RetroArt-xl1024-v1a-_r3tr0.safetensors
+    url: https://civitai.com/models/553027
+    sha256: 479c0c14e632f30c283fa2fdd1f79f61324cd3d554e64ce9522ceb58ea074698
+    licence: Civitai-Non-Commercial
+    licenceUrl: https://civitai.com/models/553027
+    note: '"(SDXL Lora) - Retro Game Art" (version 615427), trigger word r3tr0. The card allows no commercial use (generation services
+      only). Download: https://civitai.com/api/download/models/615427 (no login needed on 2026-10-19).'
+  krea2-tng-setting-lora:
+    role: experimental
+    family: krea2
+    remoteOnly: true
+    file: loras/Krea2_Setting_SFW_Star Trek tng 4000 5200 7200 8000.safetensors
+    url: https://civitai.com/models/2878784
+    sha256: ffb0a7fcfb969c75b2c5612d1f8ddad38d8480f10e09445884703818029e9781
+    licence: Civitai-Custom
+    licenceUrl: https://civitai.com/models/2878784
+    note: '"Star Trek tng - the next generation" (version 3253431), a Krea 2 setting LoRA; trigger words Star Trek, tng. Used by the
+      krea2 avatar variants (Carlstrom, Butler) at 0.7 on the model only. The card''s flags allow commercial use and derivatives, but the
+      base model''s licence and the show''s rights still govern anything made with it, so it is treated as experimental like the rest.'
+  krea2-turbo-fp8:
+    role: experimental
+    family: krea2
+    remoteOnly: true
+    file: diffusion_models/krea2_turbo_fp8.safetensors
+    url: https://huggingface.co/AlperKTS/Krea2_FP8/resolve/main/krea2_turbo_fp8.safetensors
+    sha256: 2d3523507c59df965e5d4ec9a1b9b4591297a50c058915c36fb29d124d30f64e
+    licence: Krea-2-Community
+    licenceUrl: https://huggingface.co/krea/Krea-2-Turbo
+    note: 'A community fp8 conversion of Krea 2 Turbo (the official weights are krea/Krea-2-Turbo, gated). Both cards name the Krea 2
+      licence (krea-2-community-license on the official card, https://www.krea.ai/krea-2-licensing on the conversion), not an
+      open-source one, so it is experimental. Turbo: 8 steps, cfg 1, er_sde / simple.'
+  krea2-qwen3vl-4b-fp8:
+    role: experimental
+    family: krea2
+    remoteOnly: true
+    file: text_encoders/qwen3vl_4b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen3-VL/resolve/main/text_encoders/qwen3vl_4b_fp8_scaled.safetensors
+    sha256: 54bd5144df0bbc25dd6ccadfcb826b521445a1b06ae5a42570bdd2974ca87094
+    licence: Apache-2.0
+    licenceUrl: https://huggingface.co/Comfy-Org/Qwen3-VL
+    note: Krea 2's text encoder (CLIPLoader type krea2). The card is Apache-2.0; experimental because it serves only the Krea 2 base.
+# Plan 14 Tasks 3-4. Speed picked the first set in Task 3; the controller then ruled on quality (see the notes above):
+# x4plus, not anime6b (anime6b posterises painted backgrounds into flat blocks), and no Lightning LoRA for repaints
+# (8-step Lightning came out cel-shaded and smeared on lab.s01; base SDXL at 30 steps is faithful).
+# A recipe may still name `lora` under its own `models:`. Task 5: lab.s01 aligns within 2 px with these at denoise 0.25 (not at 0.3), so `selected` is final.
+selected:
+  checkpoint: sdxl-base-1.0
+  vae: sdxl-vae-fp16-fix
+  depth: cn-union-sdxl
+  lineart: cn-union-sdxl
+  depthAnnotator: depth-anything-v2-small
+  lineartAnnotator: anyline-mteed
+  upscaler: realesrgan-x4plus
+  ipadapterStyle: ip-adapter-plus-sdxl-vit-h
+  ipadapterFace: ip-adapter-plus-face-sdxl-vit-h
+  clipVision: clip-vit-h-image-encoder

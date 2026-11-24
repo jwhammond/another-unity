@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The bridge set (Plan 16 Task 3). Everything here is our own design: metres (Y up, the viewscreen wall at -z), pixel coordinates
+# read off the decoded original, angles and colours. No lifted rectangle is in this file: the item rectangles come from
+# games/unity/ship.yaml at run time, and `support` only names the plane each one is unprojected onto, by item index.
+id: ship.bridge
+kind: ship
+station: bridge
+script: ship/bridge.py
+materials: [mat.carpet, mat.wood-rail, mat.hull-panel, mat.lcars, mat.console-glass, mat.trim, mat.ceiling-light]
+
+# The original was drawn with a level camera and a lens shift (its verticals stay vertical, its horizon sits above the middle of
+# the frame), so pitch and roll are held at 0 and the shift is fitted.
+start:
+  position: [0, 1.8, 6]
+  fovY: 55
+  shiftY: 100
+free: [x, y, z, yaw, fovY, shiftY]
+maxRms: 3
+
+# [u, v, X, Y, Z]: a pixel of the decoded original and the same point of the design. Derived by unprojecting each pixel through
+# the intended camera (eye 2.0 m at z = 5, 60 degrees, horizon at row 105) onto the plane named in the comment, rounded to
+# the design's grid, so the fit has something to disagree with.
+trace:
+  - [130, 182, -4.9, 0, -5.8]     # left end of the display bank's foot, on the floor
+  - [442, 182, 3.2, 0, -5.8]      # right end of the display bank's foot
+  - [25, 208, -5.7, 0, -3.1]      # foot of the left wall
+  - [605, 208, 5.5, 0, -3.1]      # foot of the right wall
+  - [157, 322, -1.5, 0, 1.2]      # front-left corner of the left console's base plate
+  - [607, 315, 2.7, 0, 1.0]       # front-right corner of the right console's base plate
+  - [165, 246, -1.1, 1, 2.05]     # near-left corner of the left console's top
+  - [615, 212, 2.75, 1, 1.1]      # far-right corner of the right console's top
+  - [142, 247, -2.5, 0, -0.85]    # left tip of the oval carpet
+  - [25, 70, -5.75, 2.7, -3.1]    # top of the left door
+  - [300, 148, -0.4, 1.2, -2.7]   # apex of the curved rail
+  - [130, 108, -4.9, 1.9, -5.8]   # top-left corner of the display bank
+
+# Each lifted item (index in ship.yaml's bridge.items) is unprojected onto one of these planes: `axis: y` is a horizontal plane
+# (a console top), `axis: z` a vertical plane facing the camera (a wall, a station face, a card).
+support:
+  0: { axis: z, at: -3.1 }      # the left door, in the left wall
+  1: { axis: z, at: -3.1 }      # the right door, in the right wall
+  2: { axis: z, at: -4.9 }      # the left station panel, on the back console's face
+  3: { axis: z, at: -4.9 }      # the right station panel
+  4: { axis: y, at: 1.0 }       # the left console's top
+  5: { axis: y, at: 1.0 }       # the right console's top
+  6: { axis: z, at: -2.8 }      # a crew card by the left pillar (the original's rectangle is high on the left wall)
+  7: { axis: z, at: -0.5 }      # a crew card on the central chair
+  8: { axis: z, at: -2.2 }      # a crew card in front of the right chair
+  9: { axis: z, at: -3.4 }      # a crew card behind the back console
+  10: { ui: true }              # a button of the original's own UI strip, below the scene
+
+design:
+  floorRadius: 16
+  carpet: { cx: 0.4, cz: -1.1, rx: 2.9, rz: 1.65 }
+  # The wall's plan, left to right: the left wall, the left return, the display bank (segment 2), the right return, the right wall.
+  wallPoly: [[-9, -3.1], [-4.4, -3.1], [-4.9, -5.8], [3.2, -5.8], [3.4, -3.1], [9, -3.1]]
+  wallHeight: 3.0
+  bank: { seg: 2, y0: 0.85, y1: 1.95 }
+  beam: { y0: 3.0, y1: 3.45 }
+  # The ceiling ring: a cove rising from the beam's top to the glowing rim, round a skylight. `scale` pulls the cove's inner edge
+  # toward (cx, cz); y0 is the inner edge's height and y1 the rim's.
+  ring: { cx: 0.0, cz: -2.0, scale: 0.86, y0: 3.85, y1: 4.0, glow: [1, 4] }
+  # The command deck: a low platform under the carpet, with a ramp at each end (z0..z1 across, len along x).
+  deck: { cx: 0.4, cz: -1.1, rx: 3.3, rz: 2.15, h: 0.12, ramp: { z0: -1.5, z1: -0.7, len: 0.9 } }
+  pillars:
+    - { x: -4.1, z: -3.15, sx: 0.95, sz: 0.6, h: 3.0 }
+    - { x: 3.05, z: -3.15, sx: 0.8, sz: 0.6, h: 3.0 }
+  strips:
+    - { pillar: 0, x: -4.1, y0: 0.55, y1: 2.45, sx: 0.33 }
+    - { pillar: 1, x: 2.78, y0: 0.7, y1: 2.3, sx: 0.25 }
+  tactical: { x0: -2.4, x1: 3.0, z: -4.9, depth: 0.9, top: 1.1 }
+  rail:
+    y: 1.2
+    r: 0.022
+    pts: [[-1.0, 1.98], [-0.8, 0.3], [-0.45, -1.9], [-0.2, -2.73], [0.3, -2.3], [0.75, -0.6], [0.97, 1.5]]
+  chairs:
+    - { x: -0.74, z: -2.36, h: 0.62, yaw: 18 }
+    - { x: 1.0, z: -1.05, h: 0.98, yaw: -22 }
+    - { x: 2.43, z: -2.75, h: 0.84, yaw: -14 }
+  doors: [0, 1]
+  panels: [2, 3]
+  # plate: [x0, x1, z of the plate's front edge]; the console top overhangs it.
+  consoles:
+    - { item: 4, plate: [-1.5, 0.3, 1.2], pedestal: left }
+    - { item: 5, plate: [0.95, 2.7, 1.0], pedestal: right }
+  # each forward console is an L in plan: the lifted top is the long arm and a wing of this length and half-width runs toward the
+  # viewer at its outer end, of the same height and thickness (the lit pedestal stands under the wing's tip, `ped` from the top's near edge). Mirrored across the bridge.
+  wing: { len: 0.4, half: 0.32, ped: 0.15, thick: 0.16 }
+  viewscreen: { back: 4.0 }
+  # R6: Blender watts. A key over the command area, warm fills from the ring, the viewscreen bank's cool spill.
+  lights:
+    - { name: key, at: [0.4, 3.4, -1.0], watts: 1000, colour: "FFF6EA" }
+    - { name: fill, at: [0.0, 3.7, -4.2], watts: 520, colour: "FFE2B8" }
+    - { name: spill, at: [-0.7, 1.5, -4.2], watts: 120, colour: "9CC8FF" }

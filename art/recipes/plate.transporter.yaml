@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 16 Task 10: the transporter room's own background, repainted into a plate (R11, R16). Generic prompt: no game text, no trademarks.
+# Settings are plate.bridge's (Task 7): masked denoise, depth and lineart ControlNets, one style reference.
+id: plate.transporter
+kind: repaint
+source: { ship: transp }
+sampling: { seed: 160003, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered starship transporter room interior, a raised round platform of lit pads, ribbed golden wall panels behind it, teal-grey walls, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+# The alignment points are the four pads' corners and stand points (read from the lift at run time, shipscreen.ts), the areas' corners
+# and the original's strongest edges. The pads' glow and the wall's lit panels are emissive, so the mask protects them.
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# R12: the console strip along the bottom, kept crisp as on the bridge's plate. Traced on the decoded original: the scene ends at
+# row 287 and row 288 is the strip's frame line across all 640 columns; the strip runs to the bottom edge, 192 rows.
+keep:
+  - [0, 288, 640, 192]
+# R16: the console's areas [x, y, width, height], traced on the decoded original (the black fields inside the blue frame):
+#   equipment: the left list, x 50..199, y 300..414 (five 23 px rows, between the frame's rules at 322, 345, 368, 391);
+#   crew: the right list, x 267..417, same rows;
+#   kit: the slot tray with its bevel, x 65..578, y 418..477 (the black ground covers the whole tray, bevel and centre ring included);
+#   controls: the black block of sliders, x 419..542, y 291..414;
+#   exits: the grey block at the top right with its rounded corner, x 538..639, y 293..337.
+areas:
+  equipment: [50, 300, 150, 115]
+  crew: [267, 300, 151, 115]
+  kit: [65, 418, 514, 60]
+  controls: [419, 291, 124, 124]
+  exits: [538, 293, 102, 45]
+reference:
+  - { refs: [set.transporter.wide.1, set.transporter.pad.1, set.transporter.panel.1], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

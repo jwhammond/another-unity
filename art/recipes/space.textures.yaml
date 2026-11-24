@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 30 Task 4: every combat texture (R8), each run as tex.space.<lower-case name> in the cache: de-dithered, upscaled 4x and
+# repainted at denoise 0.3 under its UV islands; a damage texture at its base's seed; under 32 texels a side the upscale alone. A
+# texture that fails the 2 px check publishes its upscale (M8 spec §7). Generic prompt: no game text, no trademarks.
+# `seeds` (by texture name) re-rolls one texture; `upscaleOnly` (by name) keeps one at its upscale. Both empty until a run asks.
+id: space.textures
+kind: spacetex
+sampling: { seed: 300101, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  detailed starship hull surface texture, painted metal plating with fine panel lines, small hatches and markings,
+  physically based material, even lighting, crisp detail
+negative: blurry, painting, cartoon, text, watermark, logo, people, perspective, shadow, vignette, noise
+denoise: 0.3

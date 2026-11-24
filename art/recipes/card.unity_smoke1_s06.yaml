@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the smoke of `s06` (animation 0, 20 frames, a loop): w6s6smk1.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_smoke1_s06
+kind: card
+object: unity_smoke1_s06
+sprite: w6s6smk1.spr
+anims: [0]
+prop: { screen: unity.s06, objects: [unity.smoke1], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 6 of the 11 strongest windows of frames 0 to 3 are speckle (worst shift 1.75 px, flicker median 7.1); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 97011, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of wisps of pale smoke over green-lit machinery, science fiction set, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

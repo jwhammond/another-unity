@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Portrait for the injured woman (Benyt), a game-only character (icon.map: w4shbeny.spr, the dialog's speaker icon): no show footage and no actor, so no FaceID and no
+# likeness score. Same technique as butler and carlstrom: the Krea 2 Turbo variant paints the face from the game portrait as layout (lightly
+# blurred), then the grab sets that person into the game portrait's frame (face box fitted, BiRefNet matte, graded halfway to the game figure,
+# the portrait's own backdrop) and the pixel step makes the 64x64 avatar. Published under the object ids in speakers: the subtitle looks its
+# speaker up by the game's object name.
+id: avatar.benyt
+kind: avatar
+object: benyt
+speakers: [lab.injured_woman.0302]
+base: { sprite: w4shbeny.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 6 }
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+grab:
+  from: krea2
+  gameFace: [10.91, 7.85, 34.46, 39.0]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 76005, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, a civilian woman in her thirties, a colonist, head and shoulders with room above the head, slight three-quarter
+      view, long wavy golden blonde hair, fair skin, blue eyes, a pained weary expression, a plain dark green civilian work shirt with
+      a plain collar, nothing pinned or fastened on it, no pins, no insignia, no badge, warm key light from the right, cool blue shadows, dark grey background, painted
+      1990s adventure game portrait
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark
+    denoise: 0.8
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.7 }]

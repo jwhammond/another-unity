@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the shuttle of `s05` (animation 0 one frame, `shuttle_timer` plays 1, 45 frames): w3s5ship.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_shuttle_s05
+kind: card
+object: zoo_shuttle_s05
+sprite: w3s5ship.spr
+anims: [0,1]
+prop: { screen: zoo.s05, objects: [zoo.shuttle], anim: 0, animate: [0,1] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 1.12 px, flicker median 8.5): animation 1: 1 to 4 of the 1 to 6 strongest windows of frames 22 to 27 are speckle; animation 0 passed; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98012, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small grey spacecraft shuttle parked on a landing pad, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

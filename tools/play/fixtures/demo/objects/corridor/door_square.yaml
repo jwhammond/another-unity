@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: door_square
+name: Doorway
+screen: corridor
+at: door
+on:
+  use:
+    - when:
+        checks:
+          - { object: door, state: 1 }
+      do:
+        - screen: { to: lab, entrance: entry }
+          stop: true
+    - do:
+        - say: { who: picard, text: "The door is sealed." }

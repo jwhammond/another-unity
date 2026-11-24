@@ -1,0 +1,20 @@
+node_modules/
+/coverage/
+# made by apps/web/scripts/demo-assets.ts (npm run dev)
+/tools/play/fixtures/demo/models/
+/tools/play/fixtures/demo/audio/
+/apps/web/dist/
+/apps/web/test-results/
+/apps/web/playwright-report/
+__pycache__/
+
+# secrets and local settings (the Jellyfin key lives outside the repo; this is a net)
+*.env
+!tools/art/setup/pins.env
+/apps/web/dist-deploy/
+/apps/web/public/site-media/
+/apps/web/.site-media.tmp*
+.dev.vars
+.wrangler/
+.DS_Store
+/test-results/

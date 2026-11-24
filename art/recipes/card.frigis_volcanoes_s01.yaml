@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8e rollout (Frigis), the haze over the volcanoes of `s01` (4 frames, a loop): steam.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8e"). Generic prompt: no game text.
+id: card.frigis_volcanoes_s01
+kind: card
+object: frigis_volcanoes_s01
+sprite: steam.spr
+anims: [0]
+prop: { screen: frigis.s01, objects: [frigis.volcanoes], anim: 0, animate: [0] }
+group: 2
+sampling: { seed: 96001, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of pale steam drifting over red rock cliffs under a hazy sky, alien landscape, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

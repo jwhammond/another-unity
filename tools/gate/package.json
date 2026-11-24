@@ -1,0 +1,9 @@
+{
+  "name": "@another-unity/gate",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "yaml": "^2.6.1"
+  }
+}

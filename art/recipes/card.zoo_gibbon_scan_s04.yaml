@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the gibbon scan of `s04` (off at entry, 14 frames, a loop): w3s4kscn.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_gibbon_scan_s04
+kind: card
+object: zoo_gibbon_scan_s04
+sprite: w3s4kscn.spr
+anims: [0]
+prop: { screen: zoo.s04, objects: [zoo.gibbon_scan], anim: 0, animate: [0] }
+group: 3
+sampling: { seed: 98009, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing blue holographic scan outline of a small animal skeleton on a dark background, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

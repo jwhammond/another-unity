@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 30 Task 5: what combat shows de-dithered and upscaled only (R5, R11, R12; M8 spec Decision 13): the effects' sprite sheets and
+# space.mrg's pictures the console doesn't repaint. The upscaler is models.yaml's selected one.
+id: space.upscales
+kind: spaceup

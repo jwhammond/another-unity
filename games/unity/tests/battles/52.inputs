@@ -1,0 +1,26 @@
+# Battle 52, flown by hand at Lieutenant (Plan 31 R5): a cloaked ship (it decloaks at once) and two probes. Delegate
+# wins it only by being rammed, its reactors and grid destroyed (Plan 23). Battle stations, the weapons lock, and two
+# torpedoes a salvo (a tube fires all it has loaded otherwise). Target the ship once it shows (a probe till then) and
+# fly at it nose on, closing to 1200-2700: the forward banks strip the shield facing us (each hit lands on the shield
+# the shooter sees it by), then, with that shield under 40, torpedoes go through it and destroy it near step 200. Its
+# kill list stands the battle down (step 349; the probes are left, as they are by Delegate), and the Bridge button leaves.
+at 0 set power 4
+at 0 set lock on
+at 0 set salvo 0 2
+at 0 set salvo 1 2
+at 0 target 2
+at 1 steer 1 1 0 1
+at 20 target 1
+at 45 steer 1 1 0 0
+at 52 steer 0 1 0 0
+at 77 steer 1 1 0 0
+at 88 steer 0 1 0 0
+at 107 steer 0 0 0 0
+at 121 steer -1 0 0 0
+at 154 steer -1 1 0 0
+at 174 fire phasers
+at 178 steer -1 1 0 -1
+at 191 fire torpedoes
+at 192 steer -1 0 0 -1
+at 194 fire torpedoes
+at 349 bridge

@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 33 Task 6: the bridge's captain repainted toward the show's likeness, over Task 5's cut-out (each frame's alpha is the cut-out's,
+# upscaled), from card.riker's settings. Generic prompt: no game text, no show or actor names.
+id: bridgecrew.picard
+kind: bridgecrew
+object: picard
+sprite: brdgpica.spr
+sampling: { seed: 93003, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a bald older man standing, a fringe of short grey hair, clean-shaven, realistic skin, fitted red and black science fiction
+  duty uniform, full body, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry, hair on top of the head
+denoise: 0.38
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [crew.picard.face.1, crew.picard.face.2], model: face, weight: 0.8, weightType: linear, mask: head }
+  - { refs: [crew.picard.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+hold: { tolerance: 20, feather: 12 }
+# Run on the 4080 (2026-10-30, 30 distinct frames), with the head pass from the start (face, denoise 0.4): a close likeness, eyes clear,
+# the same face through the talk. Flicker median 0.3-4.3, worst pair 7.5 (the walks).
+face: { denoise: 0.4, pad: 0.3, feather: 0.15 }

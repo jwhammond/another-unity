@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 4's voices.yaml: '@' in a voice key is the speaker's byte.
+speakers: { picard: '00', data: '02' }
+other: ff
+lines:
+  d@01: The panel draws power from a buried conduit.
+  dff01: I keep the lab.

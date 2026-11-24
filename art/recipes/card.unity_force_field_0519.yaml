@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the force field `0519` of `s05` (animation 0, 3 frames, a loop): w6s5onew.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_force_field_0519
+kind: card
+object: unity_force_field_0519
+sprite: w6s5onew.spr
+anims: [0]
+prop: { screen: unity.s05, objects: [unity.force_field_anim.0519], anim: 0, animate: [0] }
+group: 4
+sampling: { seed: 97008, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a faint shimmering blue vertical energy field, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

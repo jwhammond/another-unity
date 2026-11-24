@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: zoo.sultis_reptile (screen zoo.s09, sprite w3s9bat2.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks zoo.s09` stands it over the plate. Generic prompt: no game text. ScummVM's player plays animation 0 for it.
+id: card.zoo_reptile_s09
+kind: card
+object: zoo_reptile_s09
+sprite: w3s9bat2.spr
+anims: [0]
+prop: { screen: zoo.s09, objects: [zoo.sultis_reptile], anim: 0 }
+group: 1
+sampling: { seed: 92164, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a dark blue alien forest of tall thin trees at night with small glowing yellow lights, mist, realistic, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

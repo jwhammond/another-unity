@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: mat.wood-rail
+kind: material
+script: mat/wood-rail.py
+seed: 12
+size: 1024
+band: 96

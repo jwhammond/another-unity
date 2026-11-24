@@ -1,0 +1,16 @@
+{
+  "name": "@another-unity/space",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@another-unity/engine": "*",
+    "@another-unity/lift": "*",
+    "@gltf-transform/core": "4.5.1",
+    "pngjs": "7.0.0",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/pngjs": "6.0.5"
+  }
+}

@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Away-team avatar for data, made as Riker's (avatar.riker.yaml, the user's pick id-real): a NEW picture from IP-Adapter FaceID on
+# InsightFace embeddings of five show frames (face.3-7, seasons 5-7), the blurred game portrait as the layout (img2img at 0.9), a
+# "realistic oil painting" prompt at cfg 4 with plus-face 0.4 and a palette transfer of 0.3, shown as the 64x64 k-means-32 pixel version.
+# The frames were found by InsightFace over the cached episode scans (the largest faces nearest this person's face.1-2), square crops
+# about the face; face.8-11 are held out and score the likeness, with the margin over the nearest other crew member.
+id: avatar.data
+kind: avatar
+object: data
+base: { sprite: smhddata.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 40 }
+identity:
+  refs: [crew.data.face.3, crew.data.face.4, crew.data.face.5, crew.data.face.6, crew.data.face.7]
+  holdout: [crew.data.face.8, crew.data.face.9, crew.data.face.10, crew.data.face.11]
+  others: [crew.picard.face.1, crew.picard.face.2, crew.riker.face.1, crew.riker.face.2, crew.troi.face.1, crew.troi.face.2, crew.worf.face.1, crew.worf.face.2, crew.crusher.face.1, crew.crusher.face.2, crew.la_forge.face.1, crew.la_forge.face.2]
+# Run 2026-10-19 on the PC (likeness, smooth / pixel, against face.8-11):
+#   id-real 0.63+0.54 / 0.55+0.46   id-gold 0.63+0.55 / 0.56+0.49
+# id-gold weights the gold skin and yellow eyes in the prompt; FaceID still paints the eyes pale blue in both. Picked: id-gold, the
+# better pixel score.
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600, refCount: 3 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+# The pick (the user's, 2026-10-19, treatment B of the grab probe): the full show frame behind its ref, its face box fitted to the game portrait's, the person
+# cut out by BiRefNet (portrait) with pymatting's foreground colours, graded halfway to the game figure, on the portrait's own backdrop
+# (art avatar <recipe> --variant grab; grab.ts). The variants below are the earlier rounds, kept.
+grab:
+  ref: crew.data.face.6
+  gameFace: [10.54, 6.95, 34.54, 41.79]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: id-real
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      realistic oil painting portrait of Lieutenant Commander Data from Star Trek: The Next Generation (Brent Spiner) the android, head
+      and shoulders, slight three-quarter view, pale gold-white skin, yellow eyes, slicked-back short dark brown hair, clean-shaven,
+      calm expression, black high-collared uniform tunic, warm key light from the right, cool blue shadows, dark blue background,
+      painted brushwork
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, pink skin, tanned skin, blue eyes, brown eyes, beard, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3
+  - name: id-gold
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      realistic oil painting portrait of Lieutenant Commander Data from Star Trek: The Next Generation (Brent Spiner) the android, head
+      and shoulders, slight three-quarter view, (pale gold-white android skin:1.3), (yellow eyes:1.4), slicked-back short dark brown
+      hair, clean-shaven, calm expression, black high-collared uniform tunic, warm key light from the right, cool blue shadows, dark
+      blue background, painted brushwork
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, pink skin, tanned skin, blue eyes, brown eyes, beard, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3

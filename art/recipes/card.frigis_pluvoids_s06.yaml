@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.pluvoids (screen frigis.s06, sprite w5s6rhrs.spr): the pluvoids, a row of figures. A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s06` stands it over the plate. Generic prompt: no game text. ScummVM's player plays animation 0 for it.
+id: card.frigis_pluvoids_s06
+kind: card
+object: frigis_pluvoids_s06
+sprite: w5s6rhrs.spr
+anims: [0, 1]
+prop: { screen: frigis.s06, objects: [frigis.pluvoids], anim: 0, animate: [0, 1] }
+group: 1
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 0.83 px, flicker median 5.5, dE max 1.2): animations 0 and 1: 18 to 20 of the 30 to 32 strongest windows are speckle that cannot be measured; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 92122, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a row of green bulbous alien creatures standing on round pedestals, translucent green skin, ribbed organic texture, golden amber light, glossy physically based materials, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), a screen of `s12` (`sc4`; animation 0 one frame, scripts play 1 and 2, 5 frames each): w2s20sc4.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_screen_sc4
+kind: card
+object: allanor_screen_sc4
+sprite: w2s20sc4.spr
+anims: [0, 1, 2]
+prop: { screen: allanor.s12, objects: [allanor.sc4], anim: 0, animate: [0, 1, 2] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 11 of the 21 strongest windows are speckle (worst shift 0.69 px); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95030, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing blue circuit diagram etched on a dark display panel, science fiction control screen, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

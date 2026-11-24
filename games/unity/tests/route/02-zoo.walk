@@ -1,0 +1,182 @@
+# A Final Unity, the zoo (world 3), then the ship's steps to frigis's first beam-down (Plan 12 Task 8). Original ids only.
+# The away leg is zoo.walk's steps. They are copied, not included: in a new game the first talk (c000) plays itself
+# on the beam-in, so its picks come before the first wait, where zoo.walk's dev start has the player talk to o_03030e.
+seed 42
+start 3 3 0
+# the first talk, c000: four menus (picks 1, 1, 1, 1), then the last (pick 0, then 1) enables the next screens
+seed 50
+pick 1
+pick 1
+pick 1
+pick 1
+pick 0
+pick 1
+advance 6
+# o_030303 to s01, then o_03010b to s04
+use 000002 030303
+advance 6
+use 000002 03010b
+advance 6
+# the carcass objects (o_030417, o_030418, o_030419) on o_030403, the first two also in o_03040c
+use 000002 030417 030403
+get 000002 030417
+use 000002 030417 03040c
+get 000002 030417
+use 000002 030418 030403
+get 000002 030418
+use 000002 030418 03040c
+use 000002 030419 030403
+advance 10
+# o_030415 with the tricorder (o_007001): the comm port opens a channel to c001 (picks 1, 0, 0, 0, 1, 0, 3, 4, 1, 0)
+seed 43
+pick 1
+pick 0
+pick 0
+pick 0
+pick 1
+pick 0
+pick 3
+pick 4
+pick 1
+pick 0
+use 000002 030415 007001
+advance 6
+# back to the constable (s03): c000 again (picks 1, 1, 1, 0)
+use 000002 030401
+advance 6
+use 000002 030101
+advance 6
+seed 51
+pick 1
+pick 1
+pick 1
+pick 0
+talk 000002 03030e
+advance 6
+# s04 again: the comm port opens a channel to c002 (picks 1, 0, 0, 2, 2, 1, 1)
+use 000002 030303
+advance 6
+use 000002 03010b
+advance 6
+seed 44
+pick 1
+pick 0
+pick 0
+pick 2
+pick 2
+pick 1
+pick 1
+use 000002 030415 007001
+advance 6
+# back to s03, then the sample chain. In s04 o_030414 and the three
+# units (o_030426-o_030428) are taken. Each unit is configured for one of s06, s07 and s08: o_030426 for s06, o_030427
+# for s07, o_030428 for s08. The map spot is used with the unit; the unit walks there
+# and the action square next to it (o_030613, o_03071f, o_030822) takes the arrival; the unit is then used with the
+# o_030414 for the sample (o_030618, o_030719, o_030806)
+use 000002 030401
+advance 6
+use 000002 030101
+advance 6
+use 000002 030303
+advance 6
+use 000002 03010b
+advance 6
+get 000002 030414
+get 000002 030426
+get 000002 030427
+get 000002 030428
+use 000002 030401
+advance 6
+use 000002 030303
+advance 6
+# (ScummVM's timers run in real time through the long chain; o_03011e's, the 25 s timer and the fire in these waits in both engines)
+advance 30
+walk 000002 030103
+advance 6
+advance 3
+look 000002 03060b
+use 000002 03061a 030426
+advance 20
+use 000002 030426 030414
+advance 5
+use 000002 030101
+advance 6
+use 000002 030304
+advance 6
+advance 12
+walk 000002 030206
+advance 6
+look 000002 03070b
+use 000002 030715 030427
+advance 20
+use 000002 030427 030414
+advance 5
+use 000002 030304
+advance 6
+walk 000002 030208
+advance 6
+look 000002 030812
+use 000002 030802 030428
+advance 20
+use 000002 030428 030414
+advance 5
+# the three samples in o_03040c, in s04: the checks o_030622, o_03072d, o_030836
+use 000002 030101
+advance 6
+use 000002 030303
+advance 6
+use 000002 03010b
+advance 6
+use 000002 030618 03040c
+advance 6
+use 000002 030719 03040c
+advance 6
+use 000002 030806 03040c
+advance 40
+use 000002 030401
+advance 6
+use 000002 030101
+advance 6
+# gap: o_030327 is inactive and nothing activates or names it (Plan 9 and 10 rulings), yet c006's lines 0/30-37 are written only by it
+use 000002 030327
+advance 3
+# the c006 lines and the next arrival play themselves
+seed 61
+talk 000002 03030e
+advance 40
+# o_030304 to s02, o_03020d to s05, the shuttle (o_030502) to s10
+use 000002 030304
+advance 8
+use 000002 03020d
+advance 8
+use 000002 030502
+advance 20
+# o_031004 enables the consoles; o_031001 to s09
+use 000002 031004
+advance 10
+use 000002 031001
+advance 10
+# the consoles: o_030924 starts the first, o_030925 (inside twenty seconds) the finale
+use 000002 030924
+advance 15
+use 000002 030925
+advance 20
+# aboard again: the ending's hails play (t59; c004@3 sets the course)
+advance 5
+checkpoint after-zoo
+# the next stop's contact (c028@0): the first option, then k3 of c028@1 (pick 0 both): the encounter ends with
+# the course to frigis (c022@2, t80) and the arrival (t81) puts Riker, Troi and Data on the bridge with their own talks
+pick 0
+pick 0
+advance 600
+# o_5f0502 (c025@1): her last line gives the lounge's contacts a new talk string (c027@11-13)
+talk 5f0502
+# the contact in the lounge (o_5f0401, c027@11) ends with t86, and frigis answers: the talk at c005@2; the menu's
+# second option is k6. Its end (c005@5) runs t88, which sets the beam target
+pick 1
+lounge 5f0401
+advance 300
+# the first frigis team is Riker, Troi, La Forge and Data
+station transporter
+beam
+end

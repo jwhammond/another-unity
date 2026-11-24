@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the worm of `s02` (off at entry, 45 frames, a loop): w3s2worm.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_worm_s02
+kind: card
+object: zoo_worm_s02
+sprite: w3s2worm.spr
+anims: [0]
+prop: { screen: zoo.s02, objects: [zoo.worm.021c], anim: 0, animate: [0] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 0.33 px, flicker median 4.1): frame 1: 2 of its 2 strongest windows are speckle; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98005, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a pale segmented worm crawling on the ground, close up, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

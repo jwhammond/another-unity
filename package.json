@@ -1,0 +1,56 @@
+{
+  "name": "another-unity",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "engine",
+    "tools/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p . && tsc -p tsconfig.dom.json",
+    "lift": "tsx tools/lift/src/cli.ts",
+    "media": "tsx tools/media/src/cli.ts",
+    "greybox": "tsx tools/greybox/src/cli.ts",
+    "space": "tsx tools/space/src/cli.ts",
+    "art": "tsx tools/art/src/cli.ts",
+    "art:space": "tsx tools/art/src/spacecli.ts",
+    "gate:init": "tsx tools/gate/src/cli.ts init",
+    "gate:seal": "tsx tools/gate/src/cli.ts seal",
+    "unity:build": "tsx tools/unitybuild/src/cli.ts",
+    "unity:diff": "sh tools/tracediff/unity-diff.sh",
+    "tracediff": "tsx tools/tracediff/src/main.ts",
+    "fly": "tsx tools/play/src/fly.ts",
+    "dev": "npm run dev -w @another-unity/web",
+    "build": "npm run build -w @another-unity/web",
+    "e2e": "npm run e2e -w @another-unity/web",
+    "ci": "env -u RAW_DIR -u TRACES_DIR -u AUDIO_DIR -u IMAGES_DIR -u IMAGES_STATE_LOGS -u MOVIES_DIR -u TRACE_FILE -u WALK_DIR -u WALK_RUNS -u WALKBAD_DIR -u WALKSEED_DIR -u TRACELOAD_DIR -u WALKCOMBADGE_DIR -u GAMEDATA_DIR -u ART_CACHE -u BLENDER -u COMFY_URL -u JELLYFIN_ENV sh -c 'npx vitest run && npm run typecheck && npm run e2e'",
+    "placement": "tsx tools/placement/src/cli.ts",
+    "perf": "tsx apps/web/scripts/perf.ts",
+    "site:media": "tsx apps/web/scripts/site-media.ts",
+    "deploy:build": "tsx apps/web/scripts/deploy/build.ts",
+    "deploy:check": "tsx apps/web/scripts/deploy/check.ts",
+    "deploy:preview": "tsx apps/web/scripts/deploy/preview.ts",
+    "deploy": "tsx apps/web/scripts/deploy/deploy.ts",
+    "deploy:e2e": "npm run deploy:e2e -w @another-unity/web",
+    "backup": "tsx tools/backup/src/cli.ts",
+    "publish:spdx": "tsx tools/publish/src/cli.ts spdx",
+    "publish:scan": "tsx tools/publish/src/cli.ts scan",
+    "publish:snapshot": "tsx tools/publish/src/cli.ts snapshot"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/three": "^0.170.0",
+    "fake-indexeddb": "^6.0.0",
+    "happy-dom": "^15.11.6",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8",
+    "wrangler": "4.148.0"
+  }
+}

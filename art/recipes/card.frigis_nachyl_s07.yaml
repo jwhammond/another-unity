@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.nachyl (screen frigis.s07, sprite w5s7nach.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s07` stands it over the plate. Generic prompt: no game text.
+id: card.frigis_nachyl_s07
+kind: card
+object: frigis_nachyl_s07
+sprite: w5s7nach.spr
+anims: [3, 2, 0]
+prop: { screen: frigis.s07, objects: [frigis.nachyl], anim: 3, talk: 2, animate: [3, 2, 0] }
+group: 1
+sampling: { seed: 92110, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an alien elder standing with hands folded, long rust-orange hooded robe, grey beard, a glowing blue light above the head, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

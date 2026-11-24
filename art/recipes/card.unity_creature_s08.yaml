@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: unity.creature.0807 (screen unity.s08, sprite w6s8grun.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks unity.s08` stands it over the plate. Generic prompt: no game text.
+id: card.unity_creature_s08
+kind: card
+object: unity_creature_s08
+sprite: w6s8grun.spr
+anims: [2]
+prop: { screen: unity.s08, objects: [unity.creature.0807], anim: 2, animate: [2] }
+group: 1
+sampling: { seed: 92123, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall hairy alien humanoid in an orange fur suit with a green head and green hands and boots, realistic fur, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

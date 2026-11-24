@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Placement small batch 7b: the star chart (allanor.s0f). The original draws it over the background and the plate (a repaint of the background alone) does not have it.
+# A still of the sprite's frame 0 upscaled 4x and lightly repainted, silhouette kept exactly; `prop` has `art masks <screen>` stand it over the plate while the object is active.
+# `placement triage`: static-missing (one frame, not in the background at its rect). Generic prompt: no game text.
+id: card.allanor_star_chart
+kind: card
+object: allanor_star_chart
+sprite: w2s15map.spr
+anims: [0]
+prop: { screen: allanor.s0f, objects: [allanor.star_chart], anim: 0 }
+group: 1
+sampling: { seed: 92410, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a flat glowing blue holographic star map panel on a wall, dark screen with small points of light, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

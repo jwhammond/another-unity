@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Placement small batch 7c: half of a broken circular disk, grey plastic (unity.s0d). The original draws it over the background and the plate (a repaint of the background alone) does not have it.
+# A still of the sprite's frame 0 upscaled 4x and lightly repainted, silhouette kept exactly; `prop` has `art masks <screen>` stand it over the plate while the object is active.
+# `placement triage`: static-missing (one frame, not in the background at its rect). Generic prompt: no game text.
+id: card.unity_disk_half_0d0b
+kind: card
+object: unity_disk_half_0d0b
+sprite: w6s6cplf.spr
+anims: [0]
+prop: { screen: unity.s0d, objects: [unity.disk_half.0d0b], anim: 0 }
+group: 1
+sampling: { seed: 92515, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of half of a broken circular disk, grey plastic, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

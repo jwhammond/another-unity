@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The phaser inventory icon repainted (art icon): the game icon is phaser2.spr (icon.map 007003). Upscaled for its layout and
+# colours, repainted with SDXL img2img toward a prompt that names the prop (no show frame of it), then reduced to the icon's own pixel
+# grid on 24 k-means colours of its opaque cells, the sprite's alpha as the cut-out. Two denoise levels; `pick` is written as
+# item.phaser.png.
+id: icon.phaser
+kind: icon
+object: phaser
+source: { sprite: phaser2.spr, frame: 0 }
+pixel: { kmeans: 24, scale: 4 }
+# Run 2026-10-19 on the PC (kit.compare.png). Picked: real-d55: real-d70 loses the green emitter.
+pick: real-d55
+variants:
+  - name: real-d55
+    sampling: { seed: 74001, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of a type-2 hand phaser from Star Trek: The Next Generation, the grey curved pistol-grip phaser with a
+      black ribbed grip, a pale grey body and a small green emitter light on top, seen from the side, studio product shot, soft key
+      light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.55
+    palette: 0.4
+  - name: real-d70
+    sampling: { seed: 74002, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of a type-2 hand phaser from Star Trek: The Next Generation, the grey curved pistol-grip phaser with a
+      black ribbed grip, a pale grey body and a small green emitter light on top, seen from the side, studio product shot, soft key
+      light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.7
+    palette: 0.4

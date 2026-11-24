@@ -1,0 +1,37 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * The import screen (importScreen.tsx): over the loading screen (z-index 50) and everything else, in the admin console's colours
+ * (admin.css: the ink, the lit blue, the keys' cream). One column, so it fits a 360 px phone.
+ */
+.au-gate {
+  --au-gate-ink: #208ce0; --au-gate-lit: #68e0fc; --au-gate-face: #3c3c3c; --au-gate-key: #c6c6a8; --au-gate-key-lit: #f4f0a0; --au-gate-red: #ff8a8a;
+  position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; overflow-y: auto;
+  padding: 16px; box-sizing: border-box; background: #000; color: var(--au-gate-lit);
+  font: 15px/1.45 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif;
+}
+.au-gate * { box-sizing: border-box; }
+.au-gate-panel {
+  width: min(520px, 100%); margin: auto; padding: 20px 18px; border: 2px solid var(--au-gate-ink); border-radius: 18px 18px 0 0;
+  background: #05101c; display: flex; flex-direction: column; gap: 12px;
+}
+.au-gate-panel.au-gate-over { border-color: var(--au-gate-key-lit); background: #0c2238; }
+.au-gate-title { margin: 0; font-size: 20px; font-weight: bold; letter-spacing: 0.12em; text-transform: uppercase; color: var(--au-gate-key-lit); }
+.au-gate-lead { margin: 0; color: var(--au-gate-lit); }
+.au-gate-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+/* (the label is the button: its file input is hidden inside it, still focusable and still a target for setInputFiles) */
+.au-gate-choice {
+  position: relative; flex: 1 1 200px; display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 18px;
+  border-radius: 99px; background: var(--au-gate-key); color: #000; font-weight: bold; letter-spacing: 0.06em; text-transform: uppercase;
+  font-size: 13px; text-align: center; cursor: pointer;
+}
+.au-gate-choice:hover, .au-gate-choice:focus-within { background: var(--au-gate-key-lit); outline: 2px solid var(--au-gate-lit); outline-offset: 2px; }
+.au-gate-choice input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.au-gate-choice.au-gate-off { background: var(--au-gate-face); color: #888; cursor: not-allowed; outline: 0; }
+.au-gate-choice.au-gate-off input { cursor: not-allowed; }
+.au-gate-bar { height: 12px; background: #0c3058; border: 1px solid #1c4c80; }
+.au-gate-fill { height: 100%; background: var(--au-gate-ink); transition: width 0.2s ease-out; }
+.au-gate-message { margin: 0; min-height: 1.45em; color: var(--au-gate-key-lit); }
+.au-gate-message.au-gate-error { color: var(--au-gate-red); }
+.au-gate-given { margin: 0; font-size: 13px; color: var(--au-gate-ink); overflow-wrap: anywhere; }
+.au-gate-private { margin: 0; font-size: 13px; color: var(--au-gate-ink); }
+@media (prefers-reduced-motion: reduce) { .au-gate-fill { transition: none; } }

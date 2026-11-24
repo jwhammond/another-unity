@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 15 Task 9: Riker's animations repainted toward the show's likeness. Generic prompt: no game text, no show or actor names.
+id: card.riker
+kind: card
+object: riker
+sprite: riker.spr
+anims: used
+group: 4
+sampling: { seed: 90001, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man standing, short brown hair and a trimmed beard, realistic skin, fitted science fiction duty uniform,
+  full body, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.55
+lineart: { strength: 0.7 }
+reference:
+  - { refs: [crew.riker.face.1, crew.riker.face.2], model: face, weight: 0.8, weightType: linear, mask: head }
+  - { refs: [crew.riker.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+# Tuning (walk 6, 4 frames, seed 90001, sweeps riker-w6-base/-time/-a in the cache): denoise 0.35 barely changes the face, 0.45 gives a
+# likeness, 0.55 the closest (fuller beard, eyes, hair) with the costume still within dE 4.4; face weight 0.5 / 0.7 / 0.9 look alike (masked to
+# the head), so 0.8; group 1 is the most photographic but the hair colour differs frame to frame, group 2 is consistent (58 s a frame), group 4
+# is as consistent in the face and half the cost (about 30 s a frame). Depth ControlNet dropped and 20 steps: same look, 93 s a canvas against
+# 134 s, alignment still worst 0.74 px. Without any ControlNet a point moved 2.4 px. Flicker F over the walk: median 4.9-6.7, max 7.0, the
+# spread within an animation is small, but the median differs by view (up 6.9, right profile 11.0 with no spike: its legs move more, so the
+# texture shimmer of the repaint is bigger against them), so: median <= 14, any pair <= 2.2x the median. Looked at: no visible strobe at 11.
+checks: { flickerRatio: 2.2, flickerMax: 14, deltaE: 12 }
+# The speech loop (31) is 5 frames: on two canvases (3+2) its hair and skin tone changed at the seam (F 8.3 against a median 2.6), so it gets one.
+groupOverrides: { "31": 5 }
+seedOverrides: { "21": 90121 } # Batch 10, the phaser: animation 21 (kAnimFirePhaser + 9, a shot to the left) failed the card check at the recipe seed on its median flicker (14.5, limit 14) and passed at seed 90121 (13.6, worst shift 1.34 px)

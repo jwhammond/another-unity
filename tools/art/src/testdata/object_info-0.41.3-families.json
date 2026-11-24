@@ -1,0 +1,580 @@
+{
+ "AnyLineArtPreprocessor_aux": {
+  "input": {
+   "optional": {
+    "lineart_lower_bound": [
+     "FLOAT"
+    ],
+    "lineart_upper_bound": [
+     "FLOAT"
+    ],
+    "merge_with_lineart": [
+     [
+      "lineart_standard",
+      "lineart_realisitic",
+      "lineart_anime",
+      "manga_line"
+     ]
+    ],
+    "object_connectivity": [
+     "INT"
+    ],
+    "object_min_size": [
+     "INT"
+    ],
+    "resolution": [
+     "INT"
+    ]
+   },
+   "required": {
+    "image": [
+     "IMAGE"
+    ]
+   }
+  }
+ },
+ "CLIPLoader": {
+  "input": {
+   "optional": {
+    "device": [
+     [
+      "default",
+      "cpu"
+     ]
+    ]
+   },
+   "required": {
+    "clip_name": [
+     [
+      "clip_l.safetensors",
+      "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "t5xxl_fp8_e4m3fn.safetensors"
+     ]
+    ],
+    "type": [
+     [
+      "stable_diffusion",
+      "stable_cascade",
+      "sd3",
+      "stable_audio",
+      "mochi",
+      "ltxv",
+      "pixart",
+      "cosmos",
+      "lumina2",
+      "wan",
+      "hidream",
+      "chroma",
+      "ace",
+      "omnigen2",
+      "qwen_image",
+      "hunyuan_image",
+      "flux2",
+      "ovis",
+      "longcat_image",
+      "cogvideox",
+      "lens",
+      "pixeldit",
+      "ideogram4",
+      "boogu",
+      "krea2",
+      "joyimage",
+      "mage",
+      "minimax",
+      "yue2",
+      "flux3"
+     ]
+    ]
+   }
+  }
+ },
+ "CLIPTextEncode": {
+  "input": {
+   "optional": {},
+   "required": {
+    "clip": [
+     "CLIP"
+    ],
+    "text": [
+     "STRING"
+    ]
+   }
+  }
+ },
+ "CLIPVisionEncode": {
+  "input": {
+   "optional": {},
+   "required": {
+    "clip_vision": [
+     "CLIP_VISION"
+    ],
+    "crop": [
+     [
+      "center",
+      "none"
+     ]
+    ],
+    "image": [
+     "IMAGE"
+    ]
+   }
+  }
+ },
+ "CLIPVisionLoader": {
+  "input": {
+   "optional": {},
+   "required": {
+    "clip_name": [
+     [
+      "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+      "sigclip_vision_patch14_384.safetensors"
+     ]
+    ]
+   }
+  }
+ },
+ "ConditioningZeroOut": {
+  "input": {
+   "optional": {},
+   "required": {
+    "conditioning": [
+     "CONDITIONING"
+    ]
+   }
+  }
+ },
+ "ControlNetApplyAdvanced": {
+  "input": {
+   "optional": {
+    "vae": [
+     "VAE"
+    ]
+   },
+   "required": {
+    "control_net": [
+     "CONTROL_NET"
+    ],
+    "end_percent": [
+     "FLOAT"
+    ],
+    "image": [
+     "IMAGE"
+    ],
+    "negative": [
+     "CONDITIONING"
+    ],
+    "positive": [
+     "CONDITIONING"
+    ],
+    "start_percent": [
+     "FLOAT"
+    ],
+    "strength": [
+     "FLOAT"
+    ]
+   }
+  }
+ },
+ "ControlNetLoader": {
+  "input": {
+   "optional": {},
+   "required": {
+    "control_net_name": [
+     [
+      "Qwen-Image-2512-Fun-Controlnet-Union-2602.safetensors",
+      "controlnet_union_sdxl_promax.safetensors",
+      "flux1-dev-union-pro-2.0.safetensors"
+     ]
+    ]
+   }
+  }
+ },
+ "DepthAnythingV2Preprocessor": {
+  "input": {
+   "optional": {
+    "ckpt_name": [
+     [
+      "depth_anything_v2_vitg.pth",
+      "depth_anything_v2_vitl.pth",
+      "depth_anything_v2_vitb.pth",
+      "depth_anything_v2_vits.pth"
+     ]
+    ],
+    "resolution": [
+     "INT"
+    ]
+   },
+   "required": {
+    "image": [
+     "IMAGE"
+    ]
+   }
+  }
+ },
+ "DifferentialDiffusion": {
+  "input": {
+   "optional": {
+    "strength": [
+     "FLOAT"
+    ]
+   },
+   "required": {
+    "model": [
+     "MODEL"
+    ]
+   }
+  }
+ },
+ "DualCLIPLoader": {
+  "input": {
+   "optional": {
+    "device": [
+     [
+      "default",
+      "cpu"
+     ]
+    ]
+   },
+   "required": {
+    "clip_name1": [
+     [
+      "clip_l.safetensors",
+      "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "t5xxl_fp8_e4m3fn.safetensors"
+     ]
+    ],
+    "clip_name2": [
+     [
+      "clip_l.safetensors",
+      "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "t5xxl_fp8_e4m3fn.safetensors"
+     ]
+    ],
+    "type": [
+     [
+      "sdxl",
+      "sd3",
+      "flux",
+      "hunyuan_video",
+      "hidream",
+      "hunyuan_image",
+      "hunyuan_video_15",
+      "kandinsky5",
+      "kandinsky5_image",
+      "ltxv",
+      "newbie",
+      "ace"
+     ]
+    ]
+   }
+  }
+ },
+ "FluxGuidance": {
+  "input": {
+   "optional": {},
+   "required": {
+    "conditioning": [
+     "CONDITIONING"
+    ],
+    "guidance": [
+     "FLOAT"
+    ]
+   }
+  }
+ },
+ "ImageScale": {
+  "input": {
+   "optional": {},
+   "required": {
+    "crop": [
+     [
+      "disabled",
+      "center"
+     ]
+    ],
+    "height": [
+     "INT"
+    ],
+    "image": [
+     "IMAGE"
+    ],
+    "upscale_method": [
+     [
+      "nearest-exact",
+      "bilinear",
+      "area",
+      "bicubic",
+      "lanczos"
+     ]
+    ],
+    "width": [
+     "INT"
+    ]
+   }
+  }
+ },
+ "ImageToMask": {
+  "input": {
+   "optional": {},
+   "required": {
+    "channel": [
+     "COMBO",
+     {
+      "options": [
+       "red",
+       "green",
+       "blue",
+       "alpha"
+      ]
+     }
+    ],
+    "image": [
+     "IMAGE"
+    ]
+   }
+  }
+ },
+ "KSampler": {
+  "input": {
+   "optional": {},
+   "required": {
+    "cfg": [
+     "FLOAT"
+    ],
+    "denoise": [
+     "FLOAT"
+    ],
+    "latent_image": [
+     "LATENT"
+    ],
+    "model": [
+     "MODEL"
+    ],
+    "negative": [
+     "CONDITIONING"
+    ],
+    "positive": [
+     "CONDITIONING"
+    ],
+    "sampler_name": [
+     [
+      "euler",
+      "euler_cfg_pp",
+      "euler_ancestral",
+      "euler_ancestral_cfg_pp",
+      "heun",
+      "heunpp2",
+      "exp_heun_2_x0",
+      "exp_heun_2_x0_sde",
+      "dpm_2",
+      "dpm_2_ancestral",
+      "lms",
+      "dpm_fast",
+      "dpm_adaptive",
+      "dpmpp_2s_ancestral",
+      "dpmpp_2s_ancestral_cfg_pp",
+      "dpmpp_sde",
+      "dpmpp_sde_gpu",
+      "dpmpp_2m",
+      "dpmpp_2m_cfg_pp",
+      "dpmpp_2m_sde",
+      "dpmpp_2m_sde_gpu",
+      "dpmpp_2m_sde_heun",
+      "dpmpp_2m_sde_heun_gpu",
+      "dpmpp_3m_sde",
+      "dpmpp_3m_sde_gpu",
+      "ddpm",
+      "lcm",
+      "ipndm",
+      "ipndm_v",
+      "deis",
+      "cfgpp_ud10_ab",
+      "res_multistep",
+      "res_multistep_cfg_pp",
+      "res_multistep_ancestral",
+      "res_multistep_ancestral_cfg_pp",
+      "gradient_estimation",
+      "gradient_estimation_cfg_pp",
+      "er_sde",
+      "seeds_2",
+      "seeds_3"
+     ]
+    ],
+    "scheduler": [
+     [
+      "simple",
+      "sgm_uniform",
+      "karras",
+      "exponential",
+      "ddim_uniform",
+      "beta",
+      "normal",
+      "linear_quadratic",
+      "kl_optimal"
+     ]
+    ],
+    "seed": [
+     "INT"
+    ],
+    "steps": [
+     "INT"
+    ]
+   }
+  }
+ },
+ "LoadImage": {
+  "input": {
+   "optional": {},
+   "required": {
+    "image": [
+     []
+    ]
+   }
+  }
+ },
+ "ModelSamplingAuraFlow": {
+  "input": {
+   "optional": {
+    "sampling": [
+     [
+      "flow",
+      "img_to_img_velocity"
+     ]
+    ]
+   },
+   "required": {
+    "model": [
+     "MODEL"
+    ],
+    "shift": [
+     "FLOAT"
+    ]
+   }
+  }
+ },
+ "SaveImage": {
+  "input": {
+   "optional": {},
+   "required": {
+    "filename_prefix": [
+     "STRING"
+    ],
+    "images": [
+     "IMAGE"
+    ]
+   }
+  }
+ },
+ "SetLatentNoiseMask": {
+  "input": {
+   "optional": {},
+   "required": {
+    "mask": [
+     "MASK"
+    ],
+    "samples": [
+     "LATENT"
+    ]
+   }
+  }
+ },
+ "StyleModelApply": {
+  "input": {
+   "optional": {},
+   "required": {
+    "clip_vision_output": [
+     "CLIP_VISION_OUTPUT"
+    ],
+    "conditioning": [
+     "CONDITIONING"
+    ],
+    "strength": [
+     "FLOAT"
+    ],
+    "strength_type": [
+     [
+      "multiply",
+      "attn_bias"
+     ]
+    ],
+    "style_model": [
+     "STYLE_MODEL"
+    ]
+   }
+  }
+ },
+ "StyleModelLoader": {
+  "input": {
+   "optional": {},
+   "required": {
+    "style_model_name": [
+     [
+      "flux1-redux-dev.safetensors"
+     ]
+    ]
+   }
+  }
+ },
+ "UNETLoader": {
+  "input": {
+   "optional": {},
+   "required": {
+    "unet_name": [
+     [
+      "flux1-krea-dev_fp8_scaled.safetensors",
+      "qwen_image_2512_fp8_e4m3fn.safetensors"
+     ]
+    ],
+    "weight_dtype": [
+     [
+      "default",
+      "fp8_e4m3fn",
+      "fp8_e4m3fn_fast",
+      "fp8_e5m2"
+     ]
+    ]
+   }
+  }
+ },
+ "VAEDecode": {
+  "input": {
+   "optional": {},
+   "required": {
+    "samples": [
+     "LATENT"
+    ],
+    "vae": [
+     "VAE"
+    ]
+   }
+  }
+ },
+ "VAEEncode": {
+  "input": {
+   "optional": {},
+   "required": {
+    "pixels": [
+     "IMAGE"
+    ],
+    "vae": [
+     "VAE"
+    ]
+   }
+  }
+ },
+ "VAELoader": {
+  "input": {
+   "optional": {},
+   "required": {
+    "vae_name": [
+     [
+      "ae.safetensors",
+      "qwen_image_vae.safetensors",
+      "sdxl_vae_fp16_fix.safetensors",
+      "pixel_space"
+     ]
+    ]
+   }
+  }
+ }
+}

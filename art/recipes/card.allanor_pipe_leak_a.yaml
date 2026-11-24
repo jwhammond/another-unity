@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), a leaking pipe (6 frames, a loop): leka.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_pipe_leak_a
+kind: card
+object: allanor_pipe_leak_a
+sprite: leka.spr
+anims: [0]
+prop: { screen: allanor.s01, objects: [allanor.pipe.0122], anim: 0, animate: [0] }
+group: 4
+sampling: { seed: 95004, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glassy violet and blue crystalline pipe leaking glowing liquid, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

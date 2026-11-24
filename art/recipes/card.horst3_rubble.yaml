@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Horst III's rubble pile (o_070103, screen horst3.s01): the rock fall that blocks the passage until the phaser clears it. The original draws it as a
+# patch over the background (sprite w7s1cvin.spr, animation 0, 144x136 at 208,336) and the plate, repainted from the background alone, has the
+# passage open, so with art on the first puzzle's obstacle was missing. The patch is a still of the sprite's first frame, upscaled 4x and lightly
+# repainted, silhouette kept; `prop` has `art masks horst3.s01` stand it over the plate while the object is active. The phaser's kill turns
+# the object off and the plate's open passage (the original's animation 5) shows through. Generic prompt: no game text.
+id: card.horst3_rubble
+kind: card
+object: horst3_rubble
+sprite: w7s1cvin.spr
+anims: [0]
+prop: { screen: horst3.s01, objects: [horst3.rubble.0103], anim: 0 }
+group: 1
+sampling: { seed: 92201, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a pile of grey and brown volcanic rubble and broken rock blocking a cave passage, rough stone surfaces, cool blue light, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the chodalite crystal (10 frames, 9 distinct, a loop): w2s7chod.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_chodalite
+kind: card
+object: allanor_chodalite
+sprite: w2s7chod.spr
+anims: [0]
+prop: { screen: allanor.s07, objects: [allanor.chodalite], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 3 to 6 of the 5 to 7 strongest windows are speckle (worst shift 0.33 px, flicker median 5.2); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95012, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall glowing blue-violet mineral crystal column, science fiction cavern, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,6 @@
+# Plan 22's hand-flown battle: self-destruct (combat-parity.sh at Lieutenant). Armed, disarmed, then armed again
+# away from the CONN page, so the Enterprise goes alone (only CONN's countdown takes the target: weapons.cpp:723-727).
+at 20 set selfdestruct
+at 60 set selfdestruct
+at 80 page phasers
+at 100 set selfdestruct

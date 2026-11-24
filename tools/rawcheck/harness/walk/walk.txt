@@ -1,0 +1,7 @@
+# the first steps on Horst III
+start 7 1 0
+look 000000 070103
+use 000000 070103
+talk 000000 000001
+advance 2
+end

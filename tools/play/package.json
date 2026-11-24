@@ -1,0 +1,12 @@
+{
+  "name": "@another-unity/play",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@another-unity/engine": "*"
+  }
+}

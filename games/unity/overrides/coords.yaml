@@ -1,0 +1,6 @@
+# Hand fits for screens whose one-line fit draws the crew wrong at their entrances (M3 Plan 8 Task 3).
+# Each line goes through the entrance slots' own scales (live-projection.test.ts prints it).
+screens:
+  frigis.s02: { slope: 0.787655, horizonY: 75.632 }
+  unity.s08: { slope: 1.674439, horizonY: 212.31 }
+  zoo.s04: { slope: 0.686305, horizonY: 83.589 }

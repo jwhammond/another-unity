@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Optimator Two: a game-only picture (icon.map: w2shopt2, the dialog's speaker icon), no show footage, so no FaceID and no grab. The non-face path of the portraits:
+# the Krea 2 Turbo variant repaints the game's own picture as layout (img2img at a high denoise, so its shape and colours stay and its painting
+# is new), and the pixel step makes the 64x64 picture. Published under the object ids in speakers: the subtitle looks its speaker up by the game's object name.
+id: avatar.optimator_two
+kind: avatar
+object: optimator_two
+speakers: [allanor.optimator_two.0811, allanor.optimator_two.0909, allanor.optimator_two.0c08, allanor.optimator_two.0d06, allanor.optimator_two.0e04, allanor.optimator_two.1404, allanor.dead_optimator.0b11, allanor.alien.0706, allanor.alien.061b]
+base: { sprite: w2shopt2.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 2 }
+pick: krea2
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 77309, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, an Optimator, an insect-eyed alien face of an early 1990s television science fiction series, a smooth pale grey-
+      blue skull with two huge glossy orange almond-shaped eyes, a ridged flat nose and a thin grim mouth, deep blue veined folds
+      around the face and neck, seen from the front, head and shoulders, dark blue background, painted 1990s adventure game portrait, a
+      silver ridged crest rising over the brow
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark
+    denoise: 0.7
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.4 }]

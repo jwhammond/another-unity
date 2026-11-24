@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the marine map of `s08` (off at entry; animation 0 is 37 frames into a held 1): w3s8ksk.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_marine_map_s08
+kind: card
+object: zoo_marine_map_s08
+sprite: w3s8ksk.spr
+anims: [0,1]
+prop: { screen: zoo.s08, objects: [zoo.marine_map], anim: 0, animate: [0,1] }
+group: 3
+sampling: { seed: 98020, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing holographic relief map of terrain on a display table, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

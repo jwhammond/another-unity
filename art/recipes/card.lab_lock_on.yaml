@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# lab_lock_on (screen lab.s0a, the transporter console close-up): a sprite the original draws over the background (the plate has none), so it gets a prop card like
+# lab_big_cable: the sprite's frame 0 upscaled 4x and lightly repainted, silhouette and position kept exactly. A still of frame 0, not its animation.
+# Animated since the console plays its buttons: animation 0 is the button as it stands and animation 1, one frame, how it looks pressed. A use of it plays 1, the button sound,
+# then 0 with `wait`: the button flashes while the sound plays. `prop.animate` publishes both as strips, so the layer follows the object's animation (docs/unity-sprite-placement.md, "Batch 8a").
+# `prop` has `art masks lab.s0a` stand it over the plate in a mask's place. Generic prompt: no game text, no trademarks.
+id: card.lab_lock_on
+kind: card
+object: lab_lock_on
+sprite: w4s10bt1.spr
+anims: [0, 1]
+prop: { screen: lab.s0a, objects: [lab.lock_on.0a01, lab.lock_on.0a08], anim: 0, animate: [0, 1] }
+group: 2
+sampling: { seed: 91011, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  glossy blue backlit touch button on a science fiction control console, glowing glass, brushed metal edge, a small white standing figure icon, crisp detail
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, blurry
+denoise: 0.4
+lineart: { strength: 0.9 }
+reference:
+  - { refs: [mat.lcars.1], model: style, weight: 0.3, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

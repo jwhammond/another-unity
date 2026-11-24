@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8e rollout (Frigis), the force field of `s03` and its mask object (the same sprite and place; animation 0, 3 frames, a loop; no script plays the other three): w5s3forc.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8e"). Generic prompt: no game text.
+id: card.frigis_force_field_s03
+kind: card
+object: frigis_force_field_s03
+sprite: w5s3forc.spr
+anims: [0]
+prop: { screen: frigis.s03, objects: [frigis.force_field, frigis.mask_force_field], anim: 0, animate: [0] }
+group: 2
+sampling: { seed: 96006, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing green arched energy barrier of swirling light framed by dark stone, science fiction set, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the force field emitter of `s0c` (animation 0, 8 frames, 7 distinct, a loop): w6s12bem.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_force_field_s0c
+kind: card
+object: unity_force_field_s0c
+sprite: w6s12bem.spr
+anims: [0]
+prop: { screen: unity.s0c, objects: [unity.force_field], anim: 0, animate: [0] }
+group: 3
+sampling: { seed: 97022, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a dark green angular metal emitter on a white pedestal with a green glow, science fiction set, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

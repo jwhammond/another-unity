@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 33 Task 7: the admin console's screen page 3 (adminmnu.spr's animation 3, 332 by 256), in HD with the art on. The run's original is the
+# console (420 by 478) with the page drawn on it at (44, 47), where the console draws it, decoded from the game zip by admin.ts; publish cuts the
+# page back out as frame3.hd.webp. No game text in this recipe.
+id: plate.admin.new
+kind: repaint
+source: { admin: new }
+# Upscale-only, no diffusion pass: plate.admin keeps the whole screen as the original's own upscale, and so must the page. The page is all screen:
+# its frame, labels, slot rows, bars and buttons on black. A pass over its black would leave it unlike the screen round it, and the screen would
+# change tone when the page comes up. The same upscaler run over the same pixels gives the console's own HD screen, so nothing shifts on a switch.
+repaint: false
+# (sampling, prompt and denoise are the schema's; an upscale-only run doesn't use them)
+sampling: { seed: 330007, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: recessed black display
+denoise: 0.6
+# Kept: the whole page, every label, slot row, bar and button on it, as the original's own upscale.
+keep:
+  - [44, 47, 332, 256]
+# Held still for the check: the screen and the page on it.
+areas:
+  screen: [38, 42, 343, 266]
+  page: [44, 47, 332, 256]
+size: { work: [960, 1088], out: [1680, 1912] }
+post:
+  - align: { maxShift: 2 }

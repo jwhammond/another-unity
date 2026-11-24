@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the jelly corals 1 and 2 of `s08` (8 frames, a loop): w3s8msh1.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_jelly_corals_12_s08
+kind: card
+object: zoo_jelly_corals_12_s08
+sprite: w3s8msh1.spr
+anims: [0]
+prop: { screen: zoo.s08, objects: [zoo.jelly_corals_1, zoo.jelly_corals_2], anim: 0, animate: [0] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 0.61 px, flicker median 13.9): 8 to 9 of the 10 to 11 strongest windows are speckle; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98023, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing jelly coral with soft tentacles in an aquarium, underwater, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

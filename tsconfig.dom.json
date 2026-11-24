@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vite/client"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+  "include": ["engine/src", "tools/gate/src", "apps/*/src", "apps/*/e2e", "apps/*/e2e-deploy", "apps/*/scripts", "functions", "apps/*/vite.config.ts", "apps/*/playwright.config.ts", "apps/*/playwright.deploy.config.ts"],
+  "exclude": []
+}

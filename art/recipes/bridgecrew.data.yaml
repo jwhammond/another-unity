@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 33 Task 6: the bridge's seated android repainted toward the show's likeness, over Task 5's cut-out (each frame's alpha is the cut-out's,
+# upscaled), from card.riker's settings. Generic prompt: no game text, no show or actor names.
+id: bridgecrew.data
+kind: bridgecrew
+object: data
+sprite: brdgdata.spr
+sampling: { seed: 93004, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man seated at a console, pale gold-white android skin, yellow eyes, slicked-back short dark brown hair, clean-shaven,
+  realistic skin, mustard gold and black science fiction duty uniform, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry, closed eyes, missing eyes, red eyes, blue eyes, glowing eyes
+denoise: 0.38
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [crew.data.face.1, crew.data.face.2], model: face, weight: 0.9, weightType: linear, mask: head }
+  - { refs: [crew.data.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+hold: { tolerance: 20, feather: 12 }
+# Runs on the 4080 (2026-10-30, one frame a canvas, 19 distinct frames): 1) the whole figure at denoise 0.38: the face is a tenth of the canvas,
+# one eye faint, the talking frames' eyes changed colour between frames; 2) with the head pass (face, denoise 0.4): the near eye drawn gold (the far one is the original's dark stroke, now a gold slit);
+# held on the nearest earlier frame at tolerance 20 the talking frames keep one pair of eyes (only the mouth moves). Flicker median 0.6-2.1
+# per animation (worst pair 2.5); alpha unchanged. The head turns of animation 0 still differ in eye tint frame to frame (each pose is drawn anew).
+# 3) red, blue and glowing eyes in the negative (the last try): of the head turn's frames, the one with red glowing eyes now has gold ones and
+# the red one before it is a faint pink; the near-rear view keeps a blue eye and the gold fleck by the ear (both in the sprite's own colours).
+# Talk unchanged. Kept: 3, the better of the two.
+face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
+# Plan 34: the lamp behind the head (and its specks) went from the mask, which changed every frame, so the strips were painted again (two runs:
+# the lamp, then its dark housing beside it), with this recipe unchanged. The near-rear turn's blue eye is gone (its eyes are gold, as the
+# prompt asks, in the two frames that show them most). One frame of the turn drew a gold fleck on the chin; it takes the frame before's skin.
+# The frame before the turn's last drew the face green-tinted with violet eyes; a pose apart from its neighbours, it takes the next frame's
+# colour over the face (tone: its lightness by rank, its chroma by lightness band).
+fixups:
+  - { anim: 0, frame: 3, box: [176, 127, 11, 11], from: 2 }
+  - { anim: 0, frame: 6, box: [132, 50, 90, 110], from: 7, mode: tone }

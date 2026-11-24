@@ -1,0 +1,5 @@
+wait 1000
+gfx_state
+export_images @DIR@/media 7
+gfx_state
+quit

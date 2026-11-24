@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Away-team avatar for butler, a game-only character (the game calls them engineering officer; icon.map gives smhdfeml.spr): no show footage,
+# so no FaceID. The picture is made from the game portrait itself, upscaled and only lightly blurred, repainted in the same "realistic
+# oil painting" style as the other crew (cfg 4, palette 0.3) at a lower denoise so the portrait's face and colouring stay, then the same
+# 64x64 k-means-32 pixel step.
+id: avatar.butler
+kind: avatar
+object: butler
+base: { sprite: smhdfeml.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 6 }
+# Run 2026-10-19 on the PC: no show frames, so no likeness score.
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+# The pick (the user's, 2026-10-19, treatment B of the grab probe): the krea2 variant's picture (no show footage), its face box fitted to the game's, the person
+# cut out by BiRefNet (portrait) with pymatting's foreground colours, graded halfway to the game figure, on the portrait's own backdrop
+# (art avatar <recipe> --variant grab; grab.ts). The variants below are the earlier rounds, kept.
+grab:
+  from: krea2
+  gameFace: [13.47, 11.77, 35.43, 39.67]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: real-d70
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      realistic oil painting portrait of Ensign Butler, a Starfleet engineering officer from the Star Trek: The Next Generation era, a
+      young woman, head and shoulders, slight three-quarter view, short curly red hair, pale fair skin, light eyes, serious expression,
+      black high-collared Starfleet uniform tunic with gold operations colours, warm key light from the right, cool blue shadows, dark
+      blue background, painted brushwork
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, man, beard, long hair, hat
+    denoise: 0.7
+    palette: 0.3
+  # The grab portrait's face: Krea 2 Turbo img2img from the layout (the game portrait lightly blurred) with the TNG setting LoRA.
+  - name: krea2
+    model: krea2
+    sampling: { seed: 75001, steps: 8, cfg: 1, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, Ensign Butler, a Starfleet engineering officer from Star Trek: The Next Generation, a young woman, head and
+      shoulders, slight three-quarter view, short curly red hair, pale fair skin, light eyes, serious expression, gold operations
+      division Starfleet uniform with black shoulders, warm key light from the right, cool blue shadows, dark blue background,
+      painted 1990s adventure game portrait
+    denoise: 0.8
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.7 }]

@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: frigis room 0c. Settings from the lab.s05 step-down, protect tightened to 0.1 after the first M6 samples missed by 1-2 points at 0.15 (masked denoise, see lab.s01). Generic prompt: no game text.
+id: frigis.s0c
+kind: repaint
+source: { background: s_050c }
+sampling: { seed: 500012, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered desert planet landscape, red sandstone mesas, a woven clay hut with warm glowing doorway, ochre and rust palette, dusk sky with soft clouds, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.45
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+mask: { protect: 0.1, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

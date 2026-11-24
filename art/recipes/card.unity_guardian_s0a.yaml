@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: unity.guardian.0a07 (screen unity.s0a, sprite w6s10cnt.spr, animation 0, which ScummVM plays there). A prop card (a still of the sprite's first frame of that animation, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks unity.s0a` stands it over the plate. Generic prompt: no game text.
+id: card.unity_guardian_s0a
+kind: card
+object: unity_guardian_s0a
+sprite: w6s10cnt.spr
+anims: [0]
+prop: { screen: unity.s0a, objects: [unity.guardian.0a07], anim: 0, animate: [0] }
+group: 1
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 0.68 px, dE max 1.4): animation 0: frame 13 has 16 of its 28 strongest windows speckle that cannot be measured, and the median flicker of the glowing frames is 11.8; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 92203, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a glowing circular time portal, swirling cyan energy rings around a dark centre, wisps of light, glossy physically based, sharp focus, neutral black background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

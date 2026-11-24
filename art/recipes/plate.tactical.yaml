@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 30 Task 3: tactical's console (spc00a.pic as TacticalScreen draws it, in the space palette: tactical.cpp:264-278), repainted
+# into a plate (R3, R4). Generic prompt: no game text, no trademarks. Settings are plate.viewscreen's (Plan 16 Task 9).
+id: plate.tactical
+kind: repaint
+source: { space: console }
+sampling: { seed: 300001, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered starship control console, flat backlit touch panels with rounded coloured bars and buttons in a dark frame,
+  physically based materials, soft lighting, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# R4: the console's own words and buttons, kept crisp: the tabs (tabRect, tactical.cpp:65), the top bar's View and Full
+# (kButtons 2-3, :90-121), the fire buttons and the zoom buttons the background shows up (kButtons 4-8), and the readouts' box with
+# its labels (the readouts' area, :1087-1108, and the words beside it, which the repaint garbled).
+keep:
+  - [0, 297, 127, 183]
+  - [327, 0, 312, 19]
+  - [316, 248, 324, 45]
+  - [303, 21, 13, 222]
+  - [494, 306, 113, 58]
+# R4: where the console draws over its plate (tactical.cpp:39-42, 1049-1050, 1087-1108, 1161-1255, 1326-1335; console.ts' places):
+# held still for the check and the mask. The view's is cleared in the published plate; the radar's is always the indices (R7).
+areas:
+  view: [319, 23, 320, 220]
+  radar: [5, 21, 310, 275]
+  scanner: [144, 309, 183, 135]
+  readouts: [542, 307, 61, 55]
+  log: [130, 440, 254, 35]
+  lamps: [316, 280, 322, 14]
+  digits: [150, 439, 112, 16]
+reference:
+  - { refs: [set.astrogation.tactical.1, set.bridge.lcars.1], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

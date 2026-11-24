@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 16 Task 7: the command deck's own background, repainted into a plate (R11). Generic prompt: no game text, no trademarks.
+# Settings are lab.s01's (Plan 15 Tasks 3-6): masked denoise, depth and lineart ControlNets, one style reference.
+id: plate.bridge
+kind: repaint
+source: { ship: bridge }
+sampling: { seed: 160001, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered starship command deck interior, physically based materials, soft global illumination,
+  crisp detail, blue-grey carpet, warm beige wall panels, a polished wood rail, glowing console displays
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+# The alignment points are the bridge's lifted item rectangles (read from the lift at run time, shipscreen.ts) and the original's
+# strongest edges, so there are no `areas`.
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# R12: the interface strip the original paints along the bottom of the picture: [x, y, width, height] in original pixels. Traced on
+# the decoded original: the scene ends at row 363, and row 364 is the strip's dark frame line across all 640 columns (the first
+# row of the strip, where the picture's own scene sprite ends); the strip runs to the bottom edge, 116 rows. The denoise mask is 0
+# here and the plate takes the run's own 4x upscale, so the strip stays crisp.
+# The two door signs (a brown-framed plaque, about 24x9 px, on each side door) are kept too: the repaint turned them into rings and
+# specks. Traced on the decoded original: the left plaque spans x 10-33, y 97-105 and the right x 599-618, y 91-99, each with 2 px round it.
+# The lit pedestal panels under the two consoles (pale cyan with a soft glow, 53x53 and 70x46 px; the repaint blew them out to white and waved their lower edge,
+# traced as the pale pixels' bounding boxes with 1 to 2 px round them) and the back wall's LCARS displays (two rectangles that stop above the conn
+# console's arc; the repaint simplified their coloured blocks to smears) are kept: the run's own upscale of the original stands there.
+keep:
+  - [0, 364, 640, 116]
+  - [8, 95, 28, 13]
+  - [597, 89, 24, 13]
+  - [166, 263, 56, 56]
+  - [531, 255, 73, 49]
+  - [132, 111, 92, 52]
+  - [224, 111, 214, 34]
+reference:
+  - { refs: [set.bridge.wide.1, set.bridge.lcars.1, set.bridge.carpet.1], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

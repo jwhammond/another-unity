@@ -1,0 +1,1 @@
+Another Unity is a brand-new adventure game engine that runs in the browser. It brings classic adventure games back scene by scene, keeping every puzzle, script and line of dialogue as it was while repainting the art for today's screens. It also sets up a framework for building new adventures the same way.

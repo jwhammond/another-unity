@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' hull breach (screen lab.s06, sprite w4s16hol.spr): drawn over the background by the original and not in the plate.
+# A still of the sprite's frame 0 upscaled 4x and lightly repainted, silhouette kept exactly; `prop` has `art masks lab.s06` stand it over the plate while the object is active.
+# Placement small batch 7 (`placement triage`: static-missing). Generic prompt: no game text.
+id: card.lab_hull_breach
+kind: card
+object: lab_hull_breach
+sprite: w4s16hol.spr
+anims: [0]
+prop: { screen: lab.s06, objects: [lab.hull_breach], anim: 0 }
+group: 1
+sampling: { seed: 92308, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a round scorched hole in a grey metal bulkhead, torn plating, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 15 Task 6. Settings from lab.s01 (masked denoise with emissive protection, style-transfer reference). Generic prompt: no game text, no trademarks.
+# 2026-10-20: 06-59 run republished with `art publish` (lossy WebP failed, near-lossless passes the check at 0.08 mean diff).
+id: lab.s0d
+kind: repaint
+source: { background: s_040d }
+sampling: { seed: 401013, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered close-up of a science-fiction rivetted pipe housing with a small display, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+# Plan 15 fix wave (I2): with the lifted touchbar rect at its sprite position, the 0.5 plate's touchbar bottom-right corner is
+# 2.5 px off (on both the MPS run and a re-run on the CUDA box); 0.45 holds it (worst 0.95 px, 19/28 measured).
+# M6 retry (2026-10-19): denoise 0.35, 0.25, then a new seed at 0.25 all failed one point (lab.exit.0d03 bottom-right); the earlier plate stays live.
+denoise: 0.45
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+# 2026-10-19 (PC CUDA via COMFY_URL): NOT PASSING with dedither yet; the published plate is still the earlier one (no dedither).
+# Seed 401013: the touchbar's bottom-right corner (in a dither-only shade) moved 2.26-2.3 px at d0.45 p0.2, d0.45 p0.15 and d0.4 p0.15
+# alike; dedither factor 2 moved exit 0d00's top-right (x 636) 2.32 px instead, as did seed 401113 and sigma 1.0 (at p0.2 and p0.15).
+# (Without the glow test, d0.45 p0.2 passed at 0.77 px, but flattened the displays' grids.)
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+reference:
+  - { refs: [set.cargo.1.console, mat.lcars.3, set.cargo.1.stairs], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

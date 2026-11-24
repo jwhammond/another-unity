@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the buttons `1100` and `1110` (6 frames, a loop; their scripts play 1, which the sprite does not have): w2s17but.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_button_s11_pulse
+kind: card
+object: allanor_button_s11_pulse
+sprite: w2s17but.spr
+anims: [0]
+prop: { screen: allanor.s11, objects: [allanor.button.1100, allanor.button.1110], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: frame 0 is a dim, flat glow whose 11 of 12 strongest windows are speckle, at every seed tried, the other frames pass (worst shift 1.47 to 1.95 px at three seeds); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95103, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a round glowing button in a dark metal panel, science fiction control panel, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

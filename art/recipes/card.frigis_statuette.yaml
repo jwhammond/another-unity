@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Placement small batch 7c: small carved statuette (frigis.s0d). The original draws it over the background and the plate (a repaint of the background alone) does not have it.
+# A still of the sprite's frame 0 upscaled 4x and upscaled only (`repaint: false`: the repaint failed on speckle the check cannot measure), silhouette kept exactly; `prop` has `art masks <screen>` stand it over the plate while the object is active.
+# `placement triage`: static-missing (one frame, not in the background at its rect). Generic prompt: no game text.
+id: card.frigis_statuette
+kind: card
+object: frigis_statuette
+sprite: w5s7iplu.spr
+anims: [0]
+prop: { screen: frigis.s0d, objects: [frigis.statuette], anim: 0 }
+group: 1
+sampling: { seed: 92513, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+repaint: false
+align: { skip: true, reason: "the original is speckle texture: 2 of its 3 strongest windows cannot be measured (repaint: no shift, no flicker, dE max under 2; allowed only because repaint is false, the upscale is the original's own pixels at 4x)" }
+prompt: >-
+  photograph of a small carved statuette, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

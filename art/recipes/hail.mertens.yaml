@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Static repaint of a viewscreen caller (the Mertens Station hail: the chancellor of the world the station orbits). See hail.garidian.
+# Generic prompt: no game text, no show, species or actor names. No show reference fits this character, so no IP-Adapter reference.
+id: hail.mertens
+kind: repaint
+source: { hail: viewdenu }
+sampling: { seed: 170002, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man with long thin reddish-brown braided hair, calm face, realistic skin, plain green high collared tunic,
+  seated in a pale metal chamber with a round porthole window behind him showing a stormy sky, soft cinematic light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra people, extra limbs, blurry
+denoise: 0.35
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+size: { work: [1536, 728], out: [2120, 1008] }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

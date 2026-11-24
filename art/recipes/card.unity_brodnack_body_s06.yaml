@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 10 prop card: unity.brodnack_s_body (screen unity.s06, sprite w6broddi.spr): Brodnack's body on the floor, after the tower. Walker-scaled (objwalktype 1, 116/256), off at entry.
+# A still of the sprite's one frame (animation 0 falls into 60, a single frame), upscaled 4x and lightly repainted; `art masks unity.s06` stands it over the plate. Generic prompt: no game text.
+id: card.unity_brodnack_body_s06
+kind: card
+object: unity_brodnack_body_s06
+sprite: w6broddi.spr
+anims: [0]
+prop: { screen: unity.s06, objects: [unity.brodnack_s_body], anim: 0 }
+group: 1
+sampling: { seed: 100104, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a smooth grey metallic egg-shaped hovering robot shell lying on its side on the floor, a blue-green alien creature slumped half out of it, glossy physically based metal, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

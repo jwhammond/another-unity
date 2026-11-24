@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The curl of cable the second screen draws over the trapped woman (o_040216, lab.s02: named `cable_mask`, so `art masks` cut it from the plate, but its pixels are the cable's and match the background 12%). Three animations of w4s2msk5.spr, one frame each: 0 (18x18, the cable as it lies), 1 (20x10) and 2 (30x18), which the transporter's `get` plays on it when the piece of cable is taken (o_040100), so its picture changes with the object: `prop.animate` publishes all three. Generic prompt: no game text.
+id: card.lab_cable_mask_0216
+kind: card
+object: lab_cable_mask_0216
+sprite: w4s2msk5.spr
+anims: [0, 1, 2]
+prop: { screen: lab.s02, objects: [lab.cable_mask.0216], anim: 0, animate: [0, 1, 2] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint of animation 2 failed the card check on speckle alone, nothing measured moved: its one strongest window (the 30x18 frame is a few windows wide) was speckle, worst shift 0.00 px; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 92402, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a thick braided metal power cable lying on a floor, bronze and grey metal, worn, science fiction, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

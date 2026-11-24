@@ -1,0 +1,54 @@
+# A Final Unity, Horst III, from beam-down to beaming up (Plan 6 Task 11).
+# Original ids only; ScummVM and the TypeScript engine both play it (docs/trace-format.md).
+seed 42
+start 7 1 0
+advance 65
+look 000000 070103
+talk 000000 000001
+# scan the rubble with the tricorder
+seed 101
+use 000000 070103 007001
+# set the phaser to its highest setting and clear the rubble with it
+phaser 3
+use 000000 070103 007003
+# ask for advice once the way is clear
+seed 102
+talk 000000 000001
+# go through the passage the rubble blocked
+walk 000000 070102
+advance 20
+seed 103
+talk 000000 000001
+# walk to the rear of the site: the team gathers and steps into the interior
+walk 000000 070203
+advance 35
+# examine and scan the instrument and its mounting
+look 000000 070307
+use 000000 070307 007001
+look 000000 07030e
+use 000000 07030e 007001
+# ask Data for advice from across the room
+seed 104
+talk 000000 000002
+# back out to the main area
+walk 000000 070301
+advance 20
+# step up to the panel screen (its close-up)
+use 000000 07020c
+# examine and scan the aperture
+look 000000 070402
+use 000000 070402 007001
+seed 105
+talk 000000 000001
+# leave the close-up
+use 000000 070404
+advance 20
+seed 106
+talk 000000 000001
+# back to the landing site through the access shaft
+walk 000000 070201
+advance 65
+# call the ship and beam up
+answer 0
+combadge 000000
+end

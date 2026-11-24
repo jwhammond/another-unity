@@ -1,0 +1,16 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* The demo's theme: a nod to LCARS (the full theme is for later, spec §9). */
+:root {
+  --au-bg: #000;
+  --au-panel: rgba(0, 0, 0, 0.82);
+  --au-text: #ffcc99;
+  --au-accent: #ff9900;
+  --au-accent-text: #000;
+  --au-muted: #cc99cc;
+  --au-font: 'Antonio', 'Arial Narrow', sans-serif;
+  --au-radius: 14px;
+}
+.au-bar { border-top: 6px solid #cc6699; }
+.au-verbs button:nth-child(2n) { background: #cc99cc; }
+.au-team button { background: #9999ff; }
+.au-nametag { color: #000; background: #ffcc99; }

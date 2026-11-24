@@ -1,0 +1,49 @@
+# Horst III's conversations from other teammates than the canonical walk asks (Plan 6 Task 11).
+# Original ids only. Each advisor answers with their own line of the advice conversation; the
+# timers on the second and third screens start the away team's own exchanges.
+seed 42
+start 7 1 0
+advance 65
+# each teammate's advice on the landing site
+seed 301
+talk 000000 000000
+seed 302
+talk 000000 000002
+seed 303
+talk 000000 000003
+seed 304
+talk 000001 000000
+# clear the rubble and go through
+phaser 3
+use 000000 070103 007003
+walk 000000 070102
+advance 20
+# each teammate's advice in the main area
+seed 305
+talk 000000 000000
+seed 306
+talk 000000 000002
+seed 307
+talk 000000 000003
+# into the interior, where the timers start the team talking
+walk 000000 070203
+advance 35
+seed 308
+talk 000000 000000
+seed 309
+talk 000000 000001
+seed 310
+talk 000000 000003
+# back out and up to the panel screen
+walk 000000 070301
+advance 20
+use 000000 07020c
+seed 311
+talk 000000 000000
+seed 312
+talk 000000 000002
+seed 313
+talk 000000 000003
+use 000000 070404
+advance 20
+end

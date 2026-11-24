@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The length of cable the third screen draws across the trapped woman (o_04031c, lab.s03: named `cable_mask`, so `art masks` cut it from the plate, but its pixels are the cable's: 20% of them match the background). w4s3msk2.spr, 106x30, one frame. Generic prompt: no game text.
+id: card.lab_cable_mask_031c
+kind: card
+object: lab_cable_mask_031c
+sprite: w4s3msk2.spr
+anims: [0]
+prop: { screen: lab.s03, objects: [lab.cable_mask.031c], anim: 0 }
+group: 4
+sampling: { seed: 92404, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a thick braided metal power cable lying on a floor, bronze and grey metal, worn, science fiction, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

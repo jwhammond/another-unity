@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: guard
+responses:
+  # (the menu lists these last first)
+  - situation: 1
+    key: 0
+    state: enabled
+    who: ['$anyone']
+    text: "Who goes there?"
+    replier: { object: guard }
+    replies: [{ text: "I keep the lab.", voice: "dff01" }]
+    changes: [{ to: disabled, situation: 1, key: 0 }]
+    next: 1
+  - situation: 1
+    key: 1
+    state: enabled
+    who: ['$anyone']
+    text: "We mean no harm."
+    replier: { object: guard }
+    replies: [{ text: "Then pass." }]
+    changes:
+      - { to: disabled, situation: 1, key: 1 }
+      - { to: enabled, situation: 1, key: 2 }
+    results:
+      - - do: [{ alter: { object: guard, state: 1 } }]
+  - situation: 1
+    key: 2
+    state: disabled
+    who: ['$anyone']
+    text: "Anything else?"
+    replier: { object: guard }
+    replies: [{ text: "No." }]

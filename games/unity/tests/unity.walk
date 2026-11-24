@@ -1,0 +1,115 @@
+# A Final Unity, unity (world 6): the canonical walkthrough (Plan 9). Original ids only.
+seed 42
+start 6 1 0
+advance 65
+# o_06010a to s02, o_060205 beams the leader down to s03, o_060301 to s04
+use 000000 06010a
+advance 10
+use 000000 060205
+advance 5
+# once Data has beamed up too, none of the four is left on s02, and the pad timer moves the screen to s03
+use 000002 060205
+advance 12
+seed 43
+pick 0
+pick 0
+use 000000 060301
+advance 90
+# o_06040b into the shuttle (s05)
+use 000000 06040b
+advance 60
+# o_06050a to the vision on s0b, then s06: c031 menu (proceed)
+pick 0
+use 000000 06050a
+advance 40
+advance 20
+# o_060402: c006, the test is explained (no menus)
+talk 000000 060402
+advance 40
+# o_060405: c007, the offer to join forces (menu entries 2 and 2) sets o_060623 to 1
+pick 2
+pick 2
+talk 000000 060405
+advance 30
+# the blocks from o_060d0a (six looks), one into the receptacle o_060d05 that targets o_060402, o_060d07 ends the turn
+use 000000 060601
+advance 10
+look 000000 060d0a
+look 000000 060d0a
+look 000000 060d0a
+look 000000 060d0a
+look 000000 060d0a
+look 000000 060d0a
+advance 5
+use 000000 060d05 060d02
+advance 10
+seed 60
+use 000000 060d07
+advance 70
+use 000000 060601
+advance 10
+seed 61
+use 000000 060d07
+advance 70
+use 000000 060601
+advance 10
+# the third turn takes the block back out; o_060402 falls on o_060405's turn, c015 spares him (menu entries 0 and 0)
+get 000000 060d0b
+advance 10
+pick 0
+pick 0
+seed 62
+use 000000 060d07
+advance 70
+# the way out: looks at o_060c00, o_060c01, o_060c03 on s0c, the three disks from o_060d0a, each into o_060c03
+use 000000 060600
+advance 15
+look 000000 060c00
+advance 5
+look 000000 060c01
+advance 5
+look 000000 060c03
+advance 5
+use 000000 060c10
+advance 10
+use 000000 060601
+advance 10
+use 000000 060d0a
+advance 5
+use 000000 060d0a
+advance 5
+use 000000 060d0a
+advance 5
+use 000000 060d08
+advance 10
+use 000000 060600
+advance 15
+use 000000 060c03 06062a
+advance 10
+use 000000 060c03 060628
+advance 10
+use 000000 060c03 060629
+advance 30
+use 000000 060c10
+advance 40
+# o_060633 to s07, the symbol o_060706, o_060703 to s05, o_060504 with the symbol, o_060507 to s08, o_060803 to s0e, o_060e12 to s09
+use 000000 060633
+advance 30
+walk 000000 060706
+advance 20
+get 000000 060706
+advance 10
+use 000000 060703
+advance 20
+use 000000 060504 060706
+advance 15
+use 000000 060507
+advance 20
+use 000000 060803
+advance 20
+use 000000 060e12
+advance 20
+# o_060903 takes the leader to s0a; the walk ends there (R7 c: ScummVM never moves o_060402 or o_060405 off s04, so the guardians' endings that reach s10 can't be walked)
+use 000000 060903
+advance 30
+end

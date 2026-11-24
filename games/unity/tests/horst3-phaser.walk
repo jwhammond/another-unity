@@ -1,0 +1,21 @@
+# The phaser on Horst III at each setting (Plan 6 Task 11). Original ids only.
+# The rubble (health 2, down at 2, damaged from setting 1) takes setting - 1 + 1 a shot: setting 1 leaves it
+# at 1 and stunned, and a second shot at setting 2 takes it below 0, which clears it. The phaser won't fire
+# at a crew member at all (firePhaser fails on crew), so no one on the team can be shot down.
+seed 42
+start 7 1 0
+advance 65
+# the low setting on the rubble: stunned, not cleared
+phaser 1
+use 000000 070103 007003
+# the medium setting at a teammate: the phaser refuses, with its line
+phaser 2
+use 000000 000001 007003
+# the medium setting on the rubble again: cleared
+use 000000 070103 007003
+# the high setting at the chasm, which can't be shot
+phaser 3
+use 000000 070108 007003
+# the teammate is still on their feet, and looks at the passage the shots opened
+look 000001 070102
+end

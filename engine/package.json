@@ -1,0 +1,21 @@
+{
+  "name": "@another-unity/engine",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./web": "./src/web/index.ts",
+    "./dev/overlay": "./src/dev/overlay.tsx",
+    "./dev/perfOverlay": "./src/dev/perfOverlay.tsx",
+    "./ui/base.css": "./src/ui/base.css",
+    "./ui/ship/ship.css": "./src/ui/ship/ship.css",
+    "./ui/admin/admin.css": "./src/ui/admin/admin.css"
+  },
+  "dependencies": {
+    "yaml": "^2.6.1",
+    "zod": "^3.23.8",
+    "preact": "^10.25.0",
+    "three": "^0.170.0"
+  }
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "commit": "9f159e460515",
+    "lineHash": "5bf9aa101d7257880711dfba07dceef2e3dd6c0ef092646330e51ecce34fa1ed",
+    "why": "made-up test value or code reading the key from config: tools/art/src/jellyfin.ts:37"
+  },
+  {
+    "commit": "9f159e460515",
+    "lineHash": "ec628bfd8f892ddc1a538d99a86a43ef6a5cc65b277552313cd65ac24ad65012",
+    "why": "made-up test value or code reading the key from config: tools/art/src/secrets.test.ts:16"
+  },
+  {
+    "commit": "9f159e460515",
+    "lineHash": "83c661396ec111e8e52bf7665950b7bf6b7fcd8340f0fa524ff5c778e076391b",
+    "why": "made-up test value or code reading the key from config: tools/art/src/secrets.test.ts:46"
+  },
+  {
+    "path": "apps/web/e2e/helpers.ts",
+    "lineHash": "632812097cfbf9d359999e469ad36172db4553b2fc20840734f6aab827fb329f",
+    "why": "tree: a bridge button's label (a place's name), which the real-game e2e helper clicks: apps/web/e2e/helpers.ts:283"
+  },
+  {
+    "path": "docs/unity-art-status.md",
+    "lineHash": "a2c135ed3ad83d8065da8f1393662651af1e4b24622a08721e7e70e66dc03a2b",
+    "why": "tree: the same bridge button's label, naming where characters appear: docs/unity-art-status.md:215"
+  },
+  {
+    "path": "docs/unity-art-status.md",
+    "lineHash": "d6986c4919d2deaf0ef9c3d5706271acb10565f2981269e30da43365df0b89d1",
+    "why": "tree: a character's label used as her name in the portrait table: docs/unity-art-status.md:217"
+  },
+  {
+    "path": "engine/src/sim/stations.ts",
+    "lineHash": "904694029266b717716763f0cbb245a1c5fd56e46d19d7fc7c6e06c7aeaa6907",
+    "why": "tree: LOUNGE_EMPTY, a short engine UI string under the Plan 12 short-UI-strings allowance (ScummVM's source holds it too): engine/src/sim/stations.ts:260"
+  },
+  {
+    "path": "art/recipes/avatar.la_forge.yaml",
+    "lineHash": "36733e7fae3be9abcc16ff283951a1742e852ffb23e48e9f92b339603581e394",
+    "why": "tree: a character's full rank and name (five words, a computer-entry heading) in the portrait recipe's prompt: art/recipes/avatar.la_forge.yaml:36"
+  },
+  {
+    "path": "tools/art/src/secrets.test.ts",
+    "lineHash": "c0be26a81d7c2f2ef0f251d01f9a259e7b9317814494c4133c8e1cf8c4315a8b",
+    "why": "tree: a made-up test config line (a placeholder LAN address and a made-up key): tools/art/src/secrets.test.ts:17"
+  }
+]

@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 16 Task 11: the astrogation screen's own background, repainted into a plate (R11, R17). Generic prompt: no game text, no trademarks.
+# Settings are plate.bridge's (Task 7): masked denoise, depth and lineart ControlNets, one style reference.
+id: plate.astrogation
+kind: repaint
+source: { ship: astropnl }
+sampling: { seed: 160004, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered starship console display, black glass panels, rounded coloured panel bars, brushed grey metal, physically based materials, soft lighting, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+# The alignment points are the areas' corners and the original's strongest edges.
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# R12: every LCARS bar, frame and label, traced on the decoded original (the black windows and the grey blocks stay repaintable):
+#   the header bar, rows 0..18; the frame's left edge, columns 0..9 (rows 19..366); the tabs, columns 388..639, rows 19..89;
+#   the info window's frame (columns 388..390 and 638..639, rows 90..366, and its bottom rows 362..366);
+#   the bottom strip's blue controls (arrows, selectors, readout and the ship's picture), columns 0..489, rows 367..479.
+keep:
+  - [0, 0, 640, 19]
+  - [0, 19, 10, 348]
+  - [388, 19, 252, 71]
+  - [388, 90, 3, 277]
+  - [638, 90, 2, 277]
+  - [388, 362, 252, 5]
+  - [0, 367, 490, 113]
+# R17: the screen's areas [x, y, width, height], traced on the decoded original (the black fields, and the grey exit block):
+#   map: the large black window, x 10..388, y 19..366;
+#   info: the box under the tabs, x 391..637, y 90..361;
+#   controls: the painted exit block's three buttons, x 491..609, y 373..472 (Engage and Back to the bridge sit over them).
+areas:
+  map: [10, 19, 379, 348]
+  info: [391, 90, 247, 272]
+  controls: [491, 373, 119, 100]
+reference:
+  - { refs: [set.astrogation.sidebar.1, set.astrogation.tactical.1], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

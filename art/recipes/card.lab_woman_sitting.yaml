@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' injured woman on the second screen once the med kit has been used (o_040211, off at entry; w4s3doct.spr animation 1, one frame, sitting up): the doctor's use of the
+# kit on the third screen turns it on and plays its animation 1. A walker-scaled still (27x10 of the sprite's 98x37 here: the second screen is far away), a strip is not resampled.
+# Same prompt, seed and sampling as card.lab_trapped_woman. Generic prompt: no game text.
+id: card.lab_woman_sitting
+kind: card
+object: lab_woman_sitting
+sprite: w4s3doct.spr
+anims: [1]
+prop: { screen: lab.s02, objects: [lab.injured_woman.0211], anim: 1 }
+group: 1
+sampling: { seed: 91002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an unconscious woman lying on her side on a floor, long blonde hair, fitted green science fiction jumpsuit, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+reference:
+  - { refs: [set.science.1.wall], model: style, weight: 0.3, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+# Tuning (frame 0002, seed 91002): denoise 0.45 / lineart 0.8, then 0.38 / 1.0 (with the speckle skip), left one window 3.01 px off with the median at
+# 0.2 px (a point in the jumpsuit's dithered shading, which any repaint draws differently); denoise 0.3 puts every window within 1.97 px, dE 0.7.

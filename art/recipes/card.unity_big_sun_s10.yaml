@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the sun of `s10` (animation 0, 21 frames, 20 distinct, a loop): w6s16bsn.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_big_sun_s10
+kind: card
+object: unity_big_sun_s10
+sprite: w6s16bsn.spr
+anims: [0]
+prop: { screen: unity.s10, objects: [unity.big_sun], anim: 0, animate: [0] }
+group: 2
+sampling: { seed: 97030, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a huge glowing yellow-orange sun with a mottled surface seen through a window, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

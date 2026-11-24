@@ -1,0 +1,39 @@
+# Plan 25's camera battle (combat-parity.sh at Lieutenant): every view the camera has, of the Enterprise and of its
+# target, the orbit, the zoom and the cycle, each held a while, with the Enterprise turning, so the camera trace
+# (the snapshot's `camera`) compares each of updateCamera's cases with ScummVM's.
+at 0 steer 1 0 0 1
+at 10 view 1 enterprise
+at 40 view 2 enterprise
+at 70 view 3 enterprise
+at 100 view 4 enterprise
+at 130 view 5 enterprise
+at 160 view 6 enterprise
+at 190 view 7 enterprise
+at 220 view 8 enterprise
+at 400 view 9 enterprise
+at 430 view 10 enterprise
+at 460 view 11 enterprise
+at 490 view 12 enterprise
+at 520 view 13 enterprise
+at 550 orbit 1
+at 580 orbit -1
+at 600 orbit 0
+at 610 view 15 enterprise
+at 640 view 16 enterprise
+at 670 view 17 enterprise
+at 700 view 18 enterprise
+at 730 view 0 target
+at 760 view 3 target
+at 790 view 12 target
+at 820 view 17 target
+at 850 zoom in
+at 860 zoom in
+at 870 view 0 enterprise
+at 900 zoom out
+at 910 zoom out
+at 920 zoom out
+at 930 steer 0 1 1 0
+at 950 cycle
+at 980 cycle
+at 1010 cycle
+at 1040 steer 0 0 0 0

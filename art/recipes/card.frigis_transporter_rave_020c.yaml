@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8e rollout (Frigis), the transporter effect in the doorway `020c` (7 frames, a loop; off at entry): rave.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8e"). Generic prompt: no game text.
+id: card.frigis_transporter_rave_020c
+kind: card
+object: frigis_transporter_rave_020c
+sprite: rave.spr
+anims: [0]
+prop: { screen: frigis.s02, objects: [frigis.anim_transporter.020c], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 3 to 4 of the 4 strongest windows of frames 1, 2, 4 and 5 are speckle (worst shift 0.16 px); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 96005, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small glowing orange arched stone doorway with shimmering light inside, science fiction set, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

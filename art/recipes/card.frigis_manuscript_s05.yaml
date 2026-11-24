@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8e rollout (Frigis), the manuscript of `s05`: `manuscript.050b` is on at entry (animation 0, 16 frames, a loop), `anim_manuscript` is off until `open_door` turns it on and its script plays animation 1 (17 frames) and turns it off: w5s5fire.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8e"). Generic prompt: no game text.
+id: card.frigis_manuscript_s05
+kind: card
+object: frigis_manuscript_s05
+sprite: w5s5fire.spr
+anims: [0, 1]
+prop: { screen: frigis.s05, objects: [frigis.anim_manuscript, frigis.manuscript.050b], anim: 0, animate: [0, 1] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on flame wisps that no repaint held: animation 1's burning frames (10 to 13) moved points 2.61 to 4.24 px in three runs, and frame 12 of animation 0 and of animation 1 has 1 of 1 and 5 of 8 strongest windows speckle; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 101038, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an old rolled parchment scroll with brass ends, ancient manuscript, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

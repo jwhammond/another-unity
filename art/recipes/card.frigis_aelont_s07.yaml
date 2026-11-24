@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.aelont.071e (screen frigis.s07, sprite w5s7aelo.spr): Aelont standing, off at entry and turned on by a script. A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s07` stands it over the plate. Generic prompt: no game text. ScummVM's player plays animation 0 for it.
+id: card.frigis_aelont_s07
+kind: card
+object: frigis_aelont_s07
+sprite: w5s7aelo.spr
+anims: [0, 2]
+prop: { screen: frigis.s07, objects: [frigis.aelont.071e], anim: 0, talk: 2, animate: [0, 2] }
+group: 1
+sampling: { seed: 92121, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a tall robed humanoid standing, long dark brown robe, a glowing red orb above the head, realistic fabric, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

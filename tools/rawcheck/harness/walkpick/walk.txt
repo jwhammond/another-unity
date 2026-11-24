@@ -1,0 +1,5 @@
+# a scripted pick past the options: the conversation the harness starts offers two
+start 7 1 0
+pick 9
+advance 30
+end

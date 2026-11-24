@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8a pilot, a script-changed prop: the Chodak door of Allanor's first room (o_02011b, allanor.s01). It stands closed (animation 0: one frame and a pause) until
+# a use of it plays animation 1 (state 1): 30 frames of the door opening (3db.spr, 26x72 at 132,143), held open at the last. Batch 7b left it out because a
+# still of frame 0 would stay drawn after the script; `prop.animate` publishes both animations as strips and the layer follows the object's animation.
+# Generic prompt: no game text.
+id: card.allanor_door_011b
+kind: card
+object: allanor_door_011b
+sprite: 3db.spr
+anims: [0, 1]
+prop: { screen: allanor.s01, objects: [allanor.door.011b], anim: 0, animate: [0, 1] }
+group: 4
+sampling: { seed: 93002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall narrow alien door of dark teal and black metal with ridged panels, worn, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 32 Task 12: Tactical's F1 Combat Options screen (final.spr, 562 by 334, decoded from the game zip by admin.ts with the space
+# palette's lower half), repainted into an HD plate shown with the art on, as plate.tactical repaints tactical's console. Generic prompt:
+# no game text, no trademarks.
+id: plate.final
+kind: repaint
+source: { admin: final }
+sampling: { seed: 320002, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered starship control panel, dark grey metal frame with fine perforated grip strips and bevelled physical buttons around a
+  recessed black display, physically based materials, soft lighting, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# Kept crisp (the original's own upscale): the whole screen with its lip (the key list, the Off/On rows, the emblem, the preview's
+# window and the detail box: combatOptions.tsx), the three buttons along the foot with two pixels round each, and the perforated grip
+# strips down each side (plate.admin's first run smoothed their holes away).
+keep:
+  - [0, 0, 27, 334]
+  - [535, 0, 27, 334]
+  - [33, 8, 495, 271]
+  - [47, 283, 123, 39]
+  - [220, 283, 123, 39]
+  - [395, 283, 123, 39]
+# Where the screen draws over its plate: held still for the check and the mask.
+areas:
+  screen: [40, 15, 482, 257]
+  default: [49, 285, 119, 35]
+  cancel: [222, 285, 119, 35]
+  use: [397, 285, 119, 35]
+reference:
+  - { refs: [set.astrogation.tactical.1, set.bridge.lcars.1], model: style, weight: 1.0, weightType: style transfer }
+size: { work: [1344, 800], out: [2248, 1336] }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

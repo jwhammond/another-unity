@@ -1,0 +1,7 @@
+# the combadge: Ignore, then Hail, which runs ship conversation 34 and beams the team up
+start 7 1 0
+answer 1
+combadge 000000
+answer 0
+combadge 000000
+end

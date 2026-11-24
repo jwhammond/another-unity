@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The 2026-10-18 model comparison (`npm run art -- compare art/compare/2026-10-18-models.yaml`, on the COMFY_URL server).
+# The SDXL pipeline (the committed recipes, as the baseline) against Qwen-Image 2512 and FLUX.1 Krea [dev], on the same two jobs:
+#   - the room plate lab.s01, with its recipe's masked denoise (protect zones), seed and the 2 px alignment check;
+#   - Riker's walk (anim 6, its first 4 frames: one canvas) and talk loop (anim 31, 5 frames: one canvas), the frames card.riker.yaml's
+#     tuning used, with the card checks (alignment, the forced silhouette, flicker and the costume's dE).
+# Each family gets three settings at the recipes' seeds, varying denoise and ControlNet strength. References: IP-Adapter for sdxl (the
+# recipes' own), Redux for flux (`ref` is the StyleModelApply strength, attn_bias), none for qwen-image (no core image prompt for the
+# base model). Nothing here changes the game. Experimental models are non-commercial or gated where art/models.yaml says so.
+# Prompts are generic: no show, character or actor names.
+id: 2026-10-18-models
+room: { recipe: art/recipes/lab.s01.yaml }
+card:
+  recipe: art/recipes/card.riker.yaml
+  anims:
+    - { anim: 6, frames: 4 }
+    - { anim: 31 }
+# Show crops shown beside the results on the review sheet (likeness is judged against these).
+showRefs: [set.lab.2.wall, set.science.1.wall, mat.lcars.1, crew.riker.face.1, crew.riker.face.2, crew.riker.body.1]
+families:
+  sdxl:
+    - { name: recipe }
+    - name: hi
+      room: { denoise: 0.65, protect: 0.18 }
+      card: { denoise: 0.62 }
+    - name: cn-lo
+      room: { depth: 0.7, lineart: 0.6 }
+      card: { lineart: 0.5 }
+    # Added after the first run: on the 4080 (CUDA) the recipe's room fails at one weak floor point (floor r18 #1, correlation peak
+    # 0.47 against 0.5) in all three settings above, though it passed on the M5's MPS; more protection, the card as the recipe's.
+    - name: protect-15
+      room: { protect: 0.15 }
+  qwen-image:
+    - name: d60-cn80
+      room: { denoise: 0.6, depth: 0.8, lineart: 0.8, steps: 30, cfg: 4 }
+      card: { denoise: 0.55, lineart: 0.8, steps: 30, cfg: 4 }
+    - name: d70-cn100
+      room: { denoise: 0.7, depth: 1.0, lineart: 1.0, steps: 30, cfg: 4 }
+      card: { denoise: 0.65, lineart: 1.0, steps: 30, cfg: 4 }
+    - name: d50-cn60
+      room: { denoise: 0.5, depth: 0.6, lineart: 0.6, steps: 30, cfg: 4 }
+      card: { denoise: 0.45, lineart: 0.6, steps: 30, cfg: 4 }
+  flux:
+    - name: d60-cn80-r40
+      room: { denoise: 0.6, depth: 0.8, lineart: 0.7, steps: 28, ref: 0.4 }
+      card: { denoise: 0.55, lineart: 0.7, steps: 28, ref: 0.4 }
+    - name: d70-cn100-r60
+      room: { denoise: 0.7, depth: 1.0, lineart: 0.9, steps: 28, ref: 0.6 }
+      card: { denoise: 0.65, lineart: 0.9, steps: 28, ref: 0.6 }
+    - name: d50-cn60-r25
+      room: { denoise: 0.5, depth: 0.6, lineart: 0.5, steps: 28, ref: 0.25 }
+      card: { denoise: 0.45, lineart: 0.5, steps: 28, ref: 0.25 }
+# The flow families' sampling (each model's recommended sampler and scheduler) and natural-language prompts; sdxl keeps its recipes'.
+defaults:
+  qwen-image:
+    sampling: { sampler: euler, scheduler: simple }
+    shift: 3.1
+    room:
+      prompt: >-
+        A photorealistic 3D render of a science-fiction laboratory interior with physically based materials, soft global
+        illumination and crisp detail. Grey-green wall panels, a muted green and grey palette, glowing console screens.
+      negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+    card:
+      prompt: >-
+        A photograph of a man standing, with short brown hair and a trimmed beard and realistic skin, wearing a fitted
+        science-fiction duty uniform. Full body, neutral grey background, soft studio light, sharp focus.
+      negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+  flux:
+    sampling: { sampler: euler, scheduler: simple, cfg: 1 }
+    guidance: 4.5
+    room:
+      prompt: >-
+        A photorealistic 3D render of a science-fiction laboratory interior with physically based materials, soft global
+        illumination and crisp detail. Grey-green wall panels, a muted green and grey palette, glowing console screens.
+    card:
+      prompt: >-
+        A photograph of a man standing, with short brown hair and a trimmed beard and realistic skin, wearing a fitted
+        science-fiction duty uniform. Full body, neutral grey background, soft studio light, sharp focus.

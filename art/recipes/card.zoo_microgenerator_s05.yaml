@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the microgenerator of `s05` (animation 0, a loop of six frames; the animations the power ports and `ts_for_path` play (1 to 3, 5 to 7) are played where it has been carried to, another room, so only animation 0 is drawn in `s05`): w3s5genr.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_microgenerator_s05
+kind: card
+object: zoo_microgenerator_s05
+sprite: w3s5genr.spr
+anims: [0]
+prop: { screen: zoo.s05, objects: [zoo.microgenerator.050c], anim: 0, animate: [0] }
+group: 3
+sampling: { seed: 98013, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small metal power cell with a glowing indicator, science fiction prop, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

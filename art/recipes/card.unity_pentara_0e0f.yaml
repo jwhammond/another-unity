@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), Captain Pentara in the chamber `0e0f` of `s0e` (the sprite of `unity.s08`'s `0805`, same prompt and seed as `card.unity_stasis_s08b`; off at entry, `door.0e00` plays 0, `panel.0e01` 1, `ts_pentara_trap` 2: 16 frames each, 2 falls into 0): w6s8pfre.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_pentara_0e0f
+kind: card
+object: unity_pentara_0e0f
+sprite: w6s8pfre.spr
+anims: [0, 1, 2]
+prop: { screen: unity.s0e, objects: [unity.captain_pentara.0e0f], anim: 0, animate: [0, 1, 2] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 17 of the 29 strongest windows of the first and last frames of animations 1 and 2 are speckle (worst shift 0.99 px, flicker median 5.6); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 92127, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a person frozen inside a curved glass stasis capsule with frosted glass and metal frame, orange and white uniform, physically based materials, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 33 Task 6: the bridge's first officer repainted toward the show's likeness, over Task 5's cut-out (each frame's alpha is the cut-out's,
+# upscaled), from card.riker's settings. Generic prompt: no game text, no show or actor names.
+id: bridgecrew.riker
+kind: bridgecrew
+object: riker
+sprite: brdgrikr.spr
+sampling: { seed: 93002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man standing, short brown hair and a trimmed beard, realistic skin, fitted red and black science fiction duty uniform,
+  full body, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.38
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [crew.riker.face.1, crew.riker.face.2], model: face, weight: 0.8, weightType: linear, mask: head }
+  - { refs: [crew.riker.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+hold: { tolerance: 20, feather: 12 }
+# Run on the 4080 (2026-10-30, 26 distinct frames), with the head pass from the start (face, denoise 0.4): eyes and beard clear, the same
+# face through the talk. The walks' (3 and 4) flicker is 4.9-6.2 a pair, in the room card's own walk range (median 4.9-6.7); against
+# their medians (0.3, 1.8: mostly a held pose) the room cards' ratio rule would fail them, so the bridge's gate drops that rule and keeps the absolute limits (checks).
+face: { denoise: 0.4, pad: 0.3, feather: 0.15 }

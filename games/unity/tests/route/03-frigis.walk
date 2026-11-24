@@ -1,0 +1,159 @@
+# A Final Unity, frigis's first visit (world 5), then back aboard (Plan 12 Task 8). Original ids only.
+# The away leg is frigis.walk's steps with Data (o_000002) in place of Picard, who is not on this team (Riker, Troi, La Forge and Data).
+seed 42
+start 5 1 0
+# o_050100: the first talk, conversation c000 (picks 1, 0, 0), plays itself on the beam-in (as the zoo's does), and opens the doorways
+seed 43
+pick 1
+pick 0
+pick 0
+advance 6
+# o_050104 to s02, then o_050202 to s07 (its timer moves the team)
+walk 000002 050104
+advance 6
+walk 000002 050202
+advance 12
+# o_050703 has greeted on arrival; conversation c001 (picks 2, 1, 5) opens the way to o_05070c
+seed 44
+pick 2
+pick 1
+pick 5
+talk 000001 050703
+advance 6
+# o_05070c to s0a; o_050a13, conversation c013: four menus (picks 0, 0, 0, 3) under seed 45
+walk 000002 05070c
+advance 15
+seed 45
+pick 0
+pick 0
+pick 0
+pick 3
+talk 000001 050a13
+advance 10
+# o_050a19 to s09
+walk 000002 050a19
+advance 10
+# o_050903 with the tricorder (o_007001) is not enough (c015@8); o_050909 with it wakes o_05010c on s01 (c005@0 k5 gives the translator that
+# activates o_050904): back by o_050907, o_050a0c, o_05070f and o_050204 to talk (Riker), then o_050104, o_050202, o_05070c and o_050a19 to s09
+use 000002 050903 007001
+advance 10
+use 000002 050909 007001
+advance 10
+walk 000002 050907
+advance 10
+walk 000002 050a0c
+advance 10
+walk 000002 05070f
+advance 10
+walk 000002 050204
+advance 10
+talk 000001 05010c
+advance 5
+walk 000002 050104
+advance 10
+walk 000002 050202
+advance 12
+walk 000002 05070c
+advance 15
+walk 000002 050a19
+advance 10
+use 000002 050904 007001
+# o_050911 frees o_05090a; conversation c017 (pick 3) gives o_05090f, o_050d06 and o_050d07
+use 000002 050911
+advance 12
+seed 46
+pick 3
+talk 000001 05090a
+advance 10
+# back to s07 by o_050907 and o_050a0c
+walk 000002 050907
+advance 10
+walk 000002 050a0c
+advance 10
+# o_05090f on o_050704 opens s0d: get o_050d08, o_050d0a, o_050d09, then o_050d05
+use 000002 050704 05090f
+advance 6
+get 000002 050d08
+get 000002 050d0a
+get 000002 050d09
+use 000002 050d05
+advance 10
+# o_05070f to s02, o_050204 to s01, o_050107 to s06
+walk 000002 05070f
+advance 10
+walk 000002 050204
+advance 10
+walk 000002 050107
+advance 15
+# Data fits o_050d0a into o_050602
+use 000002 050602 050d0a
+advance 40
+# o_050d09 to o_050601, who gives o_05060f
+use 000001 050601 050d09
+advance 30
+# o_050608 to s01, o_05010a to s03; o_050d08 to o_050302, conversation c014 (pick 1)
+walk 000002 050608
+advance 12
+walk 000002 05010a
+advance 12
+pick 1
+use 000001 050302 050d08
+advance 15
+# o_05060e, played on s03, moves the team to s04
+use 000002 05060e
+advance 30
+# s04 floor: o_05060f sets pattern 1; o_05044e-o_050451 give o_05044a-o_05044d, which set patterns 2, 3, 4, 5 (hops on o_05040b, o_05040d, o_050423, o_05041d, o_050429)
+use 000002 05060f
+advance 4
+use 000002 05044e
+advance 4
+walk 000002 05040b
+advance 4
+use 000002 05044a
+advance 4
+use 000002 05044f
+advance 4
+walk 000002 05040d
+advance 4
+use 000002 05044b
+advance 4
+walk 000002 050423
+advance 4
+use 000002 05060f
+advance 4
+use 000002 050450
+advance 4
+walk 000002 050423
+advance 4
+use 000002 05044b
+advance 4
+walk 000002 05041d
+advance 4
+use 000002 05044c
+advance 4
+use 000002 050451
+advance 4
+walk 000002 05041d
+advance 4
+use 000002 05044b
+advance 4
+walk 000002 050423
+advance 4
+use 000002 05060f
+advance 4
+walk 000002 050450
+advance 4
+use 000002 05044d
+advance 4
+walk 000002 050429
+advance 4
+use 000002 05044c
+advance 4
+# s04 niche: o_050404 has an animation slot without data; ScummVM used to assert on it (fixed in scummvm-export a24fa623798).
+use 000002 050400 050d06
+advance 12
+get 000002 05050b
+# the good finish (o_050511 timer) enables t90 and beams the team up on its own: no hail is needed.
+advance 12
+checkpoint after-frigis
+end

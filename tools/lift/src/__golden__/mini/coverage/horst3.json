@@ -1,0 +1,55 @@
+{
+  "generated": "tools/lift",
+  "world": "horst3",
+  "objects": 4,
+  "stubs": 0,
+  "conversations": 1,
+  "screens": 3,
+  "rules": {
+    "groups": 12,
+    "entries": {
+      "AlterBlock": 6,
+      "BeamBlock": 1,
+      "ChoiceBlock": 1,
+      "CommandBlock": 1,
+      "CommunicateBlock": 1,
+      "ConditionBlock": 3,
+      "ConversationBlock": 1,
+      "GeneralBlock": 2,
+      "PathBlock": 1,
+      "ReactionBlock": 2,
+      "ScreenBlock": 2,
+      "TriggerBlock": 2
+    },
+    "effects": 24,
+    "noops": 0
+  },
+  "hooks": [
+    {
+      "name": "unity.general.g5",
+      "ported": false,
+      "usedBy": 1
+    }
+  ],
+  "voices": {
+    "lines": 9,
+    "mapped": null,
+    "missing": []
+  },
+  "fields": {
+    "consumed": 597,
+    "ignored": 43,
+    "total": 640
+  },
+  "layout": {
+    "flat": [
+      "horst3.s03"
+    ],
+    "noPolygons": []
+  },
+  "warnings": [
+    "s_0703: no entrances (a close-up, or not in slNNN.scr): entrance_0 is the bottom middle",
+    "s_0703: a flat projection (0 scale samples)",
+    "o_070104#/use_entries/0/1: entrance 1 is beyond the 1 of s_0702; the original uses entrance 0 (awayteam.cpp:358-363)"
+  ]
+}

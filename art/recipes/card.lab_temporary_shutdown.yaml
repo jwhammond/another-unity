@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The big temporary shutdown button (o_040c01, lab.s0c, and o_040c0c, off at entry; w4s12big.spr, 48x96, animations 0 and 1). Mertens' console, played on use: each animation is one frame (a lit or pressed look), and the object's scripts play them as the buttons are used. `prop.animate` publishes them as strips, so the layer follows the object's animation (docs/unity-sprite-placement.md, "Batch 8a"). Generic prompt: no game text, no trademarks.
+id: card.lab_temporary_shutdown
+kind: card
+object: lab_temporary_shutdown
+sprite: w4s12big.spr
+anims: [0, 1]
+prop: { screen: lab.s0c, objects: [lab.temporary_shutdown.0c01, lab.temporary_shutdown.0c0c], anim: 0, animate: [0, 1] }
+group: 3
+sampling: { seed: 96104, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glossy backlit touch button on a science fiction control console, glowing glass, brushed metal edge, crisp detail, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

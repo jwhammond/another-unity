@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8c rollout, a script-played animated prop: the hologram over the holotable of Mertens' fifth screen (o_04050c, lab.s05). Off at entry; `holotable` turns it on and off
+# (no script plays an animation on it). The original plays animation 0 forever: 119 distinct frames of w4s5spin.spr (120x182 at 275,92), a rotating model of the station. At 4x
+# that is about 103 MiB decoded, which 8b could not hold; 8c streams it (docs/unity-sprite-placement.md, "Batch 8c"). Generic prompt: no game text.
+id: card.lab_hologram
+kind: card
+object: lab_hologram
+sprite: w4s5spin.spr
+anims: [0]
+prop: { screen: lab.s05, objects: [lab.hologram], anim: 0, animate: [0] }
+group: 4
+sampling: { seed: 94011, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing blue translucent hologram of a space station projected above a table, wireframe light, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.28
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

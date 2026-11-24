@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the glow of `s03` (it starts on 2, 8 frames, a loop; `as_glow` plays 3, 6 frames falling into the 16-frame loop 4): w6s3unif.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_glow_s03
+kind: card
+object: unity_glow_s03
+sprite: w6s3unif.spr
+anims: [2, 3]
+prop: { screen: unity.s03, objects: [unity.glow], anim: 2, animate: [2, 3] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 32 to 37 of the 38 to 43 strongest windows of animations 2, 3 and 4 are speckle (worst shift 0.55 px, flicker median 9.9); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 97002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a large glowing blue translucent dome of crystal panes with fine bright lines, science fiction hall, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

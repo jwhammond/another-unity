@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: unity.captain_picard.0b00 (screen unity.s0b, sprite futrpica.spr, animation 80, which ScummVM plays there). A prop card (a still of the sprite's first frame of that animation, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks unity.s0b` stands it over the plate. Generic prompt: no game text.
+id: card.unity_picard_s0b_b00
+kind: card
+object: unity_picard_s0b_b00
+sprite: futrpica.spr
+anims: [80]
+prop: { screen: unity.s0b, objects: [unity.captain_picard.0b00], anim: 80 }
+group: 1
+sampling: { seed: 92211, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a bald man in a red and black science fiction uniform standing in profile, realistic materials, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.2
+depth: { strength: 0.8 }
+lineart: { strength: 1.3 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

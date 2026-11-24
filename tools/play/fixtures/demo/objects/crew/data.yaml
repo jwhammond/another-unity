@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: data
+name: Data
+screen: corridor
+crew: true
+skills: 0x9999

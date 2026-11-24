@@ -1,0 +1,37 @@
+# Plan 22's hand-flown battle: the console's pages (combat-parity.sh at Lieutenant).
+# The phaser banks and salvoes, the spread, targets, fire, the CONN page's power, shields and lock, the Tactics
+# page's maneuvers, Engage and its arrows, and Delegate on and off.
+at 0 steer 0 0 0 1
+at 5 page phasers
+at 10 set banks none
+at 20 set bank 0 100
+at 30 set bank 3 50
+at 40 fire phasers
+at 60 page torpedoes
+at 70 set salvo 0 3
+at 80 set spread 4
+at 90 fire torpedoes
+at 120 target next
+at 130 target prev
+at 140 target 2
+at 150 fire both
+at 170 page conn
+at 180 set power 2
+at 200 set shields off
+at 230 set shields on
+at 260 set lock on
+at 300 set power 4
+at 330 page tactics
+at 340 maneuver 0
+at 350 maneuver 1
+at 360 engage
+at 420 engage
+at 430 scroll down
+at 440 scroll up
+at 450 delegate on
+at 600 delegate off
+at 620 page damage
+at 640 page sensors
+at 660 page conn
+at 680 set banks all
+at 690 fire both

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the isolinear rods of `s0f`, `s10`, `s12` and `s13` (off at entry; scripts play 0, 11 frames into a held 1, and 2, 10 frames): w2s12rod.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_isolinear_rod_s12
+kind: card
+object: allanor_isolinear_rod_s12
+sprite: w2s12rod.spr
+anims: [0, 2]
+prop: { screen: allanor.s0f, screens: [allanor.s10, allanor.s12, allanor.s13], objects: [allanor.isolinear_rod.0f0f, allanor.isolinear_rod.1006, allanor.isolinear_rod.120c, allanor.isolinear_rod.1303], anim: 0, animate: [0, 2] }
+group: 2
+sampling: { seed: 95019, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a short green cylindrical tube with a pale band around it, a glowing data rod, science fiction prop, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

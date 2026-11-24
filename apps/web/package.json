@@ -1,0 +1,30 @@
+{
+  "name": "@another-unity/web",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "assets": "tsx scripts/demo-assets.ts",
+    "dev": "npm run assets && vite",
+    "build": "npm run assets && vite build",
+    "preview": "vite preview",
+    "e2e": "playwright test",
+    "deploy:e2e": "AU_DEPLOY_E2E=preview playwright test -c playwright.deploy.config.ts && AU_DEPLOY_E2E=auth playwright test -c playwright.deploy.config.ts"
+  },
+  "dependencies": {
+    "@another-unity/engine": "*",
+    "@fontsource/antonio": "5.3.0",
+    "@fontsource/barlow-semi-condensed": "5.3.0",
+    "lucide-preact": "1.52.0",
+    "marked": "18.1.0",
+    "preact": "^10.25.0",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "^1.49.0",
+    "@preact/preset-vite": "^2.9.1",
+    "vite": "^5.4.11",
+    "yaml": "^2.6.1"
+  }
+}

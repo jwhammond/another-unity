@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The communicator inventory icon repainted (art icon): the game icon is no icon.map entry: the away-team panel (awayteam.mrg entry 0) draws it at kCommunicatorRect (191,427)-(232,475), but the badge itself spans x 194-234, y 27-70 of the entry, so the crop is widened to x 192-235, y 25-72 (the old crop cut its right edge). Upscaled for its layout and
+# colours, repainted with SDXL img2img toward a prompt that names the prop (no show frame of it), then reduced to the icon's own pixel
+# grid on 24 k-means colours of its opaque cells, the sprite's alpha as the cut-out. Two denoise levels; `pick` is written as
+# item.communicator.png.
+id: icon.communicator
+kind: icon
+object: communicator
+source: { mrg: awayteam.mrg, entry: 0, crop: [192, 25, 44, 48] }
+pixel: { kmeans: 24, scale: 4 }
+# Run 2026-10-19 on the PC (kit.compare.png). Picked: real-d70: the cleaner gold and delta.
+pick: real-d70
+variants:
+  - name: real-d55
+    sampling: { seed: 74001, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of the Starfleet combadge from Star Trek: The Next Generation, a polished silver delta arrowhead badge
+      over a gold oval backing, metal communicator pin, studio product shot, soft key light from the upper left, crisp edges, plain dark
+      background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.55
+    palette: 0.4
+  - name: real-d70
+    sampling: { seed: 74002, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of the Starfleet combadge from Star Trek: The Next Generation, a polished silver delta arrowhead badge
+      over a gold oval backing, metal communicator pin, studio product shot, soft key light from the upper left, crisp edges, plain dark
+      background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.7
+    palette: 0.4

@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* A Final Unity's HUD colours: a nod to LCARS (the full theme is for later, spec §9). The bar and dialogue windows take their frame and blue from base.css. */
+:root {
+  --au-bg: #000;
+  --au-panel: rgba(0, 0, 0, 0.85);
+  --au-text: #ffcc99;
+  --au-accent: #ff9966;
+  --au-accent-text: #000;
+  --au-muted: #9999cc;
+  --au-font: 'Antonio', 'Arial Narrow', sans-serif;
+  --au-radius: 14px;
+}
+.au-bar { border-top-color: #9aa6c4; }
+.au-team button { color: #9999ff; }

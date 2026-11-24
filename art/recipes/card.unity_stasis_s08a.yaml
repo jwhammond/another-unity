@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: unity.stasis_chamber.0804 (screen unity.s08, sprite w6s8grfr.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks unity.s08` stands it over the plate. Generic prompt: no game text.
+id: card.unity_stasis_s08a
+kind: card
+object: unity_stasis_s08a
+sprite: w6s8grfr.spr
+anims: [0]
+prop: { screen: unity.s08, objects: [unity.stasis_chamber.0804] }
+group: 1
+sampling: { seed: 92126, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a person frozen inside a curved glass stasis capsule with frosted glass and metal frame, red figure, physically based materials, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

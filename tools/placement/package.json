@@ -1,0 +1,12 @@
+{
+  "name": "@another-unity/placement",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@another-unity/engine": "*",
+    "@another-unity/lift": "*",
+    "@another-unity/play": "*",
+    "yaml": "^2.6.1"
+  }
+}

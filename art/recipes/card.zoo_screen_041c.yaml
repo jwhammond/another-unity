@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the screen `041c` of `s04` (5 frames, a loop): w3s4comp.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_screen_041c
+kind: card
+object: zoo_screen_041c
+sprite: w3s4comp.spr
+anims: [0]
+prop: { screen: zoo.s04, objects: [zoo.screen.041c], anim: 0, animate: [0] }
+group: 3
+sampling: { seed: 99007, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small computer display screen showing a glowing graph, science fiction control console, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

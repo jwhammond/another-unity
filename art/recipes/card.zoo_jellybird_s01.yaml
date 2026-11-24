@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the jellybird of `s01` (off at entry, 59 frames): gasbag.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_jellybird_s01
+kind: card
+object: zoo_jellybird_s01
+sprite: gasbag.spr
+anims: [0]
+prop: { screen: zoo.s01, objects: [zoo.luginumo_jellybird], anim: 0, animate: [0] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 3.00 px, flicker median 23.4, neither a failure): 6 to 8 of the 10 to 14 strongest windows of frames 4, 5, 7 and 23 are speckle; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a pale translucent floating jellyfish creature with trailing tendrils drifting in the air, alien wildlife, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

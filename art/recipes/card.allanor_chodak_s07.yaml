@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: allanor.alien.0705 (screen allanor.s07, sprite chodak.spr). A prop card (a still of the first frame of the animation the original plays there, 8, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks allanor.s07` stands it over the plate. Generic prompt: no game text.
+id: card.allanor_chodak_s07
+kind: card
+object: allanor_chodak_s07
+sprite: chodak.spr
+anims: [8]
+prop: { screen: allanor.s07, objects: [allanor.alien.0705, allanor.alien.0706], anim: 8, animate: [8] }
+group: 1
+sampling: { seed: 92132, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a smooth grey metallic egg-shaped hovering robot shell with a round speaker grille and small vents, glossy physically based metal, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.2
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

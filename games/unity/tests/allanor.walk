@@ -1,0 +1,87 @@
+# A Final Unity, allanor (world 2): the canonical walkthrough (Plan 9). Original ids only.
+seed 42
+start 2 1 0
+# o_020120 (a developer's debug conversation, c006): pick 0 hands over the frigis rod and programmer a real run carries from the ship
+pick 0
+use 000000 020120
+# (s_0201's timers: the arrival remarks and the field source's comment)
+advance 20
+# o_020127 to s03; o_020303 with the rod (o_02010c) opens the s10 console
+use 000000 020127
+advance 8
+use 000000 020303 02010c
+advance 8
+# o_021006 with the programmer (o_020112): a skill check
+seed 43
+use 000000 021006 020112
+advance 8
+# o_021002 initialises, o_02100e confirms, 19 s later o_021008 activates the facility
+use 000000 021002
+advance 3
+use 000000 02100e
+advance 24
+use 000000 021008
+advance 18
+# take the rod back (o_021006): s03; o_02030c to s04
+get 000000 021006
+advance 8
+use 000000 02030c
+# the drones' loop puts the small drone (o_020410) in view 24 s after arrival: scan it with the tricorder (o_007001), c020 sets o_020419
+advance 24
+use 000000 020410 007001
+# o_020406 and o_020317 back to s01: deactivate the hostile drone o_02011e (answer 1), take o_02011c
+use 000000 020406
+advance 8
+use 000000 020317
+advance 8
+answer 1
+use 000000 02011e 007001
+advance 8
+use 000000 02011c
+advance 4
+# s03, s04, s05 (o_020418): fit the inhibitor o_02012a into o_020506
+use 000000 020127
+advance 8
+use 000000 02030c
+advance 8
+use 000000 020418
+advance 6
+use 000000 020506 02012a
+# 25 s on the drone's loop frees it (o_02050a, answer 1 to deactivate), then take the inhibitor back (o_020507) and go through o_020505
+advance 25
+answer 1
+use 000000 02050a 007001
+advance 10
+get 000000 020507
+advance 8
+use 000000 020505
+advance 10
+# s06 to s07 (o_020603); the Chodak o_020704 greet on arrival
+use 000000 020603
+advance 12
+# talk to o_020704, c008: picks 2, 1, 2, 0, 0 lead the Chodak to guide the team to the Hall of Records
+seed 44
+pick 2
+pick 1
+pick 2
+pick 0
+pick 0
+talk 000000 020704
+advance 5
+# o_020703 to s08; the escort's talk offers a menu (pick 0), then their panel (o_020812) beams the team to s0d
+pick 0
+use 000000 020703
+advance 60
+# o_020d01 to s09: the escort walks into the security trap (scripted) and leads the team through s0e, s0b and s0c to s0f
+use 000000 020d01
+advance 150
+# s0f: o_020f04 takes the rod, o_020f0f is programmed (skill check); the Chodak take the rod and leave
+use 000000 020f04 02010c
+advance 5
+seed 45
+use 000000 020f0f 020112
+advance 90
+# back on s0c, o_020c05 goes to s0f
+use 000000 020c05
+advance 15
+end

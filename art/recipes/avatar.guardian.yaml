@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The Guardian: a game-only picture (icon.map: w6shanct, the dialog's speaker icon), no show footage, so no FaceID and no grab. The non-face path of the portraits:
+# the Krea 2 Turbo variant repaints the game's own picture as layout (img2img at a high denoise, so its shape and colours stay and its painting
+# is new), and the pixel step makes the 64x64 picture. Published under the object ids in speakers: the subtitle looks its speaker up by the game's object name.
+id: avatar.guardian
+kind: avatar
+object: guardian
+speakers: [unity.guardian.0a02, unity.guardian.0a03, unity.glow, unity.brodnack_guardian]
+base: { sprite: w6shanct.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 2 }
+pick: krea2
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 77310, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, an ancient disembodied guardian, a tall slender figure made of glowing pale blue light and thin crackling lines of
+      energy, floating in a black void with a few tiny specks of white light, no face, a shimmering blue silhouette, painted 1990s
+      adventure game portrait
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark
+    denoise: 0.75
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.4 }]

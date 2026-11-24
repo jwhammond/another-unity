@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: static repaint of a viewscreen caller (see hail.mertens). Generic prompt: no game text, no actor or character names.
+id: hail.chod
+kind: repaint
+source: { hail: viewchod }
+sampling: { seed: 171001, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  close-up photograph of an alien creature with a smooth bulbous blue-orange head, large red-orange slit eyes, no hair, glossy skin texture, in a dark metal chamber, dramatic light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra people, extra limbs, blurry
+denoise: 0.35
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+size: { work: [1536, 728], out: [2120, 1008] }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

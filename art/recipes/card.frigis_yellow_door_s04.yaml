@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8e rollout (Frigis), the yellow door of `s04` (animation 0 one frame, animation 1 the opening, 65 frames; `open_door` plays it; off at entry): w5s4ydor.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8e"). Generic prompt: no game text.
+id: card.frigis_yellow_door_s04
+kind: card
+object: frigis_yellow_door_s04
+sprite: w5s4ydor.spr
+anims: [0, 1]
+prop: { screen: frigis.s04, objects: [frigis.yellow_door_anim], anim: 0, animate: [0, 1] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 1 to 2 of the 1 to 2 strongest windows of every frame measured are speckle (animation 0 worst shift 0.00 px, animation 1 worst shift 1.32 px, flicker median 4.5); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 96008, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an oval stone doorway with a glass window opening onto a dark tunnel, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

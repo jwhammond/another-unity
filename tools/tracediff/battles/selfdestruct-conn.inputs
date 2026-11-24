@@ -1,0 +1,3 @@
+# Plan 22's hand-flown battle: self-destruct on the CONN page (combat-parity.sh at Lieutenant): the countdown takes the
+# target with the Enterprise (weapons.cpp:723-727).
+at 20 set selfdestruct

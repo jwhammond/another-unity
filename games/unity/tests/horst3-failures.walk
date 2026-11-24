@@ -1,0 +1,32 @@
+# Horst III's failure lines, each said at least once (Plan 6 Task 11). Original ids only.
+seed 42
+start 7 1 0
+advance 65
+# look at a sprite that has no description: the failed-look line
+seed 201
+look 000000 070105
+# talk to the rubble, which has nothing to say: the failed-talk line
+seed 202
+talk 000000 070103
+# use a sprite that has no use at all: the failed-use line
+seed 203
+use 000000 070105
+# use the chasm with nothing in hand, when only the tricorder works on it: the failed-item line
+seed 204
+use 000000 070108
+# the same with the medical kit in hand
+seed 205
+use 000000 070108 007004
+# fire the phaser at a teammate: the phaser refuses, with its line
+phaser 1
+seed 206
+use 000000 000001 007003
+# scan a teammate with the tricorder: nothing to read
+seed 207
+use 000000 000001 007001
+# clear the rubble, which turns the advice off, then ask for advice: none to give
+phaser 3
+use 000000 070103 007003
+seed 208
+talk 000000 000001
+end

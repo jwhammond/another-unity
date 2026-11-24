@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the left side light of `s0f` (animation 0, 5 frames, a loop; `done` plays 1, one frame): w6s15blf.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_side_light_0f03
+kind: card
+object: unity_side_light_0f03
+sprite: w6s15blf.spr
+anims: [0, 1]
+prop: { screen: unity.s0f, objects: [unity.side_light.0f03], anim: 0, animate: [0, 1] }
+group: 4
+sampling: { seed: 98029, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a round glowing red lamp, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.15
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

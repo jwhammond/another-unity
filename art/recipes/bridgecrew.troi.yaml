@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 33 Task 6: the bridge's seated counselor repainted toward the show's likeness, over Task 5's cut-out (each frame's alpha is the cut-out's,
+# upscaled), from card.riker's settings. Generic prompt: no game text, no show or actor names.
+id: bridgecrew.troi
+kind: bridgecrew
+object: troi
+sprite: brdgtroi.spr
+sampling: { seed: 93005, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a woman seated with her legs crossed, long dark brown curly hair, very dark brown eyes, realistic skin, fitted blue
+  science fiction jumpsuit, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry, closed eyes, missing eyes, heavy makeup
+denoise: 0.38
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [crew.troi.face.1, crew.troi.face.2], model: face, weight: 0.9, weightType: linear, mask: head }
+  - { refs: [crew.troi.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+hold: { tolerance: 20, feather: 12 }
+# Runs on the 4080 (2026-10-30, 24 distinct frames): 1) the whole figure at denoise 0.38: eyes and mouth drawn where the upscale had dark
+# smudges, the talking frames' eye make-up varied until the hold's tolerance went from 6 to 20 (the upscaler changes the eyes a little
+# when only the mouth moves); 2) with the head pass (face, denoise 0.4): a closer likeness, the same eyes through the talk. Flicker median
+# 0.7-3.8, worst pair 5.4.
+face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
+# Plan 34: the open-mouth talk frame's head pass drew the lips black; they take the next frame's lips (its strip's cell pixels, 4x).
+fixups:
+  - { anim: 2, frame: 1, box: [83, 74, 20, 10], from: 2 }

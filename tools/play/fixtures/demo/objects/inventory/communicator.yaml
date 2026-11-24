@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: communicator
+name: Combadge
+# (like the original's, it is never in the inventory: the combadge button uses it)
+screen: null
+on:
+  use:
+    - do:
+        - play: { sound: chime }
+        - say: { who: picard, text: "Away team to bridge. Stand by." }

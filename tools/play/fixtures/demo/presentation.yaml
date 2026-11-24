@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+ambience: { lab: hum }
+# the engine's own sounds: stand-in tones that apps/web/scripts/demo-assets.ts writes
+sounds: { combadge: combadge, tricorderChirp: tricorder, phaserCrew: phaser }

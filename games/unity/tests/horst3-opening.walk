@@ -1,0 +1,10 @@
+# Horst III's first steps (Plan 3's walk.txt), the first walkthrough both engines are diffed on.
+seed 42
+start 7 1 0
+# (s_0701's timer, 07010b, fires every 60 s: let it fire once in both engines inside this step, Decision 16)
+advance 65
+look 000000 070103
+use 000000 070103
+talk 000000 000001
+advance 2
+end

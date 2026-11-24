@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' wave converter (screen lab.s07, sprite w4s8tol3.spr): a small tool the original draws lying on the shelf over the background (the plate's shelf is empty).
+# A still of the sprite's frame 0 upscaled 4x and lightly repainted, silhouette kept exactly; `prop` has `art masks lab.s07` stand it over the plate.
+# Placement small batch 7 (`placement triage`: static-missing, one frame, {rect} not in the background). Generic prompt: no game text.
+id: card.lab_wave_converter
+kind: card
+object: lab_wave_converter
+sprite: w4s8tol3.spr
+anims: [0]
+prop: { screen: lab.s07, objects: [lab.wave_converter], anim: 0 }
+group: 1
+sampling: { seed: 92304, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small brass and gold device lying flat on a metal shelf, brass and gold metal, worn engineering equipment, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

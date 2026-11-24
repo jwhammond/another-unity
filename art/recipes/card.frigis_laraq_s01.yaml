@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.chancellor_laraq.0100 (screen frigis.s01, sprite w5s1lar1.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s01` stands it over the plate. Generic prompt: no game text.
+id: card.frigis_laraq_s01
+kind: card
+object: frigis_laraq_s01
+sprite: w5s1lar1.spr
+anims: [0, 2]
+prop: { screen: frigis.s01, objects: [frigis.chancellor_laraq.0100, frigis.chancellor_laraq.010c], anim: 0, talk: 2, animate: [0, 2] }
+group: 1
+sampling: { seed: 92108, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall alien dignitary standing, long dark green robe with a high collar, a glowing amber orb above the head, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

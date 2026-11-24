@@ -1,0 +1,39 @@
+# A Final Unity, horst3 (world 7) from the beam-down, then back aboard (Plan 12 Task 9). Original ids only.
+# Starts aboard at horst3, where 04 ends.
+seed 1
+start ship
+station transporter
+beam
+advance 70
+look 000000 070103
+use 000000 070103 007001
+phaser 3
+use 000000 070103 007003
+walk 000000 070102
+advance 20
+walk 000000 070203
+advance 35
+walk 000000 070301
+advance 20
+use 000000 07020c
+advance 10
+# the close-up: o_050114 into o_070402, o_050116 on the rod (o_070406 with o_050116),
+# and the tricorder on o_070403, which lights
+use 000000 070402 050114
+advance 10
+use 000000 070406 050116
+advance 10
+use 000000 070403 007001
+advance 10
+# take the item back out (o_070406 with nothing): world 2 needs it
+use 000000 070406
+advance 10
+# out of the close-up, back to the landing site (o_070201), and call the ship
+use 000000 070404
+advance 20
+walk 000000 070201
+advance 65
+answer 0
+combadge 000000
+advance 30
+checkpoint after-horst3

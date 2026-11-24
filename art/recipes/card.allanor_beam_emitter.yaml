@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the lens of `s0a` and the gun of `s0e` (it starts on 1; scripts play 0, 1 and 2, 8 frames each): w2s10bem.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_beam_emitter
+kind: card
+object: allanor_beam_emitter
+sprite: w2s10bem.spr
+anims: [0, 1, 2]
+prop: { screen: allanor.s0a, screens: [allanor.s0e], objects: [allanor.lens, allanor.gun], anim: 1, animate: [0, 1, 2] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 4 of the 5 strongest windows of every frame are speckle (worst shift 0.25 px, flicker median 3.6); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95018, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small glowing lens-like crystal device on a dark metal mount, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

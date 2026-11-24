@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' cut cable (o_040307, screen lab.s03): what the big cable becomes when the phaser at low setting cuts it. The stun script turns
+# o_040308 (the whole cable, card.lab_big_cable) off and o_040307 on, and the original draws this one in the same place: the same sprite
+# (w4s3msk4.spr) at its animation 1, a 144x58 frame where the whole cable's is 146x60. Without a card of its own the cable vanished
+# when shot (ScummVM trace, docs/unity-sprite-placement.md). Everything else as card.lab_big_cable.
+# Animated since the transporter lock takes the piece of cable (o_040100's `get`): it plays animation 2, 3 or 4 on this object, which are the cable with the piece gone and the
+# cable as it lies without it (144x40, then 230x52 twice), one frame each. Without them the cut cable stayed on the screen by the woman after the beam. `prop.animate` publishes
+# animations 1 to 4 as strips, so the layer follows the object's animation (docs/unity-sprite-placement.md, "Batch 8a").
+id: card.lab_cut_cable
+kind: card
+object: lab_cut_cable
+sprite: w4s3msk4.spr
+anims: [1, 2, 3, 4]
+prop: { screen: lab.s03, objects: [lab.big_cable.0307], anim: 1, animate: [1, 2, 3, 4] }
+group: 1
+sampling: { seed: 91003, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a thick braided metal power cable lying on a floor, bronze and grey metal, worn, science fiction, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [set.engineering.1], model: style, weight: 0.4, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

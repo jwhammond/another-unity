@@ -1,0 +1,28 @@
+wait 1000
+export_movies @DIR@/media 55
+export_movies @DIR@/media 50
+export_movies @DIR@/media 45
+export_movies @DIR@/media 44
+export_movies @DIR@/media 46
+export_movies @DIR@/media 20
+export_movies @DIR@/media 18
+export_movies @DIR@/media 6
+export_movies @DIR@/media 53
+export_movies @DIR@/media 52
+export_movies @DIR@/media 43
+export_movies @DIR@/media 51
+export_movies @DIR@/media 54
+export_movies @DIR@/media 0
+export_movies @DIR@/media 4
+export_movies @DIR@/media 21
+export_movies @DIR@/media 22
+export_movies @DIR@/media 23
+export_movies @DIR@/media 24
+export_movies @DIR@/media 25
+export_movies @DIR@/media 8
+export_movies @DIR@/media 15
+export_movies @DIR@/media 19
+export_movies @DIR@/media 47
+export_movies @DIR@/media 48
+export_movies @DIR@/media 49
+quit

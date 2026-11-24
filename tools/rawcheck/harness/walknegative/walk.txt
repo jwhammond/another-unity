@@ -1,0 +1,3 @@
+# a negative pick (cancel is spelled out)
+pick -1
+end

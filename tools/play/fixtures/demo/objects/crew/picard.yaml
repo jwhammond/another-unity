@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: picard
+name: Picard
+screen: corridor
+crew: true
+skills: 0x4444

@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: mat.ceiling-light
+kind: material
+script: mat/ceiling-light.py
+seed: 16
+size: 1024
+band: 96

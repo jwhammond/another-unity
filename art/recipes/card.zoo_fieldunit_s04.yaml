@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: zoo.field_unit_a, zoo.field_unit_b, zoo.field_unit_c (screen zoo.s04, sprite w3s4robo.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks zoo.s04` stands it over the plate. Generic prompt: no game text.
+# Speckle 0.6 (default 0.85 failed: over half of the strongest windows counted as speckle on the fur/glass; measured shifts were under 1 px).
+id: card.zoo_fieldunit_s04
+kind: card
+object: zoo_fieldunit_s04
+sprite: w3s4robo.spr
+anims: [0]
+prop: { screen: zoo.s04, objects: [zoo.field_unit_a, zoo.field_unit_b, zoo.field_unit_c], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 92117, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a floating grey metal field robot, domed saucer top with a long tapering antenna leg, glossy physically based metal, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.2
+depth: { strength: 0.8 }
+lineart: { strength: 1.3 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.6 }

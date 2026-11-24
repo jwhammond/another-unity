@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: mat.console-glass
+kind: material
+script: mat/console-glass.py
+seed: 14
+size: 1024
+band: 96

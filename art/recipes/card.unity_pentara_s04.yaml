@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: unity.captain_pentara.0405 (screen unity.s04, sprite pentara.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks unity.s04` stands it over the plate. Generic prompt: no game text.
+id: card.unity_pentara_s04
+kind: card
+object: unity_pentara_s04
+sprite: pentara.spr
+anims: [0]
+prop: { screen: unity.s04, objects: [unity.captain_pentara.0405], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 92122, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an alien officer standing, orange and grey science fiction jumpsuit with a white helmet covering the head, realistic materials, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

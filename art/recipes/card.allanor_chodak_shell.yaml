@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Placement small batch 7b: the chodak's empty shell (allanor.s0a). The original draws it over the background and the plate (a repaint of the background alone) does not have it.
+# A still of the sprite's frame 0 upscaled 4x and lightly repainted, silhouette kept exactly; `prop` has `art masks <screen>` stand it over the plate while the object is active.
+# `placement triage`: static-missing (one frame, not in the background at its rect). Generic prompt: no game text.
+id: card.allanor_chodak_shell
+kind: card
+object: allanor_chodak_shell
+sprite: w2s10dt2.spr
+anims: [0]
+prop: { screen: allanor.s0a, objects: [allanor.chodak_shell], anim: 0 }
+group: 1
+sampling: { seed: 92407, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a large cracked empty egg-shaped robot shell lying on a floor, dull blue-grey metal, debris, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

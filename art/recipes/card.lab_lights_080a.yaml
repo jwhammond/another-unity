@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8a pilot, a looping animated prop: the row of chasing indicator lights on Mertens' wall (o_04080a, lab.s08). The original plays animation 0
+# forever: 13 frames (w4s7trim.spr, 172x28 at 54,45, jump back to the first), each a different light pattern, and the repainted plate has none of them.
+# `prop.animate` publishes every frame as a strip, so the layer draws the frame the sprite is on (docs/unity-sprite-placement.md, "Batch 8a").
+# Upscale-only (`repaint: false`): the repaint failed the card check on speckle it cannot measure (frames 0 to 2: 8 to 10 of the 10 strongest windows are the lights' dots,
+# median flicker 17.5, worst shift 3.2 px), as the other small light-and-dot props (batch 6's rule: nothing else relaxed). Generic prompt: no game text.
+id: card.lab_lights_080a
+kind: card
+object: lab_lights_080a
+sprite: w4s7trim.spr
+anims: [0]
+prop: { screen: lab.s08, objects: [lab.lights.080a], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the original is rows of small lit dots: 8 to 10 of every frame's 10 strongest windows are speckle that cannot be measured (the repaint's flicker median was 17.5; allowed only because repaint is false, the upscale is the original's own pixels at 4x)" }
+sampling: { seed: 93001, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a row of small glowing orange and red indicator lights set in a dark metal panel, science fiction control console, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

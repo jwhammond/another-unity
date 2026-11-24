@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' trapped woman (o_040301, screen lab.s03; the injured and dead woman are the same sprite): an NPC lying under the cable. Her sprite's
+# frame upscaled 4x and lightly repainted, silhouette kept exactly; no show likeness (she has none): a low-weight style reference only.
+# `prop` has `art masks lab.s03` stand her over the plate in a mask's place. She is one sprite (w4s3doct.spr) in three rooms and, as the injured
+# and dead woman, three objects a script swaps for each other in turn (each would vanish from the room if it had no card): all take this still. Generic prompt: no game text, no show or actor names.
+# The third screen's four women are card.lab_woman_revive (animated since the med kit), and o_040211, the injured woman after it on the second screen, is card.lab_woman_sitting.
+id: card.lab_trapped_woman
+kind: card
+object: lab_trapped_woman
+sprite: w4s3doct.spr
+anims: [0]
+prop: { screen: lab.s02, screens: [lab.s01], objects: [lab.trapped_woman.0200, lab.dead_woman.020c, lab.injured_woman.0210, lab.dead_woman.0102] }
+group: 1
+sampling: { seed: 91002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an unconscious woman lying on her side on a floor, long blonde hair, fitted green science fiction jumpsuit, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+reference:
+  - { refs: [set.science.1.wall], model: style, weight: 0.3, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+# Tuning (frame 0002, seed 91002): denoise 0.45 / lineart 0.8, then 0.38 / 1.0 (with the speckle skip), left one window 3.01 px off with the median at
+# 0.2 px (a point in the jumpsuit's dithered shading, which any repaint draws differently); denoise 0.3 puts every window within 1.97 px, dE 0.7.

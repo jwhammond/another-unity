@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: unity.admiral_brodnack (screen unity.s04, sprite brodnack.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks unity.s04` stands it over the plate. Generic prompt: no game text. (Batch 10: the sprite's walking-type object is drawn at the floor's scale where it stands;
+# animation 0, the loop ScummVM's player is on, is published as a strip; Allanor's s0b has the same Brodnack, off at entry.)
+id: card.unity_brodnack_s04
+kind: card
+object: unity_brodnack_s04
+sprite: brodnack.spr
+anims: [0]
+prop: { screen: unity.s04, screens: [allanor.s0b], objects: [unity.admiral_brodnack, allanor.admiral_brodnack], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 92121, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a smooth grey metallic egg-shaped hovering robot shell with a round speaker grille and small vents, glossy physically based metal, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

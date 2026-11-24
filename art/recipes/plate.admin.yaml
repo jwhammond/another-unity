@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 32 Task 12: the admin console's body (adminmnu.spr's first picture, 420 by 478, decoded from the game zip by admin.ts), repainted
+# into an HD plate shown with the art on, as plate.tactical repaints tactical's console. Generic prompt: no game text, no trademarks.
+id: plate.admin
+kind: repaint
+source: { admin: console }
+sampling: { seed: 320001, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered handheld starship data padd, dark grey metal casing with fine perforated grip strips and bevelled edges, recessed black
+  display, physically based materials, soft lighting, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# Kept crisp (the original's own upscale): the top LED row and the whole screen with its lip (its pages, pills, emblem and the message
+# line are drawn there: adminConsole.tsx's CLICK and PIC), every button's place with two pixels round it (SOUND LEVELS, TEXT, the
+# DIFFICULTY and SETTINGS column with the groove the SETTINGS button covers, RESUME) and the embossed letters at the foot. The screen's
+# keep runs down to the button column's, so the shadow under the screen's lip is the original's. The grip strips down each side are
+# repainted (smoothed): kept, as plate.final keeps them, the upscaler's weave of their holes locked the check 4 px off at DIFFICULTY's
+# corner (runs 2 and 3). The SOUND LEVELS, TEXT and DIFFICULTY/SETTINGS keeps reach 2 px below their hit boxes (widened after run 4,
+# which was made with them 2 px shorter).
+keep:
+  - [33, 12, 354, 308]
+  - [32, 319, 147, 50]
+  - [32, 367, 147, 50]
+  - [182, 320, 205, 96]
+  - [262, 428, 125, 46]
+  - [36, 423, 76, 50]
+# Where the console draws over its plate: held still for the check and the mask.
+areas:
+  leds: [36, 14, 162, 20]
+  screen: [38, 42, 343, 266]
+  sound: [34, 321, 143, 43]
+  text: [34, 369, 143, 43]
+  difficulty: [184, 322, 201, 44]
+  settings: [184, 369, 201, 43]
+  resume: [264, 430, 121, 42]
+reference:
+  - { refs: [set.astrogation.tactical.1, set.bridge.lcars.1], model: style, weight: 1.0, weightType: style transfer }
+size: { work: [960, 1088], out: [1680, 1912] }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

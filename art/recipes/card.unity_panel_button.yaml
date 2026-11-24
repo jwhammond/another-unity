@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the panel buttons of `s08` and `s0e` (animation 0, 2 frames, a loop; `panel.0e01` plays 1, one frame): w6s8butt.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_panel_button
+kind: card
+object: unity_panel_button
+sprite: w6s8butt.spr
+anims: [0, 1]
+prop: { screen: unity.s08, screens: [unity.s0e], objects: [unity.panel.0806, unity.panel_anim], anim: 0, animate: [0, 1] }
+group: 4
+sampling: { seed: 97018, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small glowing orange panel button on a dark control panel, science fiction, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

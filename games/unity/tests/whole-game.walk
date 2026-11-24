@@ -1,0 +1,12 @@
+# A Final Unity, a new game through every mission to the Unity Device's beam-down, one leg at a time (Plan 12 Tasks 8 and 9). Original ids only.
+# For tools/play (live-route.test.ts); Plan 13 diffs it against ScummVM.
+seed 1
+start ship
+include route/01-mertens.walk
+include route/02-zoo.walk
+include route/03-frigis.walk
+include route/04-frigis-again.walk
+include route/05-horst3.walk
+include route/06-allanor.walk
+include route/07-unity.walk
+end

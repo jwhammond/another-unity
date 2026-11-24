@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: chip
+name: Isolinear Chip
+screen: lab
+at: bench
+on:
+  get:
+    - when: { near: { dist: 1 } }
+      do:
+        - alter: { object: chip, get: true }
+        - say: { who: picard, text: "We'll take it with us." }

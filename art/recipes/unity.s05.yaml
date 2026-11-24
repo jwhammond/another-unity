@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: unity room 05. Settings from the lab.s05 step-down, protect tightened to 0.1 after the first M6 samples missed by 1-2 points at 0.15 (masked denoise, see lab.s01). Generic prompt: no game text.
+id: unity.s05
+kind: repaint
+source: { background: s_0605 }
+sampling: { seed: 600005, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered ancient alien city of pale stone spires and carved cliffs under a night sky with a large pale moon, teal and slate palette, cold moonlight, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.45
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+mask: { protect: 0.1, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

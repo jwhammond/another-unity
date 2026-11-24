@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the vortex top of `s0a` (off at entry, animation 0, 26 frames, 14 distinct, a loop): w6s10top.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_vortex_top_s0a
+kind: card
+object: unity_vortex_top_s0a
+sprite: w6s10top.spr
+anims: [0]
+prop: { screen: unity.s0a, objects: [unity.top], anim: 0, animate: [0] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 41 to 49 of the 53 to 61 strongest windows of frames 0 to 3 are speckle (worst shift 2.23 px, flicker median 13.9); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 97019, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of the upper half of a swirling vortex of blue-grey metal and light inside a ring, science fiction set, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

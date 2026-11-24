@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: mat.hull-panel
+kind: material
+script: mat/hull-panel.py
+seed: 13
+size: 1024
+band: 96

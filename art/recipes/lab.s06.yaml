@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 15 Task 6. Settings from lab.s01 (masked denoise with emissive protection, style-transfer reference). Generic prompt: no game text, no trademarks.
+id: lab.s06
+kind: repaint
+source: { background: s_0406 }
+sampling: { seed: 401006, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered science-fiction engineering core, a central glowing shaft with a ring platform, tall support struts, warm gold light, tiled floor, physically based materials, soft global illumination, crisp detail, muted bronze and grey palette
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+reference:
+  - { refs: [set.engineering.1, set.cargo.1.stairs, set.cargo.2], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

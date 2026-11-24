@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Away-team avatar for troi, made as Riker's (avatar.riker.yaml, the user's pick id-real): a NEW picture from IP-Adapter FaceID on
+# InsightFace embeddings of five show frames (face.3-7, seasons 5-7), the blurred game portrait as the layout (img2img at 0.9), a
+# "realistic oil painting" prompt at cfg 4 with plus-face 0.4 and a palette transfer of 0.3, shown as the 64x64 k-means-32 pixel version.
+# The frames were found by InsightFace over the cached episode scans (the largest faces nearest this person's face.1-2), square crops
+# about the face; face.8-11 are held out and score the likeness, with the margin over the nearest other crew member.
+id: avatar.troi
+kind: avatar
+object: troi
+base: { sprite: smhdtroi.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 40 }
+identity:
+  refs: [crew.troi.face.3, crew.troi.face.4, crew.troi.face.5, crew.troi.face.6, crew.troi.face.7]
+  holdout: [crew.troi.face.8, crew.troi.face.9, crew.troi.face.10, crew.troi.face.11]
+  others: [crew.picard.face.1, crew.picard.face.2, crew.riker.face.1, crew.riker.face.2, crew.data.face.1, crew.data.face.2, crew.worf.face.1, crew.worf.face.2, crew.crusher.face.1, crew.crusher.face.2, crew.la_forge.face.1, crew.la_forge.face.2]
+# Run 2026-10-19 on the PC (likeness, smooth / pixel, against face.8-11):
+#   id-real 0.56+0.48 / 0.53+0.37   id-soft 0.55+0.47 / 0.48+0.33
+# id-soft asks for a gentler expression and lighter make-up: little changes and the pixel score drops. Picked: id-real.
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600, refCount: 3 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+# The pick (the user's, 2026-10-19, treatment B of the grab probe): the full show frame behind its ref, its face box fitted to the game portrait's, the person
+# cut out by BiRefNet (portrait) with pymatting's foreground colours, graded halfway to the game figure, on the portrait's own backdrop
+# (art avatar <recipe> --variant grab; grab.ts). The variants below are the earlier rounds, kept.
+# 2026-10-20 new pose (user): face.5, then face.3 (user, same day, 4th on the sheet); was instead of face.8 (near-frontal, mouth closed, face roughly centred); compared with other frames on ~/pcode/unity-raw/runs/avatars/crusher-troi-new-pose.png.
+grab:
+  ref: crew.troi.face.3
+  gameFace: [11.07, 9.27, 34.44, 40]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: id-real
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      realistic oil painting portrait of Counselor Deanna Troi from Star Trek: The Next Generation (Marina Sirtis) in her thirties, head
+      and shoulders, slight three-quarter view, long dark brown curly hair pulled back from the face, very dark brown eyes, black
+      high-collared uniform tunic, warm key light from the right, cool blue shadows, dark blue background, painted brushwork
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, blonde hair, short hair, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3
+  - name: id-soft
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      realistic oil painting portrait of Counselor Deanna Troi from Star Trek: The Next Generation (Marina Sirtis) in her thirties, head
+      and shoulders, slight three-quarter view, long dark brown curly hair pulled back from the face, very dark brown eyes, gentle warm
+      expression, natural makeup, black high-collared uniform tunic, warm key light from the right, cool blue shadows, dark blue
+      background, painted brushwork
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, blonde hair, short hair, hat, heavy makeup, stern expression
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3

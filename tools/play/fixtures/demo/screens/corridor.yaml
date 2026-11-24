@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: corridor
+markers:
+  arrival: { x: 0, z: 0 }
+  panel: { x: 4, z: 0 }
+  door: { x: 8, z: 0 }
+regions:
+  doorway: false
+startup:
+  combadge: true

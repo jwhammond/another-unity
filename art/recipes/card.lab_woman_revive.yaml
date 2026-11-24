@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' woman on the third screen (o_040301 trapped, o_040302 and o_04030c injured, o_040309 dead; one sprite, w4s3doct.spr, 98x37 at 425,280, full scale): animated since
+# the med kit. The doctor's use of it (o_04030c) turns o_040302 on and plays its animation 3 with `wait` (15 frames: she stirs and comes round, about four seconds of the
+# sprite's clock), then animation 1 (one frame, sitting up). Animation 0 is how she lies. `prop.animate` publishes its animations as strips, so the layer follows the object's
+# animation (docs/unity-sprite-placement.md, "Batch 8a"); every object of the group shares the strips and stays on animation 0 unless a script plays another. She is drawn at 162/256 of her size there (a walker-type object at the floor's scale); `art masks` shrinks the layer's rectangles about her origin and the pictures are drawn into them.
+# The second screen's woman, drawn at 45/256, is the still card.lab_trapped_woman. Same prompt, seed and sampling as that card. Generic prompt: no game text.
+id: card.lab_woman_revive
+kind: card
+object: lab_woman_revive
+sprite: w4s3doct.spr
+anims: [0, 1, 3]
+prop: { screen: lab.s03, objects: [lab.trapped_woman.0301, lab.injured_woman.0302, lab.dead_woman.0309, lab.injured_woman.030c], anim: 0, animate: [0, 1, 3] }
+group: 2
+sampling: { seed: 91002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of an unconscious woman lying on her side on a floor, long blonde hair, fitted green science fiction jumpsuit, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+reference:
+  - { refs: [set.science.1.wall], model: style, weight: 0.3, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+# Animation 3 (the waking, 14 distinct frames) is published (batch 10). It failed the card check twice at denoise 0.3 and group 4 (seed 91002: frames 2, 3 and 6 moved a point 2.15, 2.16
+# and 3.58 px; seed 91303: frames 0 and 4 moved one 2.26 and 2.29 px; limit 2); at denoise 0.2 with two frames a canvas it passed on the first try at the recipe's own seed (worst shift 0.69 px,
+# flicker median 5.5, dE max 1.8), nothing loosened. The whole recipe is at 0.2 now, so animations 0 and 1 (one frame each) were painted again at it, and the switches between the three checked.
+# (Tuned: denoise 0.3 -> 0.2, group 4 -> 2. `keep` and `warp` are for plate recipes; a card has neither.)

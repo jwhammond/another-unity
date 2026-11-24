@@ -1,0 +1,3 @@
+Astrogation is the busiest screen, with fourteen groups of painted controls. All of them now exist at their painted places: the rotation pad, the cursor arrows, the three view buttons, the three tabs (Info, Course and Display), the exits to the computer and engineering, and on the Course panel Warp, Impulse, Faster, Slower, Engage and Stop. The map is drawn the way the original draws it, with its own turning, spinning and nine display switches.
+
+Warp and Impulse are part of the course panel's own picture, and Faster, Slower, Engage and Stop are sprites, so those are drawn when the art has been built. Still different: dragging the map turns it and the wheel zooms it, neither of which the original does.

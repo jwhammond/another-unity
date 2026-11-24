@@ -1,0 +1,9 @@
+# Leaving at once: the combadge, Ignore, then Hail; the team beams up without the rod.
+seed 42
+start 7 1 0
+advance 65
+answer 1
+combadge 000000
+answer 0
+combadge 000000
+end

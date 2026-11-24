@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8b rollout, a looping animated prop: the second row of chasing indicator lights on Mertens' wall (o_04070f, lab.s07). The original plays animation 0 forever:
+# 14 frames (w4s8flow.spr, 216x32 at 50,50, jump back to the first), each a different light pattern, and the repainted plate has none of them. A twin of
+# card.lab_lights_080a (its own sprite and seed). Upscale-only (`repaint: false`) as its twin is: the repaint failed the card check on the lights' dots (frame 3: 11 of its 20 strongest windows are speckle that
+# cannot be measured; the points the alignment did measure were those dots, moved 2.2 to 4.2 px; median flicker 22.2), and batch 6's rule is the upscale with the reason, nothing else relaxed. Generic prompt: no game text.
+id: card.lab_lights_070f
+kind: card
+object: lab_lights_070f
+sprite: w4s8flow.spr
+anims: [0]
+prop: { screen: lab.s07, objects: [lab.lights.070f], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the original is rows of small lit dots: 11 of frame 3's 20 strongest windows are speckle that cannot be measured, and the repaint's alignment points were the dots themselves (moved 2.2 to 4.2 px; flicker median 22.2); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 93002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a row of small glowing orange and red indicator lights set in a dark metal panel, science fiction control console, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 15 Task 10: la_forge's animations repainted toward the show's likeness, from card.riker's settings. Generic prompt: no game text, no show or actor names.
+id: card.la_forge
+kind: card
+object: la_forge
+sprite: laforge.spr
+anims: used
+group: 4
+sampling: { seed: 90004, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man standing, short dark hair, dark skin, a metallic visor band across the eyes, fitted gold and black science fiction duty uniform, full body, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.45
+depth: { strength: 0.8 }
+lineart: { strength: 0.9 }
+reference:
+  - { refs: [crew.la_forge.face.1, crew.la_forge.face.2], model: face, weight: 0.9, weightType: linear, mask: head }
+  - { refs: [crew.la_forge.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+checks: { flickerRatio: 2.2, flickerMax: 14, deltaE: 12 }
+groupOverrides: { "31": 5 }
+# Tuning (anims 2 and 4, local MPS): at Riker's settings (denoise 0.55, lineart 0.7) every anim failed alignment by 2.3-3.8 px, because the smooth costume gives the
+# windows little to hold; lineart 0.9 alone still failed anim 2, with depth 0.8 and denoise 0.45 both anims passed (worst 2.01 / 1.51 px).

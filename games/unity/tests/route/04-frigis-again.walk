@@ -1,0 +1,63 @@
+# A Final Unity, from frigis's first visit to its second, and on to horst3's beam-down (Plan 12 Task 9). Original ids only.
+# Starts from 03-frigis's end: aboard, c005 ending, then the hub (c022).
+seed 1
+start ship
+# the hub's second option (c022@3 k1) is the course for the next stop; the alert hail follows
+pick 1
+advance 200
+# o_5f011e (c016@1), then a call that scripts the warp (sector 307, star 1)
+comms 5f011e
+advance 30
+station astrogation
+plot 307 1
+engage warp 600
+advance 300
+# o_5f0115 (c016@5): its second option (k7) is the scripted warp (t166)
+pick 1
+comms 5f0115
+# the battle at the arrival (c016@7 k6, then k8; pick 0 twice): battle 71, flown by hand (Delegate loses it: Plan 23).
+# Its ship's last words as it is destroyed (its hook 11) ask twice (pick 0 each: none of the options changes the battle)
+pick 0
+pick 0
+combat wait
+pick 0
+pick 0
+combat inputs tests/battles/71.inputs
+advance 30
+# o_5f0115's report (c016@8 k5..k11): any of the three requests (all return), then its last option: the scripted warp (t171)
+pick 0
+comms 5f0115
+advance 30
+# o_5f0113 (t174's own hail): its first option ends it; c016@15 follows
+pick 0
+advance 30
+comms 5f0115
+# the hail at t78: its first option; the call at t112 then is a scripted warp to frigis
+pick 0
+advance 200
+# the battle at frigis (battle 51), fought by Delegate (auto-resolve); the t78 hail comes again on the way in (pick 0),
+# then the team is called down
+pick 0
+combat wait
+combat auto
+# (the battle left units damaged: engineering's repairs and power, in full, as a player gives them; a point a second)
+station engineering
+repair all
+advance 70
+station bridge
+advance 30
+station transporter
+beam
+advance 8
+# o_050100 (c002): k30, then two more topics in turn (pick 0, 0); the rest follows on its own:
+# the item hand-overs, the end (t117) and the beam up
+pick 0
+pick 0
+# (back aboard, the hub's second option: the course for the next stop)
+pick 1
+talk 000000 050100
+advance 30
+checkpoint after-frigis2
+# the transit (t144-style recorded message), and the t78 hail comes again: its first option
+pick 0
+advance 100

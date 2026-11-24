@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: alarm
+name: Alarm
+screen: lab
+at: entry
+timer: 5
+on:
+  timer:
+    - when: { counter: { mode: until, value: 2 } }
+      do:
+        - say: { who: data, text: "Captain, the alarm is getting louder." }

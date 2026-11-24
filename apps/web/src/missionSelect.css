@@ -1,0 +1,32 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+.au-bridge {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(28rem, 90vw);
+  height: fit-content;
+  padding: 1.5rem;
+  background: var(--au-panel, rgba(0, 0, 0, 0.85));
+  color: var(--au-text, #fff);
+  border-radius: var(--au-radius, 8px);
+  font-family: var(--au-font, sans-serif);
+  text-align: center;
+  z-index: 20;
+}
+.au-arrival {
+  width: min(56rem, 95vw);
+}
+.au-arrival video {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+.au-bridge button {
+  background: var(--au-accent, #f90);
+  color: var(--au-accent-text, #000);
+  border: 0;
+  border-radius: var(--au-radius, 8px);
+  padding: 0.5rem 1.5rem;
+  font: inherit;
+  cursor: pointer;
+}

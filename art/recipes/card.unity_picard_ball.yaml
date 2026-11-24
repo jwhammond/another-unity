@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 10 prop card: unity.picard_ball_1/_2 (screen unity.s07, sprite picrball.spr): the ball of light Picard becomes. Walker-scaled (objwalktype 1, 99 to 191/256 where it stands), off at entry. A strip of animation 0 (the loop ScummVM's player is on),
+# upscaled 4x and lightly repainted, silhouette and position kept exactly; `art masks unity.s07` stands it over the plate. Generic prompt: no game text.
+id: card.unity_picard_ball
+kind: card
+object: unity_picard_ball
+sprite: picrball.spr
+anims: [0]
+prop: { screen: unity.s07, objects: [unity.picard_ball_1, unity.picard_ball_2], anim: 0, animate: [0] }
+group: 1
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved past the limit (worst shift 1.25 px, dE max 0.6): frames 0 and 1: 12 to 13 of the 17 strongest windows are speckle that cannot be measured, the ball being static; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 100101, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a soft glowing sphere of grey static and mist floating in the air, fuzzy edges, swirling particles, science fiction energy, soft light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, people, noisy
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

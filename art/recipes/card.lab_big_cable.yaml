@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' big cable (o_040308, screen lab.s03): a prop sprite, not a crew actor. The original draws it over the background (the plate has no
+# cable), so it gets a card like the crew do: the sprite's frame upscaled 4x and lightly repainted, its silhouette and position kept exactly.
+# `prop` has `art masks lab.s03` stand it over the plate in a mask's place. Generic prompt: no game text, no trademarks.
+id: card.lab_big_cable
+kind: card
+object: lab_big_cable
+sprite: w4s3msk4.spr
+anims: [0]
+prop: { screen: lab.s03, objects: [lab.big_cable.0308] }
+group: 1
+sampling: { seed: 91001, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a thick braided metal power cable lying on a floor, bronze and grey metal, worn, science fiction, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+reference:
+  - { refs: [set.engineering.1], model: style, weight: 0.4, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

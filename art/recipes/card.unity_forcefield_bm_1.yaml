@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), force field 1 of `s06` (animation 0, 4 frames, a loop): w6s6fld1.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_forcefield_bm_1
+kind: card
+object: unity_forcefield_bm_1
+sprite: w6s6fld1.spr
+anims: [0]
+prop: { screen: unity.s06, objects: [unity.forcefield_bm_1], anim: 0, animate: [0] }
+group: 4
+sampling: { seed: 97014, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small glowing green energy field in front of a green wall, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

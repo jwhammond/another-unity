@@ -1,0 +1,34 @@
+{
+  "generated": "tools/lift",
+  "screen": "horst3.s03",
+  "world": "horst3",
+  "background": null,
+  "projection": {
+    "kind": "flat",
+    "slope": 0,
+    "horizonY": 0,
+    "meanScale": 256,
+    "topY": 0,
+    "metersPerPixel": 0.0125,
+    "samples": 0,
+    "rms": 0
+  },
+  "camera": {
+    "kind": "flat",
+    "position": [
+      0,
+      20,
+      -4.975
+    ],
+    "yfov": 0.8176,
+    "horizonY": 0
+  },
+  "regions": [],
+  "markers": {
+    "entrance_0": {
+      "x": 0,
+      "z": 0
+    }
+  },
+  "hotspots": []
+}

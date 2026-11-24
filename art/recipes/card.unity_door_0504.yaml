@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the door `0504` of `s05` (animation 0 one frame, its use plays 1, 23 frames): w6s5door.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_door_0504
+kind: card
+object: unity_door_0504
+sprite: w6s5door.spr
+anims: [0, 1]
+prop: { screen: unity.s05, objects: [unity.door.0504], anim: 0, animate: [0, 1] }
+group: 3
+sampling: { seed: 97005, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall dark green metal door in a steel frame with a red circular handle, science fiction corridor, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

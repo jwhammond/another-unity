@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the door of `s05` (animations 0 and 1, one frame each; `c006` plays 1): w3s5door.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_door_s05
+kind: card
+object: zoo_door_s05
+sprite: w3s5door.spr
+anims: [0,1]
+prop: { screen: zoo.s05, objects: [zoo.door], anim: 0, animate: [0,1] }
+group: 3
+sampling: { seed: 98014, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a grey metal sliding door in a frame, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

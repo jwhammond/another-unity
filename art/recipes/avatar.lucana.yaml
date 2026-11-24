@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Portrait for Lucana, a game-only character in the conference lounge conversation (icon.map: w5shluca.spr, the dialog's speaker icon): no show
+# footage and no actor, so no FaceID and no likeness score. Same technique as butler and carlstrom: the Krea 2 Turbo variant paints the
+# face from the game portrait as layout (lightly blurred), then the grab sets that person into the game portrait's frame (face box
+# fitted, BiRefNet matte, graded halfway to the game figure, the portrait's own backdrop) and the pixel step makes the 64x64 avatar.
+# Published under the object's ids (speakers): the subtitle looks its speaker up by the game's object name.
+id: avatar.lucana
+kind: avatar
+object: lucana
+speakers: [ship.lucana.0400]
+base: { sprite: w5shluca.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 6 }
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+grab:
+  from: krea2
+  gameFace: [9.74, 7.28, 35.19, 39.8]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 76001, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, Lucana, an alien woman of the Garidian people, a social revolutionary, TNG-era Romulan features: pointed
+      Vulcanoid ears, a pronounced Romulan forehead brow ridge, angular sharply upswept dark eyebrows, head and shoulders, slight
+      three-quarter view, short auburn copper hair swept to one side with a straight fringe, pale skin, red lips, a stern proud
+      expression, smooth plain high stiff grey collar with nothing on it over a deep red-brown tunic, no pins, no insignia, no badge, warm key light from the
+      right, cool blue shadows, dark blue background, painted 1990s adventure game portrait
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark, round human ears, plain human forehead, soft rounded eyebrows
+    denoise: 0.8
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.7 }]

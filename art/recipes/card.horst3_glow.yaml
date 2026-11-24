@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8b rollout, a looping animated prop: the glowing crystal spire in its bowl of Horst III's third screen (o_070306, horst3.s03). The original plays animation 0 forever:
+# 6 frames (w7s3glow.spr, 272x190 at 504,400, jump back to the first; three distinct pictures), and no script touches it. Generic prompt: no game text.
+id: card.horst3_glow
+kind: card
+object: horst3_glow
+sprite: w7s3glow.spr
+anims: [0]
+prop: { screen: horst3.s03, objects: [horst3.glow], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 92301, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall green crystalline spire rising from a faceted metal and stone bowl, glowing green light, alien structure, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

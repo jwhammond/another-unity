@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Portrait for T'Bak, a game-only character in the conference lounge conversation (icon.map: w5shtbak.spr, the dialog's speaker icon): no show
+# footage and no actor, so no FaceID and no likeness score. Same technique as butler and carlstrom: the Krea 2 Turbo variant paints the
+# face from the game portrait as layout (lightly blurred), then the grab sets that person into the game portrait's frame (face box
+# fitted, BiRefNet matte, graded halfway to the game figure, the portrait's own backdrop) and the pixel step makes the 64x64 avatar.
+# Published under the object's ids (speakers): the subtitle looks its speaker up by the game's object name.
+id: avatar.t_bak
+kind: avatar
+object: t_bak
+speakers: [ship.t_bak.0401]
+base: { sprite: w5shtbak.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 6 }
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+grab:
+  from: krea2
+  gameFace: [11.15, 8.45, 35.6, 41.56]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 76012, steps: 8, cfg: 1, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, T'Bak, an alien man from the Garidian people, a scholar, head and shoulders with room above the head, slight three-quarter view, short
+      dark brown hair combed back, warm olive-tan skin, sharply arched dark eyebrows, a narrow pointed goatee, a calm serious expression,
+      high stiff grey collar and a dark maroon tunic, warm key light from the right, cool blue shadows, dark blue background, painted
+      1990s adventure game portrait
+    denoise: 0.8
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.7 }]

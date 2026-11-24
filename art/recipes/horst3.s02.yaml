@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: horst3 room 02. Settings from the lab.s05 step-down (masked denoise, see lab.s01). Generic prompt: no game text.
+id: horst3.s02
+kind: repaint
+source: { background: s_0702 }
+sampling: { seed: 700002, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered alien planet cavern interior, enormous ribbed organic rock formations like petrified coral, deep blue night sky, cold blue and grey stone with pale glowing crystal light, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.5
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+mask: { protect: 0.15, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

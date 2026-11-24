@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: guard
+name: Guard
+screen: lab
+at: guard
+width: 1
+talk: "@guard,1"
+description: { text: "A guard in grey armour." }
+phaser:
+  health: 3
+  threshold: 1
+  damageFrom: 1
+  gtpFrom: 4
+  on:
+    stun:
+      - do:
+          - alter: { object: guard, state: 2 }
+on:
+  use:
+    - when: { other: tricorder }
+      do:
+        - alter: { object: guard, sayNow: "~12" }
+          stop: true

@@ -1,0 +1,185 @@
+# Battle 71, flown by hand at Lieutenant (Plan 31 R5): one cruiser, which Delegate loses to (Plan 23: step 584).
+# Battle stations and the weapons lock at once (full power, shields up, weapons charging, torpedoes homing). Then
+# close in and hold the enemy off the starboard beam at 2000-3500, turning to keep it there; nearer, bear away, further
+# off, turn in. Phasers and torpedoes are fired every few steps while they bear within 4500: the banks' charge is
+# all a battle has (it never recharges), and a phaser does far more close in. It is destroyed near step 760; then the
+# Bridge button leaves. Steering lines are the flight keys as held (yaw, pitch, roll, throttle); the throttle is a lever.
+at 0 set power 4
+at 0 set lock on
+at 1 steer -1 1 0 1
+at 45 steer -1 1 0 0
+at 81 steer 0 1 0 0
+at 96 steer -1 1 0 0
+at 125 steer 0 1 0 0
+at 128 steer 0 0 0 0
+at 143 steer 1 0 0 0
+at 192 steer 0 0 0 0
+at 201 steer 1 0 0 0
+at 203 fire both
+at 206 fire both
+at 209 fire both
+at 212 fire both
+at 215 fire both
+at 218 fire both
+at 221 fire both
+at 222 steer -1 0 0 -1
+at 224 fire both
+at 227 fire both
+at 230 fire both
+at 233 fire both
+at 236 fire both
+at 239 steer 0 0 0 -1
+at 239 fire both
+at 242 steer 0 0 0 0
+at 242 fire both
+at 245 steer 1 0 0 0
+at 245 fire both
+at 248 fire both
+at 251 fire both
+at 254 fire both
+at 257 fire both
+at 260 fire both
+at 263 fire both
+at 266 fire both
+at 269 steer 1 0 0 1
+at 269 fire both
+at 271 steer 1 1 0 1
+at 272 fire both
+at 275 fire both
+at 278 fire both
+at 281 fire both
+at 284 fire both
+at 287 fire both
+at 289 steer 1 1 0 0
+at 290 fire both
+at 293 fire both
+at 296 fire both
+at 299 steer 1 0 0 0
+at 299 fire both
+at 302 fire both
+at 305 fire both
+at 315 steer 1 1 0 0
+at 332 steer 1 0 0 0
+at 346 steer 0 0 0 0
+at 355 steer 0 1 0 0
+at 362 steer 1 1 0 0
+at 365 steer 1 0 0 0
+at 381 steer 1 1 0 0
+at 390 steer 1 0 0 0
+at 399 steer 0 0 0 0
+at 409 steer 0 1 0 0
+at 416 steer 0 0 0 0
+at 417 steer 1 0 0 0
+at 439 steer 1 1 0 0
+at 445 steer 1 0 0 0
+at 448 steer 0 0 0 0
+at 457 steer 0 1 0 0
+at 464 steer 0 0 0 0
+at 466 steer 1 0 0 0
+at 491 steer 1 1 0 0
+at 493 steer 0 1 0 0
+at 497 steer 0 0 0 0
+at 501 fire both
+at 504 fire both
+at 507 fire both
+at 508 steer 1 0 0 0
+at 510 fire both
+at 511 steer 1 1 0 0
+at 513 fire both
+at 516 fire both
+at 519 fire both
+at 522 steer 1 0 0 0
+at 522 fire both
+at 525 fire both
+at 528 fire both
+at 531 fire both
+at 534 steer 0 0 0 0
+at 534 fire both
+at 537 fire both
+at 540 fire both
+at 543 fire both
+at 546 steer 0 1 0 0
+at 546 fire both
+at 548 steer 1 1 0 0
+at 549 fire both
+at 552 steer -1 1 0 -1
+at 552 fire both
+at 553 steer -1 0 0 -1
+at 555 fire both
+at 558 fire both
+at 561 fire both
+at 564 fire both
+at 567 fire both
+at 570 fire both
+at 572 steer -1 0 0 0
+at 573 fire both
+at 576 fire both
+at 579 fire both
+at 581 steer 0 0 0 0
+at 582 fire both
+at 585 steer 1 0 0 0
+at 585 fire both
+at 588 fire both
+at 591 fire both
+at 594 fire both
+at 597 fire both
+at 600 fire both
+at 603 fire both
+at 606 fire both
+at 609 fire both
+at 612 fire both
+at 615 fire both
+at 618 fire both
+at 621 fire both
+at 624 fire both
+at 627 fire both
+at 630 fire both
+at 633 steer 0 0 0 0
+at 633 fire both
+at 636 fire both
+at 637 steer -1 0 0 0
+at 639 fire both
+at 642 fire both
+at 645 fire both
+at 648 fire both
+at 651 fire both
+at 654 fire both
+at 657 fire both
+at 660 fire both
+at 663 fire both
+at 666 fire both
+at 669 fire both
+at 671 steer 0 0 0 0
+at 672 fire both
+at 675 fire both
+at 678 fire both
+at 679 steer 1 0 0 0
+at 681 fire both
+at 684 fire both
+at 687 fire both
+at 690 fire both
+at 693 fire both
+at 696 fire both
+at 699 fire both
+at 702 fire both
+at 705 fire both
+at 706 steer -1 0 0 1
+at 708 fire both
+at 711 fire both
+at 714 fire both
+at 717 fire both
+at 720 fire both
+at 723 fire both
+at 726 steer -1 0 0 0
+at 726 fire both
+at 729 fire phasers
+at 731 steer 0 0 0 0
+at 732 fire phasers
+at 733 steer 0 1 0 0
+at 734 steer 1 1 0 0
+at 735 fire phasers
+at 738 fire phasers
+at 741 fire phasers
+at 744 fire both
+at 746 steer 1 0 0 0
+at 759 bridge

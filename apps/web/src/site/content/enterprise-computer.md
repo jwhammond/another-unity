@@ -1,0 +1,1 @@
+The computer's topics lie one to a painted row, the entry sits in the painted pane, and the Bridge, Astrogation and Tactical exits are clear buttons over the painted grey ones. The list and text arrows now scroll.

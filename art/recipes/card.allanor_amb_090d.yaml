@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), an ambient light of the ninth room (10 frames, 9 distinct, a loop): w2s9amb2.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_amb_090d
+kind: card
+object: allanor_amb_090d
+sprite: w2s9amb2.spr
+anims: [0]
+prop: { screen: allanor.s09, objects: [allanor.amb.090d], anim: 0, animate: [0] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 14 of the 26 strongest windows of frames 1 and 3 are speckle (worst shift 1.64 px); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95014, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a dark cavern wall with soft pink and violet light shimmering across it, science fiction set, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

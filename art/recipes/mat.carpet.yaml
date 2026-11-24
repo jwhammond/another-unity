@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: mat.carpet
+kind: material
+script: mat/carpet.py
+seed: 11
+size: 1024
+band: 96

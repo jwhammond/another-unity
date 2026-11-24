@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' big cable as the second screen draws it (o_040203, lab.s02, and o_04020b, the piece the transporter lock takes): the far view of the cable over the trapped woman. The sprite (w4s2msk4.spr, 14x12) is named like a mask and its first entry says `mask`, so `art masks` cut it from the plate, but the plate is the background alone and the cable is in the sprite, not the plate (its pixels match the original background only 20%: placement check, docs/unity-sprite-placement.md, "Mertens' cable"). A still of frame 0, as card.lab_big_cable is on the third screen. Generic prompt: no game text.
+id: card.lab_cable_s02
+kind: card
+object: lab_cable_s02
+sprite: w4s2msk4.spr
+anims: [0]
+prop: { screen: lab.s02, objects: [lab.big_cable.0203, lab.piece_of_cable.020b], anim: 0 }
+group: 4
+sampling: { seed: 92401, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a thick braided metal power cable lying on a floor, bronze and grey metal, worn, science fiction, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

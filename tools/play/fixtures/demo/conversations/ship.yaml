@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: ship
+responses:
+  - { situation: 2, key: 0, state: enabled, who: ['$anyone'], text: "There's no answer." }
+  - { situation: 3, key: 0, state: enabled, who: ['$anyone'], text: "That does nothing." }
+  - { situation: 4, key: 0, state: enabled, who: ['$anyone'], text: "Those don't go together." }
+  - { situation: 5, key: 0, state: enabled, who: ['$anyone'], text: "I can't fire on that." }
+  - { situation: 23, key: 0, state: enabled, who: ['$anyone'], text: "Nothing unusual." }

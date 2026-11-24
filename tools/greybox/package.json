@@ -1,0 +1,11 @@
+{
+  "name": "@another-unity/greybox",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@another-unity/engine": "*",
+    "@another-unity/lift": "*",
+    "@gltf-transform/core": "^4.1.1"
+  }
+}

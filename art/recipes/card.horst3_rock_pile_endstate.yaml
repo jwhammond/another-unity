@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8a pilot, a state switch: Horst III's rock pile endstate (o_070107, horst3.s01). The object stays active over the rubble (o_070103) at the same
+# place, the same sprite (w7s1cvin.spr, 144x136 at 208,336) on animation 0, the rubble before the phaser. The phaser's kill turns the rubble off and plays animation 4 on this object
+# (21 frames of the rock coming down) and the original then jumps into animation 5, the open passage, which it holds; ts_to_second_scr turns it off with animation 5 on
+# the way out. Batch 7 left it out because a still of frame 0 would keep the rubble drawn after the phaser; with its strips the layer follows the script.
+# The look is card.horst3_rubble's (same prompt, seed, sampling), so frame 0 is the pile the player has been looking at. Generic prompt: no game text.
+id: card.horst3_rock_pile_endstate
+kind: card
+object: horst3_rock_pile_endstate
+sprite: w7s1cvin.spr
+anims: [0, 4]
+prop: { screen: horst3.s01, objects: [horst3.rock_pile_endstate], anim: 0, animate: [0, 4, 5] }
+group: 1
+sampling: { seed: 92201, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a pile of grey and brown volcanic rubble and broken rock blocking a cave passage, rough stone surfaces, cool blue light, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, people, blurry
+denoise: 0.4
+lineart: { strength: 0.8 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

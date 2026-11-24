@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The Klingon emblem: a game-only picture (icon.map: iklinemb, the dialog's speaker icon), no show footage, so no FaceID and no grab. The non-face path of the portraits:
+# the Krea 2 Turbo variant repaints the game's own picture as layout (img2img at a high denoise, so its shape and colours stay and its painting
+# is new), and the pixel step makes the 64x64 picture. Published under the object ids in speakers: the subtitle looks its speaker up by the game's object name.
+id: avatar.emblem_klingon
+kind: avatar
+object: emblem_klingon
+speakers: [ship.ky_dra, ship.klingon_captain]
+base: { sprite: iklinemb.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 0 }
+pick: krea2
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 77104, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      the Klingon Empire emblem, a bright red trefoil of three curved blades on a dark grey disc, centred on a plain black background,
+      a flat painted emblem seen straight on, no letters, painted 1990s adventure game icon
+    negative: text, letters, writing, watermark, signature, people, faces, hands, frame, border, photograph
+    denoise: 0.6
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.4 }]

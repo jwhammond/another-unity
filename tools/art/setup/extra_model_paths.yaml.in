@@ -1,0 +1,10 @@
+# Written to $ART_CACHE/extra_model_paths.yaml by install.sh.
+unity_art:
+  base_path: @ART_CACHE@/models/
+  checkpoints: checkpoints/
+  vae: vae/
+  loras: loras/
+  controlnet: controlnet/
+  upscale_models: upscale_models/
+  ipadapter: ipadapter/
+  clip_vision: clip_vision/

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' probe, the alien craft the sixth screen shows hanging over the conduits (o_040603, lab.s06, `strange machine`; w4s6cdpb.spr, 306x136 at 4x, 30 frames of its flame, 0.14 s each, looping): it is a sprite the plate lacks, so with only the plate the probe is not on the screen at all. The original plays animation 0 for as long as the screen is up (the object is only ever on or off); `prop.animate` publishes it as a streamed strip (docs/unity-sprite-placement.md, "Batch 8c"). Generic prompt: no game text.
+id: card.lab_strange_machine
+kind: card
+object: lab_strange_machine
+sprite: w4s6cdpb.spr
+anims: [0]
+prop: { screen: lab.s06, objects: [lab.strange_machine], anim: 0, animate: [0] }
+group: 2
+sampling: { seed: 94101, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small angular dark metal spacecraft with armoured hull plates and glowing orange exhaust, science fiction model, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.12
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

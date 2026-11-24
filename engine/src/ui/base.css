@@ -1,0 +1,192 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* The overlay's layout. A game's theme stylesheet sets the --au-* colours and fonts. */
+:root {
+  --au-bg: #000;
+  --au-panel: rgba(16, 20, 28, 0.88);
+  --au-text: #e8e8e8;
+  --au-accent: #4a90d9;
+  --au-accent-text: #000;
+  --au-muted: #8a94a6;
+  --au-font: system-ui, sans-serif;
+  --au-radius: 4px;
+  /* the dialogue window: a dark box in a bevelled grey-blue frame, blue type, a brighter blue for what is chosen */
+  --au-frame-light: #9aa6c4;
+  --au-frame-dark: #38405a;
+  --au-frame-mid: #646f8f;
+  --au-ink: #5aa8ff;
+  --au-ink-hi: #c4e4ff;
+  --au-window: #02040c;
+  /* the window's, the bar's and the log's type: a compact sans, condensed where the system has one (never the old monospace) */
+  --au-pixel: 'Helvetica Neue', 'Arial Narrow', Arial, system-ui, sans-serif;
+}
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--au-bg); color: var(--au-text); font-family: var(--au-font); }
+body { display: flex; align-items: center; justify-content: center; }
+/* the original's 4:3, as large as fits */
+#game { --au-u: clamp(10px, calc(min(100vw, 133.333vh) / 40), 20px); position: relative; width: min(100vw, 133.333vh); height: min(75vw, 100vh); }
+/* (a drag in the room is the game's, not the page's scroll) */
+#view { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+#labels, #ui { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.au-hotspot { position: absolute; box-sizing: border-box; border: 1px solid var(--au-accent, #ffcc66); background: rgba(255, 204, 102, 0.08); color: var(--au-text, #fff); font-size: 11px; line-height: 1.2; padding: 0 3px; overflow: hidden; text-shadow: 0 0 3px #000, 0 0 3px #000; }
+.au-nametag { position: absolute; left: 0; top: 0; padding: 1px 6px; border-radius: 8px; font-size: 12px; white-space: nowrap; background: var(--au-panel); }
+.au-hud { position: absolute; inset: 0; }
+.au-hud button, .au-hud select, .au-hud input, .au-hud label, .au-dialog, .au-panel, .au-bar, .au-message { pointer-events: auto; }
+button, .au-button { font: inherit; color: var(--au-accent-text); background: var(--au-accent); border: 0; border-radius: var(--au-radius); padding: 4px 10px; cursor: pointer; }
+button[aria-pressed='true'] { outline: 2px solid var(--au-text); }
+button:disabled { opacity: 0.4; cursor: default; }
+.au-quiet { background: transparent; color: var(--au-muted); }
+.au-action { position: absolute; top: 8px; left: 0; right: 0; text-align: center; text-shadow: 0 1px 2px #000; }
+/* The window: at the original's spot (its text starts 100 px in and 280 down, of 640 by 480), the line in blue with 8 px between lines */
+.au-window, .au-subtitle, .au-dialog { background: var(--au-window); color: var(--au-ink); font-family: var(--au-pixel); font-stretch: condensed; font-size: calc(var(--au-u) * 0.95); line-height: 1.4; letter-spacing: 0.01em; border: 3px solid; border-color: var(--au-frame-light) var(--au-frame-dark) var(--au-frame-dark) var(--au-frame-light); border-radius: 2px; box-shadow: 0 0 0 1px #000, inset 0 0 0 1px var(--au-frame-mid), inset 0 0 0 3px #000, 0 4px 14px rgba(0, 0, 0, 0.7); }
+/* a choice window: the same frame; its choices are lines of the text, the one under the pointer or focus the brighter variant */
+.au-dialog { position: absolute; left: 12%; right: 12%; top: 56%; transform: none; min-width: 0; max-height: 40%; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5em; padding: 0.7em 1em; }
+.au-dialog p { margin: 0; color: var(--au-ink); }
+.au-dialog button { font: inherit; letter-spacing: inherit; text-align: left; color: var(--au-ink); background: transparent; border: 0; border-left: 3px solid transparent; border-radius: 0; padding: 0 0 0 0.6em; line-height: inherit; }
+/* choices: one row each, banded and divided, a hanging indent when one wraps (the marker is its own column), the row under the pointer or focus lit */
+.au-dialog:not(.au-tricorder):not(.au-movie) { gap: 0; padding: 0.4em 0.5em; }
+.au-dialog:not(.au-tricorder):not(.au-movie) p { padding: 0.2em 0.5em 0.4em; }
+.au-dialog:not(.au-tricorder):not(.au-movie) button { display: flex; gap: 0.6em; width: 100%; box-sizing: border-box; padding: 0.35em 0.6em; margin: 0; border-bottom: 1px solid rgba(154, 166, 196, 0.28); }
+.au-dialog:not(.au-tricorder):not(.au-movie) button::before { content: '\203A'; flex: none; width: 0.6em; color: var(--au-frame-mid); }
+.au-dialog:not(.au-tricorder):not(.au-movie) button:nth-of-type(odd) { background: rgba(90, 168, 255, 0.05); }
+.au-dialog:not(.au-tricorder):not(.au-movie) button:last-child { border-bottom: 0; }
+.au-dialog button:hover, .au-dialog button:focus-visible, .au-dialog:not(.au-tricorder):not(.au-movie) button:hover, .au-dialog:not(.au-tricorder):not(.au-movie) button:focus-visible { color: var(--au-ink-hi); background: rgba(90, 168, 255, 0.4); border-left-color: var(--au-ink-hi); outline: none; }
+.au-dialog button:hover::before, .au-dialog button:focus-visible::before { color: var(--au-ink-hi); }
+.au-dialog button:disabled { color: var(--au-frame-mid); }
+.au-dialog.au-tricorder, .au-dialog.au-movie { left: 50%; right: auto; top: 40%; transform: translate(-50%, -50%); min-width: 40%; max-height: 80%; }
+.au-dialog.au-tricorder button, .au-dialog.au-movie button { border: 2px solid; border-color: var(--au-frame-light) var(--au-frame-dark) var(--au-frame-dark) var(--au-frame-light); background: #10162a; text-align: center; padding: 0.1em 0.8em; }
+/* The tricorder viewer on the original's picture (art.tricorder): the frame is drawn where the original draws it, 115 of 640 across and the screen's height, and everything in it
+   is placed in the picture's own pixels, as a percentage of it; the readout's type is sized from the picture's width (container units), so it keeps its lines as the frame scales */
+.au-dialog.au-tricorder.au-tricorder-art { left: 17.96875%; right: auto; top: 0; transform: none; width: 64.0625%; height: 99.5833%; min-width: 0; max-height: none; padding: 0; gap: 0; display: block; overflow: visible; border: 0; border-radius: 0; background: transparent; box-shadow: none; container-type: size; }
+.au-tricorder-frame { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
+.au-tricorder-pic { position: absolute; width: auto; height: auto; image-rendering: pixelated; pointer-events: none; }
+.au-tricorder-button { position: absolute; padding: 0; border: 0; background: transparent; overflow: visible; cursor: inherit; }
+.au-dialog.au-tricorder.au-tricorder-art button.au-tricorder-button { border: 0; background: transparent; padding: 0; }
+.au-tricorder-button .au-tricorder-pic { left: 0; top: 0; }
+.au-tricorder-hover { visibility: hidden; }
+.au-tricorder-button:hover .au-tricorder-hover, .au-tricorder-button:focus-visible .au-tricorder-hover { visibility: visible; }
+.au-dialog.au-tricorder-art button.au-tricorder-button:hover, .au-dialog.au-tricorder-art button.au-tricorder-button:focus-visible { background: transparent; }
+.au-tricorder-screen { position: absolute; box-sizing: border-box; padding: 0.95cqw; overflow-y: auto; font-family: var(--au-pixel); font-size: 3.4cqw; line-height: 4.878cqw; color: var(--au-ink-hi); text-align: left; }
+.au-tricorder-screen h2, .au-tricorder-screen h3, .au-tricorder-screen p { margin: 0; font-size: inherit; font-weight: normal; padding: 0; }
+.au-tricorder-screen .au-reading { max-height: none; overflow: visible; }
+.au-tricorder-number { position: absolute; display: flex; align-items: center; justify-content: center; font-family: var(--au-pixel); font-size: 3.4cqw; color: var(--au-ink-hi); pointer-events: none; }
+/* it is as wide as its line needs, up to the old 76%, and stays centred */
+.au-subtitle { position: absolute; left: 50%; transform: translateX(-50%); width: max-content; max-width: 76%; box-sizing: border-box; top: 56%; max-height: 34%; overflow-y: auto; padding: 0.4em 0.8em 0.5em; text-align: left; text-shadow: none; }
+/* the speaker, small, above the line */
+.au-subtitle { display: flex; align-items: center; gap: 0.7em; }
+.au-line { flex: 1; min-width: 0; }
+.au-subtitle b { display: block; font-size: 0.7em; font-weight: normal; line-height: 1.2; margin-bottom: 0.3em; color: var(--au-frame-light); text-transform: uppercase; letter-spacing: 0.12em; }
+.au-bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-wrap: wrap; }
+/* text a script puts on the screen itself (a `^N` line): the original's box, a solid backing, the console's own green-blue type */
+.au-screentext { position: absolute; box-sizing: border-box; overflow: hidden; padding: 0 0.3em; background: #000; color: var(--au-ink-hi); font-family: var(--au-pixel); font-size: calc(var(--au-u) * 0.8); line-height: 1.25; white-space: pre; pointer-events: none; }
+/* The away-team panel, in the dialogue window's language: a dark bevelled panel; verbs as framed buttons, the crew as name plates, the inventory as slots */
+.au-bar { gap: 8px 14px; padding: 6px 8px; align-items: stretch; background: var(--au-window); font-family: var(--au-pixel); font-size: calc(var(--au-u) * 0.8); border: 3px solid; border-color: var(--au-frame-light) var(--au-frame-dark) var(--au-frame-dark) var(--au-frame-light); border-radius: 0; box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px var(--au-frame-mid); }
+.au-bar button { color: var(--au-ink); background: #10162a; border: 2px solid; border-color: var(--au-frame-light) var(--au-frame-dark) var(--au-frame-dark) var(--au-frame-light); border-radius: 0; padding: 3px 10px; letter-spacing: 0.04em; text-transform: uppercase; }
+.au-bar button:hover:not(:disabled) { color: var(--au-ink-hi); background: #1a2444; }
+/* selected, or held: lit, pressed in, and outlined */
+.au-bar button[aria-pressed='true'] { color: #000; background: var(--au-ink); border-color: var(--au-frame-dark) var(--au-frame-light) var(--au-frame-light) var(--au-frame-dark); outline: 2px solid var(--au-ink-hi); outline-offset: 1px; }
+.au-bar button:disabled { opacity: 0.45; }
+.au-group { display: flex; gap: 4px; align-items: center; }
+.au-verbs { gap: 0; }
+.au-verbs button { min-width: 3.6em; }
+.au-team { gap: 3px; padding: 3px; background: #05081a; border: 1px solid var(--au-frame-dark); }
+.au-team button { padding: 2px 12px; text-transform: none; border-width: 1px 1px 3px 1px; }
+.au-inventory { gap: 3px; padding: 3px; background: #05081a; border: 1px solid var(--au-frame-dark); }
+.au-inventory button { min-width: 3em; min-height: 2.4em; text-transform: none; text-align: center; }
+.au-inventory select { font: inherit; color: var(--au-ink); background: #10162a; border: 2px solid var(--au-frame-dark); border-radius: 0; }
+.au-menus button { text-transform: none; }
+.au-item { display: inline-flex; gap: 2px; }
+/* the drop target for things dragged in Use mode: there to drop on even with nothing in it */
+.au-inventory { min-width: 120px; min-height: 28px; }
+.au-dialog video { max-width: 100%; }
+.au-movie-card { font-size: 24px; text-align: center; }
+.au-panel { position: absolute; right: 8px; top: 40px; bottom: 64px; width: 40%; margin: 0; padding: 8px 12px; overflow-y: auto; background: var(--au-panel); border-radius: var(--au-radius); }
+.au-transcript { list-style: none; }
+.au-panel.au-transcript { background: var(--au-window); color: var(--au-ink); font-family: var(--au-pixel); font-size: calc(var(--au-u) * 0.8); line-height: 1.5; border: 3px solid; border-color: var(--au-frame-light) var(--au-frame-dark) var(--au-frame-dark) var(--au-frame-light); border-radius: 2px; box-shadow: 0 0 0 1px #000, inset 0 0 0 1px var(--au-frame-mid); }
+.au-transcript li { margin: 0 0 0.5em; }
+.au-transcript b { color: var(--au-frame-light); text-transform: uppercase; font-weight: normal; font-size: 0.85em; letter-spacing: 0.1em; }
+/* in the page for tools that read the log, but not seen or clicked */
+.au-transcript-closed { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; overflow: hidden; clip-path: inset(50%); pointer-events: none; }
+.au-message { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); padding: 8px 12px; background: var(--au-panel); border: 1px solid var(--au-accent); }
+.au-error { color: #ff7a7a; }
+.au-dev { position: fixed; top: 0; left: 0; z-index: 10; width: 420px; max-height: 100vh; overflow: auto; padding: 6px; font: 12px/1.4 ui-monospace, monospace; color: #cfe; background: rgba(0, 0, 0, 0.85); }
+.au-dev-rule { color: #9f9; }
+.au-dev-skipped { color: #889; }
+.au-dev-effect { color: #cfe; }
+.au-dev-error { color: #f88; }
+.au-dev-warning { color: #fc6; }
+.au-dev-screen, .au-dev-event { color: #8cf; }
+.au-reading { white-space: pre-wrap; max-height: 50vh; overflow-y: auto; }
+
+/* a narrow screen: the windows take the width */
+@media (max-width: 600px) { .au-dialog { left: 2%; right: 2%; } .au-subtitle { max-width: 96%; } }
+
+/* The pointer: the game's arrow over everything in the game, the hand over a control, the text cursor in a field (the variables
+   are set on #game by GameUi, from cursors.ts) and, on the room, the verb's own picture */
+#game { cursor: var(--au-cursor, default); }
+#view { cursor: var(--au-cursor-room, default); }
+#game button:not(:disabled), #game .au-button, #game [role='button'], #game label, #game summary { cursor: var(--au-cursor-pointer, pointer); }
+#game button:disabled { cursor: var(--au-cursor, default); }
+#game input[type='text'], #game input:not([type]), #game textarea, #game select { cursor: text; }
+#game select { cursor: auto; }
+/* the held item's name, beside the pointer */
+.au-held { position: absolute; z-index: 5; pointer-events: none; padding: 1px 8px; white-space: nowrap; font-family: var(--au-pixel); font-size: calc(var(--au-u) * 0.7); color: var(--au-ink-hi); background: var(--au-window); border: 2px solid; border-color: var(--au-frame-light) var(--au-frame-dark) var(--au-frame-dark) var(--au-frame-light); }
+
+/* Aboard, over a plate's interface strip (app.tsx useStripDialog): the window is the strip's own rectangle, opaque, text from the top. A
+   longer menu scrolls inside it, as the original's does. */
+.au-hud[data-strip] .au-subtitle, .au-hud[data-strip] .au-dialog:not(.au-tricorder):not(.au-movie) {
+  left: var(--au-strip-x); right: auto; top: var(--au-strip-y); transform: none; max-width: none; width: var(--au-strip-w); height: var(--au-strip-h); max-height: none; box-sizing: border-box; border-radius: 0; box-shadow: none; overflow-y: auto; z-index: 3;
+}
+.au-hud[data-strip] .au-subtitle { display: flex; flex-direction: row; align-items: center; }
+
+/* Portraits and icons (art publish-kit): pixel art, drawn with hard edges. A button that has one shows nothing else; its name is its aria-label and its tooltip. */
+.au-face { display: block; flex: none; image-rendering: crisp-edges; image-rendering: pixelated; -webkit-user-drag: none; user-select: none; }
+.au-portrait { width: calc(var(--au-u) * 2.6); height: calc(var(--au-u) * 2.6); }
+.au-icon { height: calc(var(--au-u) * 2.2); width: auto; }
+.au-bar button.au-has-face { padding: 2px; min-width: 0; min-height: 0; line-height: 0; }
+/* the frame shows round the picture: dark, lit when it is the one selected or held; a disabled or incapacitated member is grey */
+.au-bar button.au-has-face:disabled .au-face { filter: grayscale(1) brightness(0.8); }
+.au-speaker { width: calc(var(--au-u) * 3.6); height: calc(var(--au-u) * 3.6); border: 2px solid var(--au-frame-dark); background: #05081a; box-sizing: border-box; object-fit: contain; }
+.au-speaker[data-placeholder] { width: auto; height: calc(var(--au-u) * 2.6); border: 0; background: transparent; }
+@media (max-width: 600px) { .au-portrait { width: calc(var(--au-u) * 2.2); height: calc(var(--au-u) * 2.2); } }
+
+/* The original's away-team panel (art panel publish; awaypanel.tsx): the 640 by 80 strip at the frame's foot, scaled with it, its controls
+   over the original's rectangles. Its pictures are the game's, drawn with hard pixels; a control's name is its aria-label and tooltip. */
+.au-awaypanel { position: absolute; left: 0; right: 0; bottom: 0; height: calc(100% * 80 / 480); pointer-events: auto; container-type: size; background: #000; }
+.au-awaypanel > *, .au-strip > * { position: absolute; }
+.au-sprite { display: block; image-rendering: pixelated; -webkit-user-drag: none; user-select: none; pointer-events: none; }
+.au-pb > .au-sprite, .au-pb > .au-face { position: absolute; inset: 0; width: 100%; height: 100%; }
+.au-awaypanel > .au-sprite, .au-strip > .au-sprite { position: absolute; }
+.au-awaypanel button.au-pb { display: block; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--au-ink); line-height: 1; overflow: hidden; }
+.au-awaypanel button.au-pb:disabled { opacity: 1; }
+.au-awaypanel button.au-pb:focus-visible { outline: 2px solid var(--au-ink-hi); outline-offset: -2px; }
+.au-awaypanel button[aria-pressed='true'] { outline: none; }
+.au-status { box-sizing: border-box; padding: 0 0.6em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--au-ink); font-family: var(--au-pixel); font-size: 15cqh; line-height: 21.25cqh; }
+/* the portrait fills the black box; a member who is down is grey; with no portrait, the name */
+.au-member > .au-face.au-portrait { object-fit: cover; }
+.au-member[data-down] > .au-face { filter: grayscale(1) brightness(0.7); }
+.au-member-name, .au-item-name { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--au-pixel); font-size: 12cqh; overflow: hidden; }
+.au-health { display: flex; flex-direction: column; justify-content: space-between; }
+.au-health > i { display: block; flex: 1; margin-bottom: 1px; }
+/* a slot's icon over the empty slot, fitted; the held item stays in its slot, dimmed (the original lifts it out onto the pointer) */
+.au-slot > .au-face.au-icon { object-fit: contain; padding: 6%; box-sizing: border-box; }
+.au-slot[data-held] > .au-face { opacity: 0.35; }
+.au-slot[aria-pressed='true'] { box-shadow: inset 0 0 0 2px var(--au-ink-hi); }
+.au-slot:hover:not(:disabled) > .au-sprite { filter: brightness(1.25); }
+.au-verb:hover:not(:disabled):not([aria-pressed='true']) > .au-sprite, .au-member:hover:not(:disabled) > .au-face, .au-admin:hover > .au-sprite { filter: brightness(1.25); }
+.au-combadge.au-pb:hover:not(:disabled) { background: rgba(196, 228, 255, 0.12); }
+.au-combadge.au-pb:disabled { background: rgba(0, 0, 0, 0.45); }
+.au-verb:disabled > .au-sprite, .au-member:disabled > .au-face, .au-slot:disabled > .au-face { filter: brightness(0.6); }
+.au-arrow > .au-on-hover { visibility: hidden; }
+.au-arrow:hover > .au-on-hover, .au-arrow:active > .au-on-hover { visibility: visible; }
+.au-arrow:hover > .au-off-hover, .au-arrow:active > .au-off-hover { visibility: hidden; }
+.au-gauge { cursor: var(--au-cursor-pointer, pointer); touch-action: none; }
+.au-gauge-square { background: rgba(0, 0, 0, 0.62); pointer-events: none; }
+.au-gauge-square[data-lit] { display: none; }
+.au-gauge:focus-visible { outline: 2px solid var(--au-ink-hi); outline-offset: -2px; }
+.au-gauge[aria-disabled='true'] { cursor: var(--au-cursor, default); }
+
+/* theatre mode: while a movie plays (body.theatre, set by the HUD) a black veil fades over the whole page, the movie above it.
+   The veil takes no input, so a click or key still skips. */
+body::before { content: ''; position: fixed; inset: 0; z-index: 40; background: #000; opacity: 0; pointer-events: none; transition: opacity 0.35s ease-in-out; }
+body.theatre::before { opacity: 0.92; }
+body.theatre .au-dialog.au-movie { z-index: 41; }
+@media (prefers-reduced-motion: reduce) { body::before { transition: none; } }

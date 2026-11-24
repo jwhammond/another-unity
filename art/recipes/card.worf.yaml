@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 15 Task 10: worf's animations repainted toward the show's likeness, from card.riker's settings. Generic prompt: no game text, no show or actor names.
+id: card.worf
+kind: card
+object: worf
+sprite: worf.spr
+anims: used
+group: 4
+sampling: { seed: 90002, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a man standing, ridged bony forehead, long dark hair, full dark beard, realistic skin, science fiction duty uniform with a metallic sash across the chest, full body, neutral grey background, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.42
+lineart: { strength: 0.7 }
+reference:
+  - { refs: [crew.worf.face.1, crew.worf.face.2], model: face, weight: 1.0, weightType: linear, mask: head }
+  - { refs: [crew.worf.body.1], model: style, weight: 0.4, weightType: linear, mask: figure }
+checks: { flickerRatio: 2.2, flickerMax: 17, deltaE: 12, speckle: 0.85 }
+groupOverrides: { "31": 5 }
+# Worf's glittering sash: any repaint draws other speckle, so a window there reads as moved 3-4 px and its shimmer raises the flicker, with the sash in
+# the same place by eye (anim 0 frames 3, 9, 10 failed at denoise 0.55/0.48, lineart 0.7/0.9, with and without depth). So: denoise 0.42 (face weight 1.0 to
+# make up), `speckle` skips such windows and judges the next strongest ones, and flickerMax 17 (Riker's 14; Worf's anims ran 14-17 from the sash alone).

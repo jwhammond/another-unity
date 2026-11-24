@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the ventilation duct (stands on animation 0; a script plays 1, 9 frames, and waits, then 2): w2s1dbar.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_vent_duct_0108
+kind: card
+object: allanor_vent_duct_0108
+sprite: w2s1dbar.spr
+anims: [0, 1, 2]
+prop: { screen: allanor.s01, objects: [allanor.ventilation_duct.0108], anim: 0, animate: [0, 1, 2] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 22 to 29 of the 34 to 37 strongest windows of every frame are speckle (worst shift 0.48 px); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95003, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a large square metal ventilation duct grille of dark teal alien metal with ridged slats, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 30 Task 6: backdrop plate 1 (M8 spec Decision 14; R13), the battles whose scenario is 1 mod 4. Our own: a generic prompt, no
+# game source. Tileable (the backdrop repeats every 1920 units, as the stars wrap), checked by the seam ratio.
+id: tex.nebula-1
+kind: texture
+sampling: { seed: 300202, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  seamless tileable deep space nebula, soft wispy clouds of glowing gas in teal and green, faint dust lanes, mostly dark,
+  no stars, no planets, smooth gradients, high detail
+negative: >-
+  stars, planets, text, watermark, logo, frame, border, vignette, hard edges, spaceship, people
+size: 1024
+seam: { band: 96, denoise: 0.8 }
+post:
+  - tilePreview: true

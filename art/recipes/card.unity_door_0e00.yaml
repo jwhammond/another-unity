@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the door `0e00` of `s0e` (animation 0 and 2 one frame, 1 26 frames, 25 distinct; the door script, `pentara_react_check` and `post_picard` play them): w6s9door.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_door_0e00
+kind: card
+object: unity_door_0e00
+sprite: w6s9door.spr
+anims: [0, 1, 2]
+prop: { screen: unity.s0e, objects: [unity.door.0e00], anim: 0, animate: [0, 1, 2] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 9 to 12 of the 17 to 18 strongest windows of animations 1 and 2 are speckle (worst shift 0.53 px, flicker median 5.7); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 97024, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a tall metal doorway with glass panes in a dark green steel frame, science fiction corridor, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

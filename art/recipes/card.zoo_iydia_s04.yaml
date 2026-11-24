@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: zoo.consultant_iydia (screen zoo.s04, sprite w3s4iyda.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks zoo.s04` stands it over the plate. Generic prompt: no game text.
+id: card.zoo_iydia_s04
+kind: card
+object: zoo_iydia_s04
+sprite: w3s4iyda.spr
+anims: [0]
+prop: { screen: zoo.s04, objects: [zoo.consultant_iydia] }
+group: 1
+sampling: { seed: 92115, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a man in a white medical uniform seen through the curved glass window of a blue alien chamber, realistic skin, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

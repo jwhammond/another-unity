@@ -1,0 +1,26 @@
+# A Final Unity, a new game on the ship (Plan 11): the census route from the bridge to the first beam-down, ids only.
+# For tools/play only; Plan 13 diffs it against ScummVM.
+seed 1
+start ship
+# the opening plays out on the bridge while the player waits (the original's tractor-beam scene, then the captain's orders):
+# five conversation menus, each answered with its second option, which is the way that keeps the battle hail from coming,
+# and a sixth: the first mission's hail (the census's t74 chain), met at the end of the wait. Its second option too
+pick 1
+pick 1
+pick 1
+pick 1
+pick 1
+pick 1
+# (the battle hail comes all the same, a little before: battle 16, which the walk leaves at its start, at astrogation)
+combat wait
+station astrogation
+# the first mission's planet: sector 156, star 3, planet 3 (the scripted warp's code 92076056)
+plot 156 3 3
+engage warp 300
+# the transit, the arrival trigger t64, and the hails of its chain, which set the beam target
+advance 450
+station transporter
+# the recommended team and kit, to the target (lab.s01, world 4)
+beam
+advance 5
+end

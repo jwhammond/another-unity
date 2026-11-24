@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: frigis room 03. Settings from the lab.s05 step-down, protect tightened to 0.1 after the first M6 samples missed by 1-2 points at 0.15 (masked denoise, see lab.s01). Generic prompt: no game text.
+# Re-run 2026-10-20 (4080, 2 runs at denoise 0.2/0.15, protect 0.05/0, pointRadius 50/70): frigis.doorway.0308 top-right stays 4 px off in y; border floor points (x 1..13) add more.
+id: frigis.s03
+kind: repaint
+# 2026-10-20 (user): upscale-only plate, like allanor.s14: the de-dithered 4x upscale, no diffusion pass. The repaint drifted one point 6-7.5 px
+# (beyond the warp's 5 px cap); the plain upscale keeps the original's geometry. The alignment check still runs.
+repaint: false
+source: { background: s_0503 }
+sampling: { seed: 507003, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+# Step-down 3 (M6): still (5 of 65 measured points fail; worst hotspot frigis.doorway.0308 top-right); new seed 500003 -> 507003.
+prompt: >-
+  3D rendered desert planet landscape, red sandstone mesas, a woven clay hut with warm glowing doorway, ochre and rust palette, dusk sky with soft clouds, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+# Step-down 1 (M6): (12 of 64 measured points fail; worst floor r20 #4); denoise 0.45 -> 0.35.
+# Step-down 2 (M6): still (9 of 65 measured points fail; worst floor r20 #4); denoise 0.35 -> 0.25 (protect already 0.15).
+denoise: 0.15
+depth: { strength: 1.0 }
+lineart: { strength: 1.0 }
+mask: { protect: 0, pointRadius: 70, band: 24, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

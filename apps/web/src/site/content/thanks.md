@@ -1,0 +1,3 @@
+- The original Spectrum HoloByte team who made *Star Trek: The Next Generation – A Final Unity* (1995).
+- Alyssa Milburn ([github.com/fuzzie](https://github.com/fuzzie)), who wrote most of ScummVM's Unity engine. Her reverse engineering of the game's data and scripts is the reference this remake is checked against.
+- The ScummVM team.

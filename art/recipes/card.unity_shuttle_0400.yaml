@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the shuttle of `s04` inside the shuttle (animation 0 and 1 one frame each, `as_inside_shuttle` plays 1 and 2, 42 frames): w6s4shut.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_shuttle_0400
+kind: card
+object: unity_shuttle_0400
+sprite: w6s4shut.spr
+anims: [0, 1, 2]
+prop: { screen: unity.s04, objects: [unity.shuttle.0400], anim: 0, animate: [0, 1, 2] }
+group: 2
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle that no seed changes: 14 of the 26 strongest windows of frame 11, 13 of 25 of frame 14, 7 of 12 of frame 39 and 2 of 3 of frame 41 of animation 2 are speckle (worst shift 2.01 px at the second run, and 3.64 px at the first), and the switches to animations 0 and 1 flickered 14.6 and 15.1/255 against a limit of 14; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98003, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a sleek grey shuttlecraft with a dark canopy and a yellow light on its nose, seen up close in a hangar, science fiction set, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

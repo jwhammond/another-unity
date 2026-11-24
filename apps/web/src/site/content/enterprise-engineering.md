@@ -1,0 +1,3 @@
+Engineering is drawn from the original's own pictures, fonts and palette, and was checked against a capture of the original. Only the Total Power bars differ, by however much the power pool has moved in between. The five page tabs, the unit sliders, the torpedo cells, the reactors with their shimmering colours, the info box for the unit under the pointer, and the Delegate, Bridge and Tactical buttons all match. The ship's power and repair model behind it follows ScummVM's reconstruction of the original.
+
+Still to do: damage from hazards and battle. The ship can be damaged and repaired in the sim, but nothing in the game calls for it yet.

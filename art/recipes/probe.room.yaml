@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# A probe for the Blender runner (Plan 14 Task 7): generic geometry, no game content.
+id: probe.room
+kind: blender
+script: probe_room.py
+params:
+  size: 6

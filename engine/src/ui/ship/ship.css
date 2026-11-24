@@ -1,0 +1,359 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* The ship's panels: a flat themed background over the canvas, laid out on the original's 640 x 480 screen. */
+.au-ship { position: absolute; inset: 0; pointer-events: auto; box-sizing: border-box; padding-bottom: 56px; /* (the HUD's log and saves bar) */ display: flex; align-items: center; justify-content: center; background: var(--au-bg); color: var(--au-text); font-family: var(--au-font); }
+.au-ship-bridge { display: flex; flex-direction: column; gap: 8px; width: 100%; height: 100%; position: relative; align-items: center; }
+.au-ship-screen { position: relative; height: calc(100% - 48px); max-width: 100%; background: var(--au-panel); border: 1px solid var(--au-muted); }
+.au-ship-bridge > .au-ship-screen { height: 100%; }
+.au-ship-item { position: absolute; padding: 0; overflow: hidden; font-size: 11px; background: transparent; color: var(--au-text); border: 1px solid var(--au-accent); }
+.au-ship-item:disabled { color: var(--au-muted); border-color: var(--au-muted); cursor: default; }
+/* the bridge's interface strip: its own two buttons over the painted ones (the strip's box lets the pointer through elsewhere) */
+.au-ship-strip { pointer-events: none; }
+.au-ship-strip-btn { pointer-events: auto; padding: 0; overflow: hidden; font-size: 11px; background: transparent; color: var(--au-text); border: 1px solid var(--au-accent); cursor: pointer; }
+.au-ship-strip-btn[aria-pressed='true'] { background: var(--au-accent); color: var(--au-bg); }
+.au-ship.au-ship-art .au-ship-strip-btn { border-color: transparent; text-shadow: 0 0 3px #000, 0 0 3px #000; }
+.au-ship.au-ship-art .au-ship-strip-btn[aria-pressed='true'] { background: transparent; color: var(--au-text); }
+.au-ship.au-ship-art.au-ship-hotspots .au-ship-strip-btn { border-color: var(--au-accent); }
+.au-ship-bar { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px; background: #05081a; border: 1px solid var(--au-frame-dark, #38405a); }
+/* the station bar, as the away-team bar's buttons: framed panel buttons, lit and pressed in when it is the station you are at */
+.au-ship-bar button { font-family: var(--au-pixel, inherit); font-size: calc(var(--au-u, 14px) * 0.8); letter-spacing: 0.04em; text-transform: uppercase; color: var(--au-ink, #5aa8ff); background: #10162a; border: 2px solid; border-color: var(--au-frame-light, #9aa6c4) var(--au-frame-dark, #38405a) var(--au-frame-dark, #38405a) var(--au-frame-light, #9aa6c4); border-radius: 0; padding: 3px 10px; }
+.au-ship-bar button:hover:not(:disabled) { color: var(--au-ink-hi, #c4e4ff); background: #1a2444; }
+.au-ship-bar button[aria-pressed='true'], .au-ship-bar button[aria-current] { color: #000; background: var(--au-ink, #5aa8ff); border-color: var(--au-frame-dark, #38405a) var(--au-frame-light, #9aa6c4) var(--au-frame-light, #9aa6c4) var(--au-frame-dark, #38405a); }
+.au-ship-bar button:disabled { background: #080b18; color: var(--au-frame-mid, #646f8f); border-color: var(--au-frame-dark, #38405a); cursor: default; }
+.au-ship-lift { position: absolute; z-index: 5; max-width: calc(100% - 8px); margin: 0; padding: 8px; list-style: none; display: flex; flex-direction: column; gap: 4px; background: var(--au-panel); border: 1px solid var(--au-accent); border-radius: var(--au-radius); }
+.au-ship-stub { text-align: center; }
+.au-ship .au-problem { color: var(--au-accent); margin: 0; }
+/* Astrogation: the map is the canvas behind; the panel is a column at the side that lets the pointer through elsewhere. */
+.au-ship.au-ship-map { background: transparent; pointer-events: none; justify-content: flex-end; align-items: stretch; }
+.au-astro { pointer-events: auto; width: 260px; max-width: 45%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; background: var(--au-panel); border-left: 1px solid var(--au-muted); }
+.au-astro h2 { margin: 0; font-size: 16px; }
+.au-astro label { display: flex; flex-direction: column; gap: 2px; }
+.au-astro fieldset { display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--au-muted); }
+.au-astro progress { width: 100%; }
+.au-astro .au-problem { color: var(--au-accent); margin: 0; }
+.au-astro fieldset label { flex-direction: row; align-items: center; gap: 6px; }
+/* The viewscreen: a frame in the middle of the flat background; the conversation's dialog draws over it. */
+.au-ship-viewscreen { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.au-ship-viewscreen-frame { display: flex; align-items: center; justify-content: center; width: min(80%, 640px); aspect-ratio: 4 / 3; max-height: 70%; background: var(--au-panel); border: 2px solid var(--au-accent); border-radius: var(--au-radius); }
+.au-ship-viewscreen-name { margin: 0; font-size: 20px; color: var(--au-muted); }
+/* With a plate: a 4:3 box, the name in the strip's text box (an `.au-area`: opaque black over the plate's own black box). */
+.au-ship-viewscreen-plate { flex-direction: column; }
+.au-ship-viewscreen-plate .au-ship-viewscreen-name { display: flex; align-items: center; padding: 0 12px; font-size: clamp(12px, 2.4vw, 22px); color: #f2b25a; }
+/* Tactical: the dialog, and with the combat sim its battle view (behind ?dev until M8), which scrolls when it is taller than the frame. */
+.au-ship-tactical { max-height: 100%; overflow-y: auto; padding: 12px; box-sizing: border-box; }
+/* The tactical console (Plan 27): a 4:3 box the size of the panel, the space view drawn under its clear rectangle; it scrolls nowhere,
+   so the view never leaves its place. The wide view's box is the whole game frame: `.au-console` isn't positioned, so the box's inset
+   is the panel's (Plan 27 R3). The dev tools fold out over the console's corner. */
+.au-console { width: 100%; height: 100%; container-type: size; display: flex; align-items: center; justify-content: center; }
+.au-console .au-console-screen { flex: none; position: relative; height: auto; max-width: none; width: min(100cqw, 133.3333cqh); aspect-ratio: 4 / 3; overflow: hidden; background: transparent; border: 0; pointer-events: none; }
+.au-console-wide { position: absolute; inset: 0; pointer-events: none; }
+.au-console-root { position: absolute; inset: 0; pointer-events: auto; }
+.au-console-canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+/* With the art on (Plan 30 R7): the repainted plate and the art layer under the frame, smooth, taking no pointer. */
+.au-console-plate, .au-console-art { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.au-console-ctl { z-index: 1; display: block; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: transparent; font-size: 0; cursor: pointer; }
+.au-console-slider { z-index: 1; cursor: ew-resize; touch-action: none; }
+.au-console-radar { z-index: 0; cursor: crosshair; }
+/* The view under the pointer (Plan 29 R6, R7): a drag steers, a click or tap targets; no page scroll or zoom from a touch on it. */
+.au-console-view { z-index: 0; cursor: move; touch-action: none; }
+.au-combat-hud > .au-combat-hud-view { inset: 0; cursor: move; touch-action: none; }
+/* The assists panel over the battle (Plan 29 R9): top right, over the console or the HUD, scrolling inside the frame. */
+.au-assists-over { position: absolute; top: 8px; right: 8px; z-index: 4; box-sizing: border-box; width: min(420px, calc(100% - 16px)); max-height: calc(100% - 16px); overflow-y: auto; padding: 8px 12px; color: var(--au-ink, #fff); font: 14px/1.4 system-ui, sans-serif; text-shadow: none; background: var(--au-panel); border: 1px solid #1c74b8; border-radius: 8px; pointer-events: auto; }
+.au-assists-over button { min-width: 32px; min-height: 32px; }
+.au-combat-hud-top button { min-width: 32px; min-height: 32px; padding: 2px 8px; font: inherit; color: #000; background: #f2b25a; border: 0; border-radius: 12px; cursor: pointer; }
+/* On a short screen Full's control grows down to a 32 px tap target, over the view's top strip, where nothing else takes a tap. */
+.au-console-touch { min-height: 32px; }
+.au-console-ctl:focus-visible, .au-console-slider:focus-visible { outline: 2px solid #f2b25a; outline-offset: -2px; }
+.au-ship.au-ship-hotspots .au-console-ctl, .au-ship.au-ship-hotspots .au-console-slider { outline: 1px solid var(--au-accent); outline-offset: -1px; }
+.au-console-wait { position: absolute; left: 2%; bottom: 2%; margin: 0; color: var(--au-muted); }
+/* The wide view's HUD (Plan 27 R10): a strip along the top and three corners over the view, clear of the HUD bar at the bottom; its
+   buttons at least 32 CSS px; the frame between them lets the pointer through to the view. */
+.au-combat-hud { position: absolute; inset: 0 0 56px 0; pointer-events: none; color: #f2b25a; font-family: var(--au-pixel); font-size: calc(var(--au-u) * 0.75); text-shadow: 0 0 3px #000, 0 0 3px #000; }
+.au-combat-hud > * { position: absolute; pointer-events: auto; }
+.au-combat-hud ul, .au-combat-hud ol { list-style: none; margin: 0; padding: 0; }
+.au-combat-hud-top { top: 6px; left: 8px; right: 30%; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.au-combat-hud-shields { display: flex; gap: 3px; }
+.au-combat-hud-shields li { width: 18px; height: 8px; border: 1px solid #1c74b8; background: #000; }
+.au-combat-hud-shields li > span { display: block; height: 100%; background: #6cbcfc; }
+.au-combat-hud-countdown { color: #ff6060; }
+.au-combat-hud-target { top: 6px; right: 8px; max-width: 28%; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+/* The log and the fire buttons stop 8 px short of the drawer's handle (96 px, centred): 50% less 64 px each side. */
+.au-combat-hud-log { left: 8px; bottom: 6px; max-width: min(45%, calc(50% - 64px)); display: flex; flex-direction: column; gap: 2px; }
+.au-combat-hud-fire { right: 8px; bottom: 6px; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; max-width: calc(50% - 64px); }
+.au-combat-hud-lamps { display: flex; gap: 3px; flex-basis: 100%; justify-content: flex-end; }
+.au-combat-hud-lamps li { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #000; background: #3a3a3a; }
+.au-combat-hud-lamps li[data-lamp='0'] { background: #60e060; }
+.au-combat-hud-lamps li[data-lamp='1'] { background: #e04040; }
+.au-combat-hud-fire button { min-width: 32px; min-height: 32px; padding: 2px 8px; font: inherit; color: #000; background: #f2b25a; border: 0; border-radius: 12px; cursor: pointer; }
+/* The console as a drawer over the wide view (Plan 27 R10): a handle at the bottom's middle; open, the pages for touch, scrolling
+   up and down inside it, never sideways. */
+.au-drawer { left: 50%; bottom: 6px; transform: translateX(-50%); display: flex; flex-direction: column-reverse; align-items: center; max-width: min(100%, 640px); max-height: 100%; }
+/* (Split on a short screen: the drawer over the console, as over the wide view: Plan 29 R12) */
+/* (the drawer is sized by the screen it sits on, the 4:3 box, not the panel: cqw and cqh resolve against this layer) */
+.au-console-phone { position: absolute; inset: 0; container-type: size; pointer-events: none; }
+.au-console-phone > .au-drawer { position: absolute; z-index: 3; pointer-events: auto; }
+.au-drawer-handle { min-width: 96px; min-height: 32px; font: inherit; color: #000; background: #f2b25a; border: 0; border-radius: 12px 12px 0 0; cursor: pointer; }
+.au-drawer-body { box-sizing: border-box; width: min(92cqw, 600px); max-height: max(120px, calc(100cqh - 140px)); overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 8px; background: rgba(0, 0, 0, 0.88); border: 2px solid #1c74b8; border-radius: 8px 8px 0 0; text-shadow: none; }
+/* (in Wide it lies from the left and stops 8 px short of the fire buttons, which start at most 50% + 56 px in: open, the fire buttons and
+   Split stay in reach. Its contents sit at its right end, so the handle stays centred, as closed: the user's ruling on Plan 29's hand-on) */
+.au-combat-hud > .au-drawer { left: 8px; transform: none; width: calc(50% + 40px); max-width: none; align-items: flex-end; pointer-events: none; }
+/* (the box itself lets the pointer through to the log and the view: only the handle and the open body take it) */
+.au-combat-hud > .au-drawer > * { pointer-events: auto; }
+.au-combat-hud > .au-drawer .au-drawer-body { width: min(100%, 600px); }
+.au-drawer-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.au-drawer-body button { min-width: 32px; min-height: 32px; padding: 2px 8px; font: inherit; color: #f2b25a; background: #10162a; border: 1px solid #1c74b8; border-radius: 6px; cursor: pointer; }
+.au-drawer-body button[aria-pressed='true'], .au-drawer-body button[aria-selected='true'], .au-drawer-body button[aria-current='true'] { color: #000; background: #6cbcfc; }
+.au-drawer-body label { display: flex; align-items: center; gap: 8px; min-height: 32px; }
+.au-drawer-body input[type='range'] { flex: 1; min-width: 0; height: 32px; }
+.au-drawer-rows { display: flex; flex-direction: column; gap: 4px; }
+.au-drawer-rows button { width: 100%; text-align: left; }
+.au-drawer-scanner { width: 100%; height: auto; image-rendering: pixelated; }
+.au-console-dev { position: absolute; top: 0; left: 0; z-index: 3; max-width: 420px; max-height: 100%; overflow: auto; padding: 4px 8px; box-sizing: border-box; background: var(--au-panel); }
+/* The transporter room: sections stacked on the flat background. */
+.au-transporter { display: flex; flex-direction: column; gap: 8px; max-height: 100%; overflow-y: auto; padding: 12px; box-sizing: border-box; }
+.au-transporter h2, .au-transporter h3 { margin: 0; font-size: 16px; }
+.au-transporter h3 { font-size: 13px; color: var(--au-muted); }
+.au-transporter ul, .au-transporter ol { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px; }
+.au-transporter-pads li { min-width: 96px; padding: 4px; border: 1px solid var(--au-muted); text-align: center; }
+.au-transporter-empty { color: var(--au-muted); }
+.au-transporter .au-problem { color: var(--au-accent); margin: 0; }
+
+.au-ship-computer { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 2.5fr); grid-template-rows: 1fr auto auto; gap: 8px; width: 100%; height: 100%; padding: 8px; box-sizing: border-box; }
+.au-ship-computer-rows { list-style: none; margin: 0; padding: 0; overflow-y: auto; }
+.au-ship-computer-rows button { width: 100%; text-align: left; }
+.au-ship-computer-rows [data-child="true"] { padding-left: 1.2em; }
+.au-ship-computer-rows [aria-current="true"] { border-color: var(--au-accent); }
+.au-ship-computer-entry { grid-row: 1 / span 2; grid-column: 2; overflow-y: auto; white-space: pre-wrap; }
+.au-ship-computer-scroll { display: flex; gap: 4px; }
+.au-ship-computer > .au-ship-bar { grid-column: 1 / -1; }
+.au-ship-replay { position: absolute; inset: 24px; overflow-y: auto; z-index: 2; }
+/* The Replay panel is grey, like the bevelled Viewscreen button beside it: a grey box with dark text and a raised frame. */
+.au-panel.au-ship-replay { background: #6f7276; color: #0a0a0c; border: 3px solid; border-color: #b4b7bb #2a2b2e #2a2b2e #b4b7bb; border-radius: 2px; box-shadow: 0 0 0 1px #000; }
+.au-ship-replay button { color: #0a0a0c; background: #8a8d91; border: 2px solid; border-color: #b4b7bb #2a2b2e #2a2b2e #b4b7bb; }
+.au-ship-replay .au-transcript { color: #0a0a0c; }
+/* With a set drawn behind the buttons (Plan 16 R4): the panel, the box and the item borders go clear; labels, focus and disabled states stay.
+   The hotspots debug view (au-ship-hotspots) shows the borders again. */
+.au-ship.au-ship-art { background: transparent; }
+/* (B5: the last station's picture is held on the canvas while this one's loads, with a still copy of its panel over it; the new panel waits hidden) */
+.au-ship.au-ship-held { visibility: hidden; }
+.au-ship-frozen { position: absolute; inset: 0; pointer-events: auto; }
+.au-ship.au-ship-art .au-ship-screen { background: transparent; border-color: transparent; }
+.au-ship.au-ship-art .au-ship-item, .au-ship.au-ship-art .au-ship-item:disabled { border-color: transparent; text-shadow: 0 0 3px #000, 0 0 3px #000; }
+/* (over a plate the labels are off unless asked for: H or the HUD's Hotspots button; the names stay for the pointer's tooltip and for assistive tech) */
+.au-ship.au-ship-art:not(.au-ship-hotspots) .au-ship-item, .au-ship.au-ship-art:not(.au-ship-hotspots) .au-ship-item:disabled, .au-ship.au-ship-art:not(.au-ship-hotspots) .au-ship-strip-btn { color: transparent; text-shadow: none; }
+/* (with the viewscreen up the picture fills the room: the shut items' labels would show faintly over it) */
+.au-ship.au-ship-art:not(.au-ship-hotspots) .au-ship-bridge-up .au-ship-item:disabled { color: transparent; text-shadow: none; }
+.au-ship.au-ship-art.au-ship-hotspots .au-ship-item { border-color: var(--au-accent); }
+.au-ship.au-ship-art.au-ship-hotspots .au-ship-item:disabled { border-color: var(--au-muted); }
+/* What the original draws over the strip that the plate lacks (bridge.cpp draw()): the sector readout and the bevelled Viewscreen button.
+   Both are always visible, hotspots on or off, and scale with the strip's box (1cqw is 6.4 of the original's pixels). */
+.au-ship-strip { container-type: size; }
+.au-ship-strip-hover { justify-content: center; }
+.au-ship-strip-sector { z-index: 1; display: flex; align-items: center; box-sizing: border-box; overflow: hidden; white-space: nowrap; font: 700 2.3cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; letter-spacing: 0.04em; color: #2f8fe0; pointer-events: none; }
+.au-ship.au-ship-art .au-ship-strip-viewscreen, .au-ship.au-ship-art:not(.au-ship-hotspots) .au-ship-strip-viewscreen {
+  display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer;
+  font: 700 2.8cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; letter-spacing: 0.03em; text-transform: uppercase;
+  color: #0a0a0c; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: linear-gradient(#8a8d91, #5f6266 55%, #4c4f53); border: 0.5cqw solid; border-color: #b4b7bb #2a2b2e #2a2b2e #b4b7bb; border-radius: 1cqw;
+}
+.au-ship.au-ship-art .au-ship-strip-viewscreen:hover, .au-ship.au-ship-art .au-ship-strip-viewscreen:focus-visible { background: linear-gradient(#a3a6aa, #74777b 55%, #5f6266); color: #000; }
+.au-ship.au-ship-art .au-ship-strip-viewscreen[aria-pressed='true'], .au-ship.au-ship-art:not(.au-ship-hotspots) .au-ship-strip-viewscreen[aria-pressed='true'] {
+  color: #1c74b8; text-shadow: none; background: linear-gradient(#3b3d40, #4c4f53); border-color: #2a2b2e #b4b7bb #b4b7bb #2a2b2e;
+}
+/* (the button as the original's picture, 4x: pressed while the viewscreen is up; the label stays for assistive tech, visually hidden. The
+   held copy of the panel, B5, has the class in place of the attribute) */
+.au-ship button.au-ship-strip-btn.au-ship-strip-viewscreen.au-ship-strip-pic:is([data-strip], .au-ship-strip-copy) { display: block; padding: 0; border: 0; border-radius: 0; overflow: visible; background: transparent; }
+/* (the picture is the original's draw size, 129 x 49 from the button's corner, and may overhang the 121 x 42 the original clicks: it takes no clicks) */
+.au-ship-strip-art { position: absolute; left: 0; top: 0; pointer-events: none; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+/* (no picture: the label is measured and sized to the box, since the font it falls back to is the system's) */
+.au-ship-strip-label { white-space: nowrap; }
+.au-ship.au-ship-art.au-ship-hotspots .au-ship-strip-viewscreen { outline: 1px solid var(--au-accent); outline-offset: 1px; }
+/* A plate (R14): a panel's sections sit in named areas of the 640 x 480 box (areaStyle gives their rectangles), each with an opaque
+   LCARS-black ground, so a control the original paints under it is covered. */
+.au-ship { --au-lcars-ground: #000; }
+.au-area { background: var(--au-lcars-ground); box-sizing: border-box; overflow: hidden; }
+.au-visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/* The transporter on its plate (R16): the lists sit in the console's areas (sizes in the box's width, so they scale with it). The pads list
+   and the bar split the `controls` area; a list of more than its rows scrolls. */
+.au-transporter-plate { padding: 0; gap: 0; width: 100%; height: 100%; max-height: none; overflow: visible; align-items: center; justify-content: center; }
+.au-transporter-plate .au-ship-screen { container-type: size; flex: none; overflow: hidden; background: transparent; }
+.au-transporter-plate .au-area { color: #f2b25a; font-size: clamp(6px, 2.2cqw, 20px); line-height: 1.1; padding: 0; margin: 0; }
+.au-transporter-plate .au-area ul, .au-transporter-plate .au-area ol, .au-transporter-plate ul.au-area { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0; height: 100%; overflow-y: auto; scrollbar-width: thin; }
+.au-transporter-plate .au-area li, .au-transporter-plate ul.au-area > li { flex: none; display: flex; align-items: stretch; min-width: 0; height: 20%; padding: 0; border: 0; text-align: left; }
+.au-transporter-plate .au-area button { flex: 1; min-width: 0; padding: 0 1.5%; background: transparent; color: inherit; border: 0; border-radius: 0; font: inherit; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.au-transporter-plate .au-area button:hover, .au-transporter-plate .au-area button:focus-visible { background: #1c74b8; color: #000; }
+.au-transporter-plate .au-area button:disabled { color: #606060; background: transparent; cursor: default; }
+.au-transporter-plate .au-transporter-empty { align-self: center; padding: 0 1.5%; color: #606060; }
+.au-transporter-plate .au-transporter-pads li { min-width: 0; height: 25%; }
+.au-transporter-plate .au-transporter-kit ul { flex-direction: row; }
+.au-transporter-plate .au-transporter-kit li { width: calc(54 / 514 * 100%); height: 100%; }
+.au-transporter-plate .au-transporter-kit button { white-space: normal; overflow-wrap: anywhere; line-height: 1.05; font-size: 0.8em; padding: 0 1%; }
+.au-transporter-plate .au-transporter-exits { padding: 0; margin: 0; list-style: none; }
+.au-transporter-plate ul.au-transporter-exits > li { height: calc(100% / 3); }
+.au-transporter-plate .au-ship-bar { display: flex; flex-direction: column; gap: 0; flex-wrap: nowrap; }
+.au-transporter-plate .au-ship-bar button { height: 50%; flex: none; }
+/* (the status and the problem sit on the room's floor, under the pads, and not over the console's slots) */
+.au-transporter-plate .au-transporter-note { position: absolute; left: 16%; right: 16%; top: 54.5%; height: 5%; margin: 0; padding: 0 1%; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: clamp(6px, 2.2cqw, 20px); color: #f2b25a; background: rgba(0, 0, 0, 0.7); overflow: hidden; pointer-events: none; }
+/* The astrogation screen on its plate (R17): the map is drawn by the session in the plate's map window, so the panel lets the pointer through
+   to it everywhere but the areas; the info box and the exit block's controls sit over their painted places (sizes in the box's width). */
+.au-ship.au-ship-art[data-station="astrogation"]:has(.au-astro-plate) { pointer-events: none; }
+.au-astro.au-astro-plate { width: 100%; max-width: none; height: 100%; padding: 0; gap: 0; border: 0; background: transparent; overflow: visible; pointer-events: none; align-items: center; justify-content: center; }
+.au-astro-plate .au-ship-screen { container-type: size; flex: none; overflow: hidden; background: transparent; pointer-events: none; }
+.au-astro-plate .au-area { pointer-events: auto; color: #f2b25a; font-size: clamp(6px, 1.9cqw, 16px); line-height: 1.15; padding: 0; margin: 0; }
+.au-astro-plate .au-astro-info { display: flex; flex-direction: column; gap: 1.2%; padding: 1.5% 2%; overflow-y: auto; scrollbar-width: thin; }
+.au-astro-plate .au-astro-info label { flex-direction: row; align-items: center; gap: 0.6em; }
+.au-astro-plate .au-astro-info select { flex: 1; min-width: 0; font: inherit; color: inherit; background: #000; border: 1px solid #1c74b8; border-radius: 0; }
+.au-astro-plate .au-astro-info fieldset { border: 1px solid #1c74b8; border-radius: 0; margin: 0; padding: 0.3em 0.6em; gap: 0.3em; }
+.au-astro-plate .au-astro-info legend { padding: 0 0.3em; color: #6cbcfc; }
+.au-astro-plate .au-astro-info input[type="range"] { width: 100%; margin: 0; }
+.au-astro-plate .au-astro-info p { margin: 0; }
+.au-astro-plate .au-astro-info .au-problem { color: #ff6a5a; }
+.au-astro-plate .au-astro-controls { display: flex; flex-direction: column; gap: 0; }
+.au-astro-plate .au-astro-controls button { flex: 1; min-height: 0; padding: 0 4%; background: transparent; color: inherit; border: 0; border-radius: 0; font: inherit; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.au-astro-plate .au-astro-controls button:hover, .au-astro-plate .au-astro-controls button:focus-visible { background: #1c74b8; color: #000; }
+.au-astro-plate .au-astro-controls button:disabled { color: #606060; background: transparent; cursor: default; }
+/* The computer on its plate (R17): the rows, the entry and the exits in their areas; Up and Down are clear buttons over the painted round arrows,
+   so the plate's own arrows show (a disabled one is dimmed). */
+.au-computer-plate { padding: 0; gap: 0; display: flex; width: 100%; height: 100%; max-height: none; overflow: visible; align-items: center; justify-content: center; }
+.au-computer-plate .au-ship-screen { container-type: size; flex: none; overflow: hidden; background: transparent; }
+.au-computer-plate .au-area { color: #f2b25a; font-size: clamp(6px, 2.2cqw, 20px); line-height: 1.1; padding: 0; margin: 0; }
+/* (the rows lie in the plate's painted grid: 15 rows of 23 pixels from y 54, the grid's own lines between them; the sim windows the list to
+   15 rows and the painted arrows scroll it, so the list neither scrolls nor draws a ground or borders of its own) */
+.au-computer-plate .au-ship-computer-rows { display: flex; flex-direction: column; flex-wrap: nowrap; height: 100%; overflow: hidden; list-style: none; background: transparent; }
+.au-computer-plate .au-ship-computer-rows li { flex: none; display: flex; height: calc(23 / 346 * 100%); padding: 1px 0; box-sizing: border-box; }
+.au-computer-plate .au-ship-computer-rows button { flex: 1; min-width: 0; width: auto; padding: 0 3%; background: transparent; color: inherit; border: 0; border-radius: 0; font: inherit; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.au-computer-plate .au-ship-computer-rows [data-child="true"] { padding-left: 9%; }
+.au-computer-plate .au-ship-computer-rows [aria-current="true"] { background: #1c74b8; color: #000; border: 0; }
+.au-computer-plate .au-ship-computer-rows button:hover, .au-computer-plate .au-ship-computer-rows button:focus-visible { background: #1c74b8; color: #000; }
+.au-computer-plate .au-computer-scroll { display: contents; }
+.au-computer-plate .au-ship-computer-entry { overflow-y: auto; white-space: pre-wrap; padding: calc(9 / 4.8 * 1cqh) calc(10 / 6.4 * 1cqw); box-sizing: border-box; scrollbar-width: none; background: transparent; }
+.au-computer-plate .au-ship-computer-entry h2 { margin: 0 0 0.5em; font-size: 1.15em; color: #6cbcfc; }
+.au-computer-plate .au-ship-computer-entry p { margin: 0; }
+.au-computer-plate .au-computer-exits { display: contents; }
+.au-computer-plate .au-computer-note { position: absolute; left: 30%; right: 0; top: 80%; margin: 0; padding: 0 2%; z-index: 1; font-size: clamp(6px, 2.2cqw, 20px); color: #ff6a5a; background: rgba(0, 0, 0, 0.7); pointer-events: none; }
+/* The transporter's painted buttons (painted.tsx) sit at their own places; a flat row without a plate. The kit is a tray of four slots, the
+   round arrow and four slots, a row at a time. */
+.au-transporter-painted { display: flex; flex-wrap: wrap; gap: 4px; }
+.au-transporter-plate .au-transporter-painted { display: contents; }
+.au-transporter-plate .au-area ul.au-transporter-kit-tray { display: grid; grid-auto-rows: 100%; height: 100%; overflow-y: auto; }
+.au-transporter-plate .au-transporter-kit-tray > li { width: auto; height: auto; min-width: 0; }
+.au-transporter-plate .au-transporter-kit-tray > li:nth-child(8n+5) { grid-column: 6; }
+.au-transporter-plate .au-transporter-kit-tray > li:nth-child(8n+6) { grid-column: 7; }
+.au-transporter-plate .au-transporter-kit-tray > li:nth-child(8n+7) { grid-column: 8; }
+.au-transporter-plate .au-transporter-kit-tray > li:nth-child(8n+8) { grid-column: 9; }
+.au-transporter-plate .au-transporter-door { position: absolute; left: 14%; top: 18%; right: auto; bottom: auto; z-index: 2; }
+/* A painted button (painted.tsx): clear over the plate's own drawing of it, outlined and named with the hotspots on. */
+.au-painted { z-index: 1; display: block; background: transparent; }
+.au-painted > .au-painted-btn { display: block; width: 100%; height: 100%; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: transparent; font-size: 0; cursor: pointer; }
+.au-painted > .au-painted-btn:hover, .au-painted > .au-painted-btn:focus-visible { outline: 2px solid #f2b25a; outline-offset: -2px; }
+.au-painted > .au-painted-btn:disabled { background: transparent; outline: 0; cursor: default; }
+.au-ship.au-ship-hotspots .au-painted > .au-painted-btn { outline: 1px solid var(--au-accent); outline-offset: -1px; color: #f2b25a; font-size: clamp(5px, 1.3cqw, 12px); line-height: 1; text-shadow: 0 0 3px #000, 0 0 3px #000; overflow: hidden; }
+/* Astrogation's painted buttons (the exits, the tabs, the pad, the views, the cursor arrows) take the pointer over the plate; Engage sits at
+   the foot of the info box. A flat row without a plate. */
+.au-astro-plate .au-painted { pointer-events: auto; }
+.au-astro-painted { display: flex; flex-wrap: wrap; gap: 4px; }
+.au-astro-plate .au-astro-engage { display: flex; }
+.au-astro-plate .au-astro-engage button { flex: 1; padding: 0.2em 4%; background: transparent; color: inherit; border: 1px solid #1c74b8; border-radius: 0; font: inherit; cursor: pointer; }
+.au-astro-plate .au-astro-engage button:hover, .au-astro-plate .au-astro-engage button:focus-visible { background: #1c74b8; color: #000; }
+.au-astro-plate .au-astro-engage button:disabled { color: #606060; background: transparent; cursor: default; }
+/* The transporter's console shows through: the lists and the kit lie in its painted rows and slots with no ground of their own (a shadow
+   keeps their names legible on the grey slots); the pads' crew are clear buttons over the pads, Energize over the sliders. */
+.au-transporter-plate .au-transporter-equipment, .au-transporter-plate .au-transporter-crew, .au-transporter-plate .au-transporter-kit { background: transparent; }
+.au-transporter-plate .au-transporter-kit button { text-shadow: 0 0 2px #000, 0 0 3px #000; }
+.au-transporter-plate .au-transporter-room-pads, .au-transporter-plate .au-transporter-room-pads ol, .au-transporter-plate .au-transporter-room-pads li, .au-transporter-plate .au-transporter-bar { display: contents; }
+.au-transporter-plate .au-transporter-recommended { display: flex; }
+.au-transporter-plate .au-transporter-recommended button { flex: 1; padding: 0 4%; background: transparent; color: #f2b25a; border: 0; border-radius: 0; font: inherit; font-size: clamp(6px, 1.9cqw, 18px); text-align: center; cursor: pointer; }
+.au-transporter-plate .au-transporter-recommended button:hover, .au-transporter-plate .au-transporter-recommended button:focus-visible { background: #1c74b8; color: #000; }
+
+/* The astrogation map's angle readouts: over the map's lower corners with a plate, plain text without one. */
+.au-astro-angle { position: absolute; z-index: 1; pointer-events: none; font: 700 12px/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; color: #2f8fe0; }
+.au-astro-detail p, .au-astro-detail h3 { margin: 0.2em 0; }
+/* On the plate the astrogation fields are written in the original's own places (drawTitle, drawCoordinates, drawInfoPanel: the title at x 399 y 98, the text from y 134 a line each 18, wrapped to 223), in its blue. */
+.au-astro-plate .au-astro-angle { font-size: 2.2cqw; color: #208ce0; }
+.au-astro-plate .au-astro-speed { font: 700 2.7cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; color: #1c74b8; }
+.au-astro-title { position: absolute; z-index: 1; pointer-events: none; white-space: nowrap; font: 700 2.7cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; letter-spacing: 0.04em; color: #04101e; }
+.au-astro-coord { position: absolute; z-index: 1; pointer-events: none; font: 700 2.3cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; color: #208ce0; }
+.au-astro-plate .au-astro-info { padding: 0.9cqw 1.3cqw; gap: 0; }
+.au-astro-plate .au-astro-detail { color: #208ce0; font: 700 2.2cqw/2.85cqw 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; }
+.au-astro-plate .au-astro-detail h3 { margin: 0 0 3.7cqw; font: inherit; }
+.au-astro-plate .au-astro-detail p { margin: 0; }
+/* The Display tab's bars: lit in the course colour, off in the panel's blue, the label beside them (drawDisplayPanel). */
+.au-astro-plate .au-astro-switch { pointer-events: auto; }
+.au-astro-switch { display: block; position: relative; box-sizing: border-box; cursor: pointer; z-index: 1; }
+.au-astro-switch > .au-astro-bar { position: absolute; left: 0; top: 0; height: 95%; background: #1c74b8; }
+.au-astro-switch > .au-astro-bar[data-on] { background: #68e0fc; }
+.au-astro-switch > .au-astro-switch-label { position: absolute; top: 0; white-space: nowrap; font: 700 2.7cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; text-transform: uppercase; color: #1c74b8; }
+.au-astro-switch:focus-within > .au-astro-bar { outline: 2px solid #f2b25a; }
+.au-astro-plate .au-astro-info[data-passive] { pointer-events: none; }
+/* (over the original's own pictures the info box shows them: it has no ground of its own) */
+.au-astro-plate .au-astro-info[data-clear] { background: transparent; }
+.au-astro-journey { position: absolute; z-index: 1; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; padding: 0 1.2cqw; overflow: hidden; background: rgba(0, 0, 0, 0.72); color: #f2b25a; font-size: clamp(6px, 1.9cqw, 16px); line-height: 1.15; pointer-events: none; }
+.au-astro-journey p { margin: 0; }
+.au-astro-journey progress { width: 100%; height: 0.8em; }
+.au-astro-sprite { position: absolute; z-index: 0; pointer-events: none; display: block; }
+.au-astro-display { display: grid; grid-template-columns: 1fr 1fr; gap: 0.1em 0.6em; border: 0; padding: 0; }
+/* The sensor records: the arrows the plate paints are greyed over at the ends of the list, as the original's greyed images; the names fit their rows. */
+.au-ship.au-ship-art .au-ship-strip-btn[data-end] { background: rgba(96, 96, 96, 0.6); }
+.au-ship-strip-record { text-overflow: clip; }
+
+/* The course panel's controls are sprites in the original, not on the plate: drawn here as LCARS-blue buttons (lit when chosen), whatever the hotspots. */
+.au-ship .au-painted[data-area="painted-warp"] > .au-painted-btn, .au-ship .au-painted[data-area="painted-impulse"] > .au-painted-btn,
+.au-ship .au-painted[data-area="painted-faster"] > .au-painted-btn, .au-ship .au-painted[data-area="painted-slower"] > .au-painted-btn,
+.au-ship .au-painted[data-area="painted-engage"] > .au-painted-btn, .au-ship .au-painted[data-area="painted-stop"] > .au-painted-btn {
+  box-sizing: border-box; border: 2px solid #1c74b8; border-radius: 4px; background: #04101e; color: #6cbcfc; font: 700 13px/1 'Arial Narrow', 'Roboto Condensed', sans-serif; text-transform: uppercase; text-shadow: none; overflow: hidden;
+}
+.au-ship .au-painted[data-area="painted-warp"] > .au-painted-btn[aria-pressed='true'], .au-ship .au-painted[data-area="painted-impulse"] > .au-painted-btn[aria-pressed='true'] { background: #1c74b8; color: #000; }
+.au-ship .au-painted[data-area="painted-faster"] > .au-painted-btn:active, .au-ship .au-painted[data-area="painted-slower"] > .au-painted-btn:active,
+.au-ship .au-painted[data-area="painted-engage"] > .au-painted-btn:active, .au-ship .au-painted[data-area="painted-stop"] > .au-painted-btn:active { background: #2f8fe0; color: #000; }
+.au-ship .au-painted[data-area="painted-engage"] > .au-painted-btn:disabled, .au-ship .au-painted[data-area="painted-stop"] > .au-painted-btn:disabled { opacity: 0.45; }
+/* With the original's sprites (art.astro) the button is clear over its picture, as the painted ones are, and shows no look of its own. */
+.au-painted-sprite { z-index: 0; display: block; pointer-events: none; }
+.au-painted-sprite > img { display: block; width: 100%; height: 100%; user-select: none; }
+.au-ship .au-painted.au-painted > .au-painted-btn.au-painted-art[data-painted] { border: 0; border-radius: 0; background: transparent; color: transparent; font-size: 0; opacity: 1; }
+.au-ship.au-ship-hotspots .au-painted.au-painted > .au-painted-btn.au-painted-art[data-painted] { color: #f2b25a; font-size: clamp(5px, 1.3cqw, 12px); }
+.au-astro-speed { position: absolute; z-index: 1; display: block; font: 700 12px/1 'Arial Narrow', 'Roboto Condensed', sans-serif; color: #6cbcfc; pointer-events: none; }
+/* The holodeck's greybox: the movies seen, one to a row, and the Bridge button. */
+.au-ship-holodeck { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; padding: 16px; max-height: 100%; overflow-y: auto; }
+.au-ship-holodeck h2 { margin: 0; font-size: 16px; }
+.au-ship-movies { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+/* The transporter's own pictures (art.transporter) and item icons (art.icons): the slots and arrows are the sprites, the icons sit in the slots bottom-centred, as drawn at the slot's centre and base. */
+.au-transporter-plate .au-transporter-kit button.au-transporter-icon-btn { padding: 0; display: flex; align-items: flex-end; justify-content: center; text-shadow: none; }
+.au-transporter-icon { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; pointer-events: none; user-select: none; }
+.au-transporter-preview > img { object-fit: contain; }
+
+/* The engineering screen: the original's picture on a canvas in a 4:3 box (an opaque black ground, so nothing of the stage shows), the clear controls over it. */
+.au-ship.au-ship-engineering { background: #000; }
+.au-eng { container-type: size; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.au-eng .au-eng-screen { flex: none; height: auto; max-width: none; width: min(100cqw, 133.3333cqh); aspect-ratio: 4 / 3; overflow: hidden; background: #000; border: 0; }
+.au-eng-canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.au-eng .au-painted > .au-painted-btn { cursor: pointer; }
+.au-eng-slider { z-index: 1; cursor: ew-resize; touch-action: none; outline-offset: -2px; }
+.au-eng-slider:focus-visible { outline: 2px solid #f2b25a; }
+.au-ship.au-ship-hotspots .au-eng-slider { outline: 1px solid var(--au-accent); }
+/* without the pictures: a plain list */
+.au-eng-plain { container-type: normal; display: block; overflow-y: auto; padding: 12px; box-sizing: border-box; }
+.au-eng-plain h2 { margin: 0 0 8px; font-size: 16px; }
+.au-eng-plain ul { list-style: none; margin: 0; padding: 0; }
+.au-eng-plain li { padding: 4px 0; border-bottom: 1px solid var(--au-muted); }
+.au-eng-plain label { display: flex; gap: 8px; align-items: center; }
+.au-eng-plain input[type='range'] { flex: 1; }
+/* The holodeck on the original's picture: the choices and the scroll buttons are clear controls over the dialog drawn on the canvas */
+.au-holo-movies { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; pointer-events: none; }
+.au-holo-movies > li { pointer-events: auto; }
+.au-holo-choice, .au-holo-scroll { display: block; width: 100%; height: 100%; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: transparent; font-size: 0; cursor: pointer; }
+.au-holo-scroll { position: absolute; z-index: 1; }
+.au-holo-scroll:disabled { cursor: default; }
+.au-holo-choice:focus-visible, .au-holo-scroll:focus-visible { outline: 2px solid #f2b25a; outline-offset: -2px; }
+.au-ship.au-ship-hotspots .au-holo-choice, .au-ship.au-ship-hotspots .au-holo-scroll { outline: 1px solid var(--au-accent); outline-offset: -1px; }
+.au-holo .au-painted { z-index: 1; }
+.au-holo-problem { position: absolute; left: 2%; right: 2%; bottom: 1%; margin: 0; z-index: 2; color: #f2b25a; background: rgba(0, 0, 0, 0.75); }
+/* Astrogation's text in the game's own fonts: the canvases are the eye's, and the words they stand for stay in the page, clear */
+.au-bt { position: absolute; z-index: 2; pointer-events: none; image-rendering: pixelated; }
+.au-astro[data-bitmap] [data-readout], .au-astro[data-bitmap] .au-astro-switch-label, .au-astro[data-bitmap] .au-astro-detail { color: transparent; text-shadow: none; }
+.au-astro-opening { position: absolute; z-index: 2; pointer-events: none; white-space: nowrap; font: 700 2.7cqw/1 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', sans-serif; font-stretch: condensed; color: #208ce0; }
+
+/* The transporter's map (transporter.cpp showMap, updateLock): while it is up the lists are put away. With the original's pictures the world's picture
+   and the scan's lines and blip are sprites; without them the map is a dark panel with a blue edge, a yellow line across and down, and a ring. */
+.au-transporter [hidden] { display: none !important; }
+.au-transporter-map-css { display: flex; align-items: center; justify-content: center; background: #000; box-shadow: inset 0 0 0 2px #1c74b8; color: #f2b25a; font-size: clamp(6px, 2.2cqw, 20px); text-align: center; }
+.au-transporter-scan-css { background: #f2d24a; }
+.au-transporter-blip-css { background: transparent; border: 2px solid #f2d24a; border-radius: 50%; box-sizing: border-box; }

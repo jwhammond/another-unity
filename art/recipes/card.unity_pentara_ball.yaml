@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 10 prop card: unity.pentara_ball_1/_2 (screen unity.s07, sprite pentball.spr): the ball of light Pentara becomes. Walker-scaled (objwalktype 1, 99 to 191/256 where it stands), off at entry. A strip of animation 0 (the loop ScummVM's player is on),
+# upscaled 4x and lightly repainted, silhouette and position kept exactly; `art masks unity.s07` stands it over the plate. Generic prompt: no game text.
+id: card.unity_pentara_ball
+kind: card
+object: unity_pentara_ball
+sprite: pentball.spr
+anims: [0]
+prop: { screen: unity.s07, objects: [unity.pentara_ball_1, unity.pentara_ball_2], anim: 0, animate: [0] }
+group: 1
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, twice (denoise 0.3: speckle in every frame and a point moved 3.23 px in one; denoise 0.15: only speckle, worst shift 1.24 px, dE max 0.3): frames 0 to 3 have 9 to 15 of their 17 to 18 strongest windows speckle that cannot be measured, the ball being a fuzz of static; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 100102, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a soft glowing sphere of grey static and mist floating in the air, fuzzy edges, swirling particles, science fiction energy, soft light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, people, noisy
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

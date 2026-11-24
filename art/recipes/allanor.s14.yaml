@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: allanor room 14. Settings from the lab.s05 step-down, protect tightened to 0.1 after the first M6 samples missed by 1-2 points at 0.15 (masked denoise, see lab.s01). Generic prompt: no game text.
+# 2026-10-20: allanor.s14 cannot pass: the original is a flat grey with one horizontal black band, so after edge supplements 0 of 7 measured points can see the x axis (need 3). Any plate, even a pure upscale, fails that; the check is not weakened and the pipeline has no upscale-only room plate.
+id: allanor.s14
+kind: repaint
+# 2026-10-20: upscale-only plate (no diffusion pass): the de-dithered 4x upscale. The original is a flat grey with one horizontal black band, so no point can measure the x axis and the check cannot be passed by any plate; the skip below is allowed only because repaint is false.
+repaint: false
+source: { background: s_0214 }
+sampling: { seed: 207020, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+# Step-down 3 (M6): still allanor.s14: the plate is misaligned (only 3 of 10 points are measurable (need 60%)); see ~/pcode/unity-art-cache/work/allanor.s14/2026-; new seed 200020 -> 207020.
+prompt: >-
+  3D rendered alien starship interior from Star Trek: The Next Generation, dark angular biomechanical machinery, deep indigo and violet metal, glossy blue-black surfaces with teal accent lights, physically based materials, soft global illumination, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+# Step-down 1 (M6): allanor.s14: the plate is misaligned (only 3 of 10 points are measurable (need 60%)); see ~/pcode/unity-art-cache/work/allanor.s14/2026-; denoise 0.45 -> 0.35.
+# Step-down 2 (M6): still allanor.s14: the plate is misaligned (only 3 of 10 points are measurable (need 60%)); see ~/pcode/unity-art-cache/work/allanor.s14/2026-; denoise 0.35 -> 0.25 (protect already 0.15).
+denoise: 0.25
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+mask: { protect: 0.1, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2, skip: true, reason: "flat grey original with one horizontal black band: no edge can measure the x axis, so the alignment check cannot run; the plate is the de-dithered 4x upscale of the original, no diffusion" }

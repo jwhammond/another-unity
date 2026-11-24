@@ -1,0 +1,249 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 15 Task 3: lab.s01 at seed 401001, 30 steps dpmpp_2m/karras, ControlNet windows {0, 1} relative to the sampled steps.
+# Numbers only. worstShift is the largest |shift| (px, original scale) of any measured point; drift the larger axis median.
+# Rows for denoise 0.3, 0.35 (strengths 1/0.9 and 1.3/1.1) and 0.4 come from a second, finer sweep (no no-ControlNet column).
+recipe: lab.s01
+rows:
+  - denoise: 0.25
+    controls: none
+    measured: 60
+    total: 67
+    worstShift: 1.38
+    worstPoint: "floor r24 #2"
+    drift: 0.17
+    ok: true
+    why: ""
+    activeFraction: ""
+    seconds: 61.1
+  - denoise: 0.25
+    controls: depth 0.5 + lineart 0.4
+    measured: 60
+    total: 67
+    worstShift: 1.33
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.16
+    ok: true
+    why: ""
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 125.7
+  - denoise: 0.25
+    controls: depth 0.7 + lineart 0.6
+    measured: 60
+    total: 67
+    worstShift: 1.35
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.18
+    ok: true
+    why: ""
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 126.1
+  - denoise: 0.25
+    controls: depth 0.9 + lineart 0.8
+    measured: 60
+    total: 67
+    worstShift: 1.39
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.19
+    ok: true
+    why: ""
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 122.8
+  - denoise: 0.3
+    controls: depth 1 + lineart 0.9
+    measured: 60
+    total: 67
+    worstShift: 1.5
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.23
+    ok: true
+    why: ""
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 98.9
+  - denoise: 0.3
+    controls: depth 1.3 + lineart 1.1
+    measured: 60
+    total: 67
+    worstShift: 1.57
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.19
+    ok: true
+    why: ""
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 96.2
+  - denoise: 0.35
+    controls: none
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: "floor r18 #1"
+    drift: 0.36
+    ok: false
+    why: "5 of 60 measured points fail; worst floor r18 #1"
+    activeFraction: ""
+    seconds: 66.9
+  - denoise: 0.35
+    controls: depth 0.5 + lineart 0.4
+    measured: 60
+    total: 67
+    worstShift: 2.09
+    worstPoint: hotspot lab.transporter top-right
+    drift: 0.25
+    ok: false
+    why: 2 of 60 measured points fail; worst hotspot lab.transporter top-right
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 121.3
+  - denoise: 0.35
+    controls: depth 0.7 + lineart 0.6
+    measured: 60
+    total: 67
+    worstShift: 4.29
+    worstPoint: hotspot lab.power_chair bottom-left
+    drift: 0.25
+    ok: false
+    why: 1 of 60 measured points fail; worst hotspot lab.power_chair bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 149.1
+  - denoise: 0.35
+    controls: depth 0.9 + lineart 0.8
+    measured: 60
+    total: 67
+    worstShift: 3.93
+    worstPoint: hotspot lab.power_chair bottom-left
+    drift: 0.22
+    ok: false
+    why: 3 of 60 measured points fail; worst hotspot lab.power_chair bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 152.7
+  - denoise: 0.35
+    controls: depth 1 + lineart 0.9
+    measured: 60
+    total: 67
+    worstShift: 1.45
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.23
+    ok: false
+    why: "1 of 60 measured points fail; worst floor r18 #1"
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 100.7
+  - denoise: 0.35
+    controls: depth 1.3 + lineart 1.1
+    measured: 60
+    total: 67
+    worstShift: 1.52
+    worstPoint: hotspot lab.ts_for_exit bottom-right
+    drift: 0.23
+    ok: false
+    why: "1 of 60 measured points fail; worst floor r18 #1"
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 101
+  - denoise: 0.4
+    controls: depth 1 + lineart 0.9
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.27
+    ok: false
+    why: 4 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 100.6
+  - denoise: 0.4
+    controls: depth 1.3 + lineart 1.1
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.25
+    ok: false
+    why: 3 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 100.5
+  - denoise: 0.45
+    controls: none
+    measured: 60
+    total: 67
+    worstShift: 4.57
+    worstPoint: hotspot lab.power_chair bottom-left
+    drift: 0.68
+    ok: false
+    why: 21 of 60 measured points fail; worst hotspot lab.power_monitor.0115
+      bottom-left
+    activeFraction: ""
+    seconds: 68.9
+  - denoise: 0.45
+    controls: depth 0.5 + lineart 0.4
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.48
+    ok: false
+    why: 7 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 126.4
+  - denoise: 0.45
+    controls: depth 0.7 + lineart 0.6
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.35
+    ok: false
+    why: 5 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 136.9
+  - denoise: 0.45
+    controls: depth 0.9 + lineart 0.8
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.43
+    ok: false
+    why: 6 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 129.4
+  - denoise: 0.55
+    controls: none
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 2.32
+    ok: false
+    why: 44 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: ""
+    seconds: 67.6
+  - denoise: 0.55
+    controls: depth 0.5 + lineart 0.4
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.6
+    ok: false
+    why: 16 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 123.8
+  - denoise: 0.55
+    controls: depth 0.7 + lineart 0.6
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.53
+    ok: false
+    why: 10 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 123.6
+  - denoise: 0.55
+    controls: depth 0.9 + lineart 0.8
+    measured: 60
+    total: 67
+    worstShift: 5.66
+    worstPoint: hotspot lab.transporter bottom-left
+    drift: 0.37
+    ok: false
+    why: 8 of 60 measured points fail; worst hotspot lab.transporter bottom-left
+    activeFraction: depth 1.00, lineart 1.00
+    seconds: 136.7

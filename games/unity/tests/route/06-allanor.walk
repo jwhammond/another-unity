@@ -1,0 +1,140 @@
+# A Final Unity, the ship's steps from horst3 to allanor, then allanor (world 2) (Plan 12 Task 9). Original ids only.
+# Starts aboard where 05 ends: the call at c032 has just ended.
+seed 1
+start ship
+advance 10
+# the course is scripted (c032@7's hail, t9); the vessel there (battle 52), flown by hand (Delegate wins it but leaves the
+# reactors and the grid destroyed, so nothing can be repaired and the scripted warp can't go: Plan 23)
+combat wait
+combat inputs tests/battles/52.inputs
+advance 60
+# c032's own hail: a scripted warp, and the arrival (t32 then t36)
+advance 300
+station transporter
+beam
+# the allanor leg is allanor.walk's steps from the beam-in (its debug conversation is not needed: the ship's kit has o_02010c and o_020112)
+# (s_0201's timers: the arrival remarks and the o_020128 timer)
+advance 20
+# o_020127 to s03; o_020303 with the rod (o_02010c) opens the s10 console
+use 000000 020127
+advance 8
+use 000000 020303 02010c
+advance 8
+# o_021006 with the programmer (o_020112): a skill check
+seed 43
+use 000000 021006 020112
+advance 8
+# o_021002 initialises, o_02100e confirms, 19 s later o_021008 activates the facility
+use 000000 021002
+advance 3
+use 000000 02100e
+advance 24
+use 000000 021008
+advance 18
+# take the rod back (o_021006): s03; o_02030c to s04
+get 000000 021006
+advance 8
+use 000000 02030c
+# the loop puts o_020410 in view 24 s after arrival: scan it with the tricorder (o_007001), c020 sets o_020419
+advance 24
+answer 0
+use 000000 020410 007001
+# o_020406 and o_020317 back to s01: deactivate the hostile drone o_02011e (answer 1), take o_02011c
+use 000000 020406
+advance 8
+use 000000 020317
+advance 8
+answer 1
+use 000000 02011e 007001
+advance 8
+use 000000 02011c
+advance 4
+# s03, s04, s05 (o_020418): fit the inhibitor o_02012a into o_020506
+use 000000 020127
+advance 8
+use 000000 02030c
+advance 8
+use 000000 020418
+advance 6
+use 000000 020506 02012a
+# 25 s on the loop frees o_02050a (answer 1 to deactivate), then take o_020507 back and go through o_020505
+advance 25
+answer 1
+use 000000 02050a 007001
+advance 10
+get 000000 020507
+advance 8
+use 000000 020505
+advance 10
+# s06 to s07 (o_020603); o_020704 greets on arrival
+use 000000 020603
+advance 12
+# talk to o_020704, c008: picks 2, 1, 2, 0, 0 (chod_have_been_here ends at state 2: lead)
+seed 44
+pick 2
+pick 1
+pick 2
+pick 0
+pick 0
+talk 000000 020704
+advance 5
+# o_020703 to s08; o_020704's talk offers a menu (pick 0), then the panel (o_020812) beams the team to s0d
+pick 0
+use 000000 020703
+advance 60
+# o_020d01 to s09: the scripted escort leads the team through s0e, s0b and s0c to s0f
+use 000000 020d01
+advance 150
+# s0f: o_020f04 takes o_02010c, o_020f0f is programmed (skill check); the escort takes the item and leaves
+use 000000 020f04 02010c
+advance 5
+seed 45
+use 000000 020f0f 020112
+advance 90
+# back on s0c, o_020c05 goes to s0f
+use 000000 020c05
+advance 15
+# gap: o_020f19 is inactive here: only o_020f10's chain (chod_have_been_here state 1, a 5 s window) activates it, and this route takes state 2; a ruled object gap
+use 000000 020f19 007001
+advance 20
+# the way back is the transporter from s0d: s0f to s0c (o_020f05), s0b (o_020c00), s0a (o_020b04), s09 (o_020a01) and s0d (o_020905), then its
+# panel (o_020d02) to the terminal on s11. The terminal's bar gauge (o_021102) starts a countdown; o_02110a leaves to s0d and the action square
+# o_020d0a is the pad. A bare energize (o_021100) leaves the acting member behind on s11 (c009@8 beams the others to s14), so the whole team goes by the pad, to s08
+use 000000 020f05
+advance 10
+use 000000 020c00
+advance 10
+use 000000 020b04
+advance 10
+use 000000 020a01
+advance 10
+use 000000 020905
+advance 10
+use 000000 020d02
+advance 5
+use 000000 021102
+advance 1
+use 000000 02110a
+advance 1
+use 000000 020d0a
+advance 30
+# s08 to s07 (o_020801) and s06 (o_020701)
+use 000000 020801
+advance 10
+use 000000 020701
+advance 10
+# s06 to s05 (o_020601), s04 (o_020501), s03 (o_020408) and s01 (o_020317), where the communicator works
+use 000000 020601
+advance 10
+use 000000 020501
+advance 10
+use 000000 020408
+advance 10
+use 000000 020317
+advance 10
+# the ship's call: the first officer's menu, the second option
+pick 1
+answer 0
+combadge 000000
+advance 30
+checkpoint after-allanor

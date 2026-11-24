@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: mat.trim
+kind: material
+script: mat/trim.py
+seed: 15
+size: 1024
+band: 96

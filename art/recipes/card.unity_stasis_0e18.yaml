@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the stasis chamber `0e18` of `s0e` (off at entry, `walk_to_tower_as` turns it on and plays 2, 16 frames falling into 0): w6s8picf.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_stasis_0e18
+kind: card
+object: unity_stasis_0e18
+sprite: w6s8picf.spr
+anims: [0, 2]
+prop: { screen: unity.s0e, objects: [unity.stasis_chamber.0e18], anim: 0, animate: [0, 2] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 17 of the 29 strongest windows of animation 2's first frame are speckle (worst shift 1.09 px, flicker median 5.5); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 97027, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a person frozen inside a curved glass stasis capsule with frosted glass and metal frame, dark uniform, physically based materials, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

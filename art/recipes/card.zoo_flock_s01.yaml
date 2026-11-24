@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the flock of `s01` (off at entry, turned on by `animal_control_timr`, 40 frames, a loop): flock.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_flock_s01
+kind: card
+object: zoo_flock_s01
+sprite: flock.spr
+anims: [0]
+prop: { screen: zoo.s01, objects: [zoo.akire_flock], anim: 0, animate: [0] }
+group: 3
+sampling: { seed: 99001, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a flock of small dark birds flying in a pale hazy sky, wildlife, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.15
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+seedOverrides: { "0": 99101 }

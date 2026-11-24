@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: zoo.constable_lliksze.0325 (screen zoo.s03, sprite w3s3cons.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks zoo.s03` stands it over the plate. Generic prompt: no game text.
+# The recipe first named anim 33, an entry offset (sprite.json "anims" lists offsets), not an index; the sprite has 6 animations (0-5) and `art batch` skipped the unknown one silently. Anim 0 frame 2 flickers 4.7 vs 1.9 whatever the seed (0.15 denoise, seeds 92143/92153); anim 1 starts on the same pose (entry 33) and passes.
+id: card.zoo_constable_s03
+kind: card
+object: zoo_constable_s03
+sprite: w3s3cons.spr
+anims: [1, 2]
+prop: { screen: zoo.s03, objects: [zoo.constable_lliksze.0325, zoo.constable_lliksze.030e], anim: 1, talk: 2, animate: [1, 2] }
+group: 1
+sampling: { seed: 92153, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a large grey-furred alien primate crouching on its knuckles, a curled tail, face painted in bold red and blue stripes, realistic fur, physically based materials, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.15
+depth: { strength: 0.8 }
+lineart: { strength: 1.3 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.6 }
+# Batch 10: the original's player is on animation 0 at entry (030e: anim_index none, playing 0), not 1. Animation 0 (15 frames) fails the card check: frames 1-2 flicker 4.7 against a median 1.9
+# (limit 2.5x) at denoise 0.3, as the note above says it did at every seed and at 0.15 denoise, so by the rule it is listed and nothing is loosened. The card starts on animation 1 (29 frames, a longer
+# loop of the same idle: the eyes and a shift of weight), and the talk animation 2 goes back to it, not to 0, since 0 has no strip.

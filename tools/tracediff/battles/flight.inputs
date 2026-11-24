@@ -1,0 +1,22 @@
+# Plan 22's hand-flown battle: flight (combat-parity.sh at Lieutenant, so Worf stays off).
+# Every flight key, alone and together, all stop, the orbit, and the views, zoom and wide view.
+at 0 steer 0 0 0 1
+at 40 steer 1 0 0 1
+at 80 steer 1 1 0 0
+at 120 steer 0 -1 1 0
+at 160 steer -1 0 -1 -1
+at 200 steer 0 0 0 0
+at 220 stop
+at 260 steer 0 1 0 1
+at 300 orbit 1
+at 340 orbit -1
+at 360 orbit 0
+at 380 view 5 enterprise
+at 400 zoom in
+at 420 wide on
+at 480 wide off
+at 500 cycle
+at 520 view 12 target
+at 540 zoom out
+at 560 steer 1 -1 1 1
+at 640 steer 0 0 0 0

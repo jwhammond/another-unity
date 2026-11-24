@@ -1,0 +1,29 @@
+trigger 0x10 off
+trigger 3 off
+trigger 0x13 off
+trigger 0x14 off
+trigger 0x15 off
+trigger 0x40 off
+trigger 0x4a off
+screen 7 1 0x80
+wait 1500
+settle
+wait 500
+save 1
+trace @DIR@/trace.jsonl 42
+wait 500
+trigger 0x40 on
+action use 070103 000000
+wait 500
+settle
+wait 500
+load 1
+wait 1500
+settle
+wait 500
+action look 070103 000000
+wait 500
+settle
+wait 500
+trace off
+quit

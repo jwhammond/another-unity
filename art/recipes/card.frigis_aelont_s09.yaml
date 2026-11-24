@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.anim_free_aelont (screen frigis.s09, sprite w5s9free.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s09` stands it over the plate. Generic prompt: no game text.
+id: card.frigis_aelont_s09
+kind: card
+object: frigis_aelont_s09
+sprite: w5s9free.spr
+anims: [0]
+prop: { screen: frigis.s09, objects: [frigis.anim_free_aelont, frigis.aelont.090a] }
+group: 1
+sampling: { seed: 92111, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a tall dark standing humanoid silhouette inside a glowing blue column of light, glassy physically based materials, soft light, sharp focus
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+# Batch 10: Aelont talks (flags 5: animation 2 talks, 1 is where he goes back to), but only a still is published. As with the gatekeeper the talk animation's marked frame is another pose than animation 0's:
+# the switch to and from it flickers 9.1/255 at denoise 0.3, 7.4 at 0.2 and 6.8 at 0.15, against a median 0.3 to 0.5 (limit: the floor, 2); animation 3 (his start animation's way into 1) 7.0 to 9.3 against 2.4 to 3.2.
+# Three runs, nothing loosened, so it is listed and the card stays a still.

@@ -1,0 +1,26 @@
+# Lifted from the game's data (Paramount's): never committed. Run the lifter (docs/lift.md) to make them.
+/game.yaml
+/screens/
+/objects/
+/conversations/
+/triggers.yaml
+/advice.yaml
+/ids.yaml
+/coords.yaml
+/voices.yaml
+/rooms/
+/coverage/
+/audio/
+/movies/
+/models/
+/presentation.yaml
+/readings.yaml
+/computer.yaml
+/universe.yaml
+/ship.yaml
+/combat.yaml
+/space/
+/art/
+/screentexts.yaml
+/gate.yaml
+/.sealed/

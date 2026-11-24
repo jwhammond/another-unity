@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Portrait for Stamblyr, a game-only character (icon.map: w5shstam.spr, the dialog's speaker icon): no show footage and no actor, so no FaceID and no
+# likeness score. Same technique as laraq and griems: the Krea 2 Turbo variant paints the face from the game portrait as layout (lightly blurred), then the
+# grab sets that person into the game portrait's frame (face box fitted, BiRefNet matte, graded halfway to the game figure, the portrait's own
+# backdrop: the black or dark one, found from the pixels joined to the picture edge) and the pixel step makes the 64x64 avatar. The game head is too broken up (dithered) for InsightFace; its box here is InsightFace's on the head scaled up 10x with a 12 px blur, padded. Published under the object ids in speakers: the subtitle
+# looks its speaker up by the game's object name.
+id: avatar.stamblyr
+kind: avatar
+object: stamblyr
+speakers: [frigis.stamblyr.0601, frigis.stamblyr.062a]
+base: { sprite: w5shstam.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 6 }
+pick: grab
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+grab:
+  from: krea2
+  gameFace: [13.98, 10.5, 37.0, 39.22]
+  backdrop: dark
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 77203, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, Stamblyr, an elderly scholar of the planet Frigis, head and shoulders with room above the head, slight three-
+      quarter view, thick white-grey hair in a wide rolled wave swept back from the brow, a band of gold cloth behind the head, tan
+      wrinkled skin, a clean-shaven lined face, a distant thoughtful expression, a plain blue robe with a round neck, nothing pinned or
+      fastened on it, no pins, no insignia, no badge, warm key light from the right, plain black background, painted 1990s adventure
+      game portrait
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark
+    denoise: 0.8
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.7 }]

@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: door
+name: Door
+screen: corridor
+at: door
+transition: door_square
+description: { text: "A heavy door." }

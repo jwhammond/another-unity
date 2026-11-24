@@ -1,0 +1,360 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Numbers and ids only (art compare 2026-10-18-models). Shifts in original pixels; seconds on the COMFY_URL server (RTX 4080 Super).
+id: 2026-10-18-models
+results:
+  - family: qwen-image
+    variant: d60-cn80
+    passes: true
+    settings: "euler/simple cfg 4, shift 3.1; room: d0.6 protect 0.2, 30 steps,
+      depth 0.8, lineart 0.8, refs none; card: d0.55, 30 steps, depth off,
+      lineart 0.8, refs none"
+    room:
+      ok: true
+      worstShift: 1.35
+      worstPoint: hotspot lab.transporter top-right
+      worstPeak: 0.89
+      measured: 49
+      total: 57
+      seconds: 111.9
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.9
+        medianShift: 0.4
+        flickerMedian: 8.64
+        flickerMax: 10.02
+        deltaEMax: 2.4
+        silhouette: true
+        seconds: 88.1
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 1.96
+        medianShift: 0.24
+        flickerMedian: 2.6799999999999997
+        flickerMax: 2.91
+        deltaEMax: 2
+        silhouette: true
+        seconds: 69
+  - family: qwen-image
+    variant: d70-cn100
+    passes: false
+    settings: "euler/simple cfg 4, shift 3.1; room: d0.7 protect 0.2, 30 steps,
+      depth 1, lineart 1, refs none; card: d0.65, 30 steps, depth off, lineart
+      1, refs none"
+    room:
+      ok: true
+      worstShift: 1.18
+      worstPoint: hotspot lab.transporter top-right
+      worstPeak: 0.91
+      measured: 49
+      total: 57
+      seconds: 109.6
+    cards:
+      - anim: 6
+        frames: 4
+        ok: false
+        worstShift: 2.22
+        medianShift: 0.48
+        flickerMedian: 8.78
+        flickerMax: 10.39
+        deltaEMax: 2.2
+        silhouette: true
+        seconds: 87.2
+        why: "frame 2: a point moved 2.22 px (limit 2)"
+      - anim: 31
+        frames: 5
+        ok: false
+        worstShift: 2.13
+        medianShift: 0.27
+        flickerMedian: 2.685
+        flickerMax: 2.76
+        deltaEMax: 2.1
+        silhouette: true
+        seconds: 68.8
+        why: "frame 2: a point moved 2.13 px (limit 2)"
+  - family: qwen-image
+    variant: d50-cn60
+    passes: true
+    settings: "euler/simple cfg 4, shift 3.1; room: d0.5 protect 0.2, 30 steps,
+      depth 0.6, lineart 0.6, refs none; card: d0.45, 30 steps, depth off,
+      lineart 0.6, refs none"
+    room:
+      ok: true
+      worstShift: 1.13
+      worstPoint: hotspot lab.transporter top-right
+      worstPeak: 0.906
+      measured: 49
+      total: 57
+      seconds: 111.2
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.77
+        medianShift: 0.33
+        flickerMedian: 8.51
+        flickerMax: 9.74
+        deltaEMax: 2.8
+        silhouette: true
+        seconds: 87.5
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 1.63
+        medianShift: 0.23
+        flickerMedian: 2.725
+        flickerMax: 2.95
+        deltaEMax: 2.1
+        silhouette: true
+        seconds: 69
+  - family: flux
+    variant: d60-cn80-r40
+    passes: true
+    settings: "euler/simple cfg 1, guidance 4.5; room: d0.6 protect 0.2, 28 steps,
+      depth 0.8, lineart 0.7, refs style 0.4; card: d0.55, 28 steps, depth off,
+      lineart 0.7, refs face 0.4 + style 0.4"
+    room:
+      ok: true
+      worstShift: 0.68
+      worstPoint: hotspot lab.transporter top-right
+      worstPeak: 0.956
+      measured: 49
+      total: 57
+      seconds: 78.3
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.49
+        medianShift: 0.27
+        flickerMedian: 6.96
+        flickerMax: 7.65
+        deltaEMax: 2.9
+        silhouette: true
+        seconds: 59.6
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.85
+        medianShift: 0.13
+        flickerMedian: 3.25
+        flickerMax: 3.41
+        deltaEMax: 2.1
+        silhouette: true
+        seconds: 48
+  - family: flux
+    variant: d70-cn100-r60
+    passes: false
+    settings: "euler/simple cfg 1, guidance 4.5; room: d0.7 protect 0.2, 28 steps,
+      depth 1, lineart 0.9, refs style 0.6; card: d0.65, 28 steps, depth off,
+      lineart 0.9, refs face 0.6 + style 0.6"
+    room:
+      ok: true
+      worstShift: 0.68
+      worstPoint: hotspot lab.transporter top-right
+      worstPeak: 0.951
+      measured: 49
+      total: 57
+      seconds: 76.7
+    cards:
+      - anim: 6
+        frames: 4
+        ok: false
+        worstShift: 3.74
+        medianShift: 0.28
+        flickerMedian: 7.19
+        flickerMax: 8
+        deltaEMax: 4.8
+        silhouette: true
+        seconds: 58
+        why: "frame 2: a point moved 3.74 px (limit 2)"
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.72
+        medianShift: 0.15
+        flickerMedian: 3.7649999999999997
+        flickerMax: 3.94
+        deltaEMax: 3.5
+        silhouette: true
+        seconds: 47.9
+  - family: flux
+    variant: d50-cn60-r25
+    passes: true
+    settings: "euler/simple cfg 1, guidance 4.5; room: d0.5 protect 0.2, 28 steps,
+      depth 0.6, lineart 0.5, refs style 0.25; card: d0.45, 28 steps, depth off,
+      lineart 0.5, refs face 0.25 + style 0.25"
+    room:
+      ok: true
+      worstShift: 0.66
+      worstPoint: hotspot lab.door.0108 bottom-right
+      worstPeak: 0.836
+      measured: 49
+      total: 57
+      seconds: 78.2
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.67
+        medianShift: 0.26
+        flickerMedian: 6.88
+        flickerMax: 7.45
+        deltaEMax: 1.6
+        silhouette: true
+        seconds: 58.1
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.87
+        medianShift: 0.1
+        flickerMedian: 2.7649999999999997
+        flickerMax: 2.94
+        deltaEMax: 1.3
+        silhouette: true
+        seconds: 46.7
+  - family: sdxl
+    variant: recipe
+    passes: false
+    settings: "dpmpp_2m/karras cfg 4.5; room: d0.6 protect 0.2, 30 steps, depth 1,
+      lineart 0.9, refs style 1; card: d0.55, 20 steps, depth off, lineart 0.7,
+      refs face 0.8 + style 0.4"
+    room:
+      ok: false
+      worstShift: 0.18
+      worstPoint: "floor r18 #1"
+      worstPeak: 0.469
+      measured: 49
+      total: 57
+      seconds: 34.4
+      why: "1 of 49 measured points fail; worst floor r18 #1"
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.07
+        medianShift: 0.24
+        flickerMedian: 6.37
+        flickerMax: 6.88
+        deltaEMax: 5.3
+        silhouette: true
+        seconds: 16.7
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.53
+        medianShift: 0.11
+        flickerMedian: 3.06
+        flickerMax: 3.11
+        deltaEMax: 3.3
+        silhouette: true
+        seconds: 13.6
+  - family: sdxl
+    variant: hi
+    passes: false
+    settings: "dpmpp_2m/karras cfg 4.5; room: d0.65 protect 0.18, 30 steps, depth 1,
+      lineart 0.9, refs style 1; card: d0.62, 20 steps, depth off, lineart 0.7,
+      refs face 0.8 + style 0.4"
+    room:
+      ok: false
+      worstShift: 0.11
+      worstPoint: "floor r18 #1"
+      worstPeak: 0.468
+      measured: 49
+      total: 57
+      seconds: 34.8
+      why: "1 of 49 measured points fail; worst floor r18 #1"
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.2
+        medianShift: 0.24
+        flickerMedian: 7.03
+        flickerMax: 7.37
+        deltaEMax: 7.1
+        silhouette: true
+        seconds: 16.8
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.48
+        medianShift: 0.12
+        flickerMedian: 3.21
+        flickerMax: 3.34
+        deltaEMax: 4.7
+        silhouette: true
+        seconds: 13.8
+  - family: sdxl
+    variant: cn-lo
+    passes: false
+    settings: "dpmpp_2m/karras cfg 4.5; room: d0.6 protect 0.2, 30 steps, depth 0.7,
+      lineart 0.6, refs style 1; card: d0.55, 20 steps, depth off, lineart 0.5,
+      refs face 0.8 + style 0.4"
+    room:
+      ok: false
+      worstShift: 0.44
+      worstPoint: "floor r18 #1"
+      worstPeak: 0.492
+      measured: 49
+      total: 57
+      seconds: 30.2
+      why: "1 of 49 measured points fail; worst floor r18 #1"
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.22
+        medianShift: 0.24
+        flickerMedian: 6.63
+        flickerMax: 7.23
+        deltaEMax: 5.5
+        silhouette: true
+        seconds: 16.7
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.67
+        medianShift: 0.12
+        flickerMedian: 3.26
+        flickerMax: 3.38
+        deltaEMax: 3.5
+        silhouette: true
+        seconds: 13.9
+  - family: sdxl
+    variant: protect-15
+    passes: true
+    settings: "dpmpp_2m/karras cfg 4.5; room: d0.6 protect 0.15, 30 steps, depth 1,
+      lineart 0.9, refs style 1; card: d0.55, 20 steps, depth off, lineart 0.7,
+      refs face 0.8 + style 0.4"
+    room:
+      ok: true
+      worstShift: 1.45
+      worstPoint: hotspot lab.ts_for_exit bottom-right
+      worstPeak: 0.682
+      measured: 49
+      total: 57
+      seconds: 42.5
+    cards:
+      - anim: 6
+        frames: 4
+        ok: true
+        worstShift: 1.07
+        medianShift: 0.24
+        flickerMedian: 6.37
+        flickerMax: 6.88
+        deltaEMax: 5.3
+        silhouette: true
+        seconds: 17.6
+      - anim: 31
+        frames: 5
+        ok: true
+        worstShift: 0.53
+        medianShift: 0.11
+        flickerMedian: 3.06
+        flickerMax: 3.11
+        deltaEMax: 3.3
+        silhouette: true
+        seconds: 14

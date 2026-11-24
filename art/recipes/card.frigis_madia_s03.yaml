@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: frigis.madia (screen frigis.s03, sprite w5s3madi.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks frigis.s03` stands it over the plate. Generic prompt: no game text.
+id: card.frigis_madia_s03
+kind: card
+object: frigis_madia_s03
+sprite: w5s3madi.spr
+anims: [0]
+prop: { screen: frigis.s03, objects: [frigis.madia] }
+group: 1
+sampling: { seed: 92130, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a tall pointed-arch alcove of glowing amber and orange translucent crystal glass with dark metal framing, glossy physically based material, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }
+# Batch 10: Madia talks (flags 5: animation 2 talks, 1 is where she goes back to) and plays an intro (0 into 3 into 1), but only a still is published. The talk animation 2 passes on its own
+# (the body repainted once, the mouths put back over it: flicker median 2.8, worst shift 0.34 px), and so does the start animation 0, but the switches between the poses do not: animation 1 (the pose the
+# intro ends on and she returns to) and 3 (the intro's second part) fail against 0 with the flicker across the switch 8.6/255 at denoise 0.3 (median 3.1), 6.0 at 0.2 and 5.2 at 0.15 (median 1.9, limit 2.5x:
+# 4.8). Three runs, nothing loosened, so it is listed: the card stays a still of animation 0's first frame, and Madia does not talk on the screen.

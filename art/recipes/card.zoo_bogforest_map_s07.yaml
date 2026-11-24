@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the bog forest map of `s07` (off at entry; animation 0 is 35 frames into a held 1): w3s7ksk.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_bogforest_map_s07
+kind: card
+object: zoo_bogforest_map_s07
+sprite: w3s7ksk.spr
+anims: [0,1]
+prop: { screen: zoo.s07, objects: [zoo.bogforest_map], anim: 0, animate: [0,1] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle that no seed changes, and on one point that moved 2.42 to 3.89 px in three runs: 14 of the 26 strongest windows of frame 21 of animation 0 are speckle (the terrain texture under the grid); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 99019, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glowing holographic relief map of terrain on a display table, science fiction, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

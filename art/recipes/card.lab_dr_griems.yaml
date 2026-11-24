@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mertens' Dr. Griems (o_040802, screen lab.s08): a person standing in the corridor, an NPC the original draws as a sprite over the background
+# (the plate has none), so with art on the room had no one to talk to. Their sprite's (w4s8egr.spr) first frame, upscaled 4x and lightly repainted,
+# silhouette kept exactly; no show likeness (they have none). `prop` has `art masks lab.s08` stand them over the plate in a mask's place.
+# Generic prompt: no game text, no show or actor names. (The dead crewman, off until a script turns it on, plays this same animation 0 in ScummVM, so it takes this still.)
+id: card.lab_dr_griems
+kind: card
+object: lab_dr_griems
+sprite: w4s8egr.spr
+anims: [0]
+prop: { screen: lab.s08, objects: [lab.dr_griems, lab.dead_crewman], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 91004, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a person standing, fitted science fiction technician uniform in teal and grey, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+reference:
+  - { refs: [set.science.1.wall], model: style, weight: 0.3, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: allanor.drone.0411 (screen allanor.s04, sprite w2s4mama.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks allanor.s04` stands it over the plate. Generic prompt: no game text.
+# Speckle 0.6 (default 0.85 failed: over half of the strongest windows counted as speckle on the fur/glass; measured shifts were under 1 px).
+id: card.allanor_drone_s04
+kind: card
+object: allanor_drone_s04
+sprite: w2s4mama.spr
+anims: [2]
+prop: { screen: allanor.s04, objects: [allanor.drone.0411], anim: 2 }
+group: 1
+sampling: { seed: 92100, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a floating alien machine, a glowing blue eye in a purple armoured housing with dangling tendrils, glossy physically based materials, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.6 }

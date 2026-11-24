@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The shutdown button of the core console (o_040b03, lab.s0b; w4s11bt3.spr, 122x42, animations 0, 1 and 2). Mertens' console, played on use: each animation is one frame (a lit or pressed look), and the object's scripts play them as the buttons are used. `prop.animate` publishes them as strips, so the layer follows the object's animation (docs/unity-sprite-placement.md, "Batch 8a"). Generic prompt: no game text, no trademarks.
+id: card.lab_shutdown
+kind: card
+object: lab_shutdown
+sprite: w4s11bt3.spr
+anims: [0, 1, 2]
+prop: { screen: lab.s0b, objects: [lab.shutdown], anim: 0, animate: [0, 1, 2] }
+group: 3
+sampling: { seed: 96103, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a glossy backlit touch button on a science fiction control console, glowing glass, brushed metal edge, crisp detail, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

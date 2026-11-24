@@ -1,0 +1,4 @@
+# a reseed: the draws after it follow the new seed
+seed 12345
+start 7 1 0x80
+end

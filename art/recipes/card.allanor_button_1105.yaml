@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8d rollout (Allanor), the button `1105` (animation 0 and 1, one frame each: lit and unlit; its script plays them): w2s8lit6.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8d"). Generic prompt: no game text.
+id: card.allanor_button_1105
+kind: card
+object: allanor_button_1105
+sprite: w2s8lit6.spr
+anims: [0, 1]
+prop: { screen: allanor.s11, objects: [allanor.button.1105], anim: 0, animate: [0, 1] }
+group: 4
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved: 3 of the 4 strongest windows are speckle (worst shift 0.47 px); allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 95023, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small rectangular indicator light set in a dark metal panel, science fiction control panel, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.3
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

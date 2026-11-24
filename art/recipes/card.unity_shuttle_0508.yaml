@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8f rollout (Unity), the shuttle `0508` of `s05` (it starts on 1, 42 frames; `screen_startup` plays 1 and then 2, one frame): w6s5shut.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8f"). Generic prompt: no game text.
+id: card.unity_shuttle_0508
+kind: card
+object: unity_shuttle_0508
+sprite: w6s5shut.spr
+anims: [1, 2]
+prop: { screen: unity.s05, objects: [unity.shuttle.0508], anim: 1, animate: [1, 2] }
+group: 2
+sampling: { seed: 98006, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a sleek grey shuttlecraft with a dark dome canopy seen from the side, science fiction hangar, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.2
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

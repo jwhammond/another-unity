@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# lab_o0a04 (screen lab.s0a, the transporter console close-up): a sprite the original draws over the background (the plate has none), so it gets a prop card like
+# lab_big_cable: the sprite's frame 0 upscaled 4x and lightly repainted, silhouette and position kept exactly. A still of frame 0, not its animation.
+# `prop` has `art masks lab.s0a` stand it over the plate in a mask's place. Generic prompt: no game text, no trademarks.
+id: card.lab_o0a04
+kind: card
+object: lab_o0a04
+sprite: w4s10tng.spr
+anims: [0]
+prop: { screen: lab.s0a, objects: [lab.o0a04], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 91013, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  glowing green holographic wireframe of a spacecraft on a black display, thin luminous lines, science fiction, crisp detail
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, blurry, people
+denoise: 0.4
+lineart: { strength: 0.9 }
+reference:
+  - { refs: [mat.lcars.1], model: style, weight: 0.3, weightType: style transfer, mask: figure }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

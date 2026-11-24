@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The creature: a game-only picture (icon.map: w6shgrun, the dialog's speaker icon), no show footage, so no FaceID and no grab. The non-face path of the portraits:
+# the Krea 2 Turbo variant repaints the game's own picture as layout (img2img at a high denoise, so its shape and colours stay and its painting
+# is new), and the pixel step makes the 64x64 picture. Published under the object ids in speakers: the subtitle looks its speaker up by the game's object name.
+id: avatar.creature
+kind: avatar
+object: creature
+speakers: [unity.creature.0807, unity.creature.0e02, unity.stasis_chamber.0804, unity.stasis_chamber.0e03]
+base: { sprite: w6shgrun.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 2 }
+pick: krea2
+sheet: { name: compare, columns: 3, pairs: true, smooth: 512, maxWidth: 1600 }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+variants:
+  - name: krea2
+    model: krea2
+    sampling: { seed: 77311, steps: 8, cfg: 2.5, sampler: er_sde, scheduler: simple }
+    prompt: >-
+      Star Trek tng, a green lizard-like alien creature seen from the front, a broad flat head of dark green scaly skin with two huge
+      round pale yellow-green eyes with black pupils, a wide mouth and heavy folds of skin under the jaw, brown rocky background,
+      painted 1990s adventure game portrait
+    negative: rank pips, collar pips, insignia, combadge, badge, delta emblem, Starfleet uniform, pins, medals, buttons, studs, snaps, rivets, clasps, dots or metal on the collar, text, watermark
+    denoise: 0.7
+    loras: [{ model: krea2-tng-setting-lora, strength: 0.4 }]

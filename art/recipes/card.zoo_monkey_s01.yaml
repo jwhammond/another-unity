@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8g rollout (zoo), the monkey of `s01` (animation 0 five frames, scripts play 1 (a loop), 2 and 3): w3s1monk.spr. `prop.animate` publishes every frame the original plays as a strip (docs/unity-sprite-placement.md, "Batch 8g"). Generic prompt: no game text.
+id: card.zoo_monkey_s01
+kind: card
+object: zoo_monkey_s01
+sprite: w3s1monk.spr
+anims: [0,1,2,3]
+prop: { screen: zoo.s01, objects: [zoo.atol_tree_monkey], anim: 0, animate: [0,1,2,3] }
+group: 3
+repaint: false
+align: { skip: true, reason: "the repaint failed the card check on speckle alone, nothing measured moved (worst shift 0.33 px, flicker median 5.3 to 12.6): animations 0 to 3: 4 to 6 of the 6 to 10 strongest windows are speckle; allowed only because repaint is false, the upscale is the original's own pixels at 4x" }
+sampling: { seed: 98003, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a small brown furry monkey sitting on a tree branch, wildlife, daylight, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.25
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

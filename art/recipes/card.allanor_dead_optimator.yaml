@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: allanor.dead_optimator.0b11 (screen allanor.s0b, sprite w2s11cho.spr, animation 0): the optimator lying dead, off at entry and turned on by a script. A prop card (a still of the first frame, upscaled 4x
+# and lightly repainted, silhouette and position kept exactly); `art masks allanor.s0b` stands it over the plate. Generic prompt: no game text.
+id: card.allanor_dead_optimator
+kind: card
+object: allanor_dead_optimator
+sprite: w2s11cho.spr
+anims: [0]
+prop: { screen: allanor.s0b, objects: [allanor.dead_optimator.0b11] }
+group: 1
+sampling: { seed: 92112, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a small wrecked egg-shaped hovering robot shell lying on a floor, dull blue-green metal, glossy physically based metal, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

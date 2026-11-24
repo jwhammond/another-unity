@@ -1,0 +1,187 @@
+{
+  "generated": "tools/lift",
+  "screen": "horst3.s01",
+  "world": "horst3",
+  "background": {
+    "png": "images/backgrounds/s_0701.png",
+    "original": "sb007001.scr"
+  },
+  "projection": {
+    "kind": "perspective",
+    "slope": 0.859061,
+    "horizonY": 100.987,
+    "meanScale": 170.75,
+    "topY": 250,
+    "metersPerPixel": 0.0125,
+    "samples": 8,
+    "rms": 0.02
+  },
+  "camera": {
+    "kind": "perspective",
+    "position": [
+      0,
+      3.725,
+      6.925
+    ],
+    "yfov": 0.8176,
+    "horizonY": 100.987
+  },
+  "regions": [
+    {
+      "name": "r23",
+      "walkable": true,
+      "type": 1,
+      "points": [
+        {
+          "x": -5.5,
+          "z": -6.924
+        },
+        {
+          "x": 5.5,
+          "z": -6.924
+        },
+        {
+          "x": 3.5,
+          "z": 0
+        },
+        {
+          "x": -3.5,
+          "z": 0
+        }
+      ],
+      "triangles": [
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "name": "r24",
+      "walkable": false,
+      "type": 0,
+      "points": [
+        {
+          "x": 5.5,
+          "z": -6.924
+        },
+        {
+          "x": 7.499,
+          "z": -6.924
+        },
+        {
+          "x": 5.802,
+          "z": -3.445
+        },
+        {
+          "x": 4.492,
+          "z": -3.445
+        }
+      ],
+      "triangles": [
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          1,
+          2
+        ]
+      ]
+    }
+  ],
+  "markers": {
+    "entrance_0": {
+      "x": -0.129,
+      "z": -2.008
+    },
+    "entrance_0.1": {
+      "x": 0.306,
+      "z": -2.008
+    },
+    "entrance_0.2": {
+      "x": 0.033,
+      "z": -2.247
+    },
+    "entrance_0.3": {
+      "x": 0.198,
+      "z": -2.206
+    },
+    "entrance_1": {
+      "x": -2.937,
+      "z": -0.472
+    },
+    "entrance_1.1": {
+      "x": -2.804,
+      "z": -0.472
+    },
+    "entrance_1.2": {
+      "x": -2.67,
+      "z": -0.472
+    },
+    "entrance_1.3": {
+      "x": -2.537,
+      "z": -0.472
+    },
+    "horst3.door": {
+      "x": 0.187,
+      "z": -3.445
+    },
+    "horst3.rubble": {
+      "x": -1.775,
+      "z": -1.856
+    },
+    "p250_340": {
+      "x": -1.091,
+      "z": -1.709
+    }
+  },
+  "hotspots": [
+    {
+      "object": "horst3.rubble",
+      "at": {
+        "x": -1.775,
+        "z": -1.856
+      },
+      "width": 1.11,
+      "height": 1.11,
+      "depth": 0.05,
+      "pickable": true,
+      "kind": "object",
+      "rect": [
+        173,
+        266,
+        243,
+        336
+      ],
+      "order": 336
+    },
+    {
+      "object": "horst3.door",
+      "at": {
+        "x": 0.187,
+        "z": -3.445
+      },
+      "width": 0.749,
+      "height": 1.497,
+      "depth": 0.05,
+      "pickable": true,
+      "kind": "transition",
+      "rect": [
+        310,
+        220,
+        350,
+        300
+      ],
+      "order": 300
+    }
+  ]
+}

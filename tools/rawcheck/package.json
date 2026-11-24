@@ -1,0 +1,15 @@
+{
+  "name": "@another-unity/rawcheck",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    "./ir": "./src/ir.ts",
+    "./manifest": "./src/manifest.ts",
+    "./trace": "./src/trace.ts"
+  },
+  "dependencies": {
+    "@another-unity/engine": "*",
+    "zod": "^3.23.8"
+  }
+}

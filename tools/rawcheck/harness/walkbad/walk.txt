@@ -1,0 +1,4 @@
+# a line the runner can't carry out
+start 7 1 0
+jump 000000 070103
+end

@@ -1,0 +1,114 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Numbers and ids only (Plan 14 Task 3). peakFootprint is /usr/bin/time -l's, in bytes.
+# `aligned` (repaint rows, Task 5): the alignment check on lab.s01 with each ControlNet pair, run through the quality
+# recipe (base SDXL 30 steps, denoise 0.25), not this bench's 8-step Lightning timing case; both pass.
+machine:
+  model: Mac17,9
+  chip: Apple M5 Pro
+  memoryGb: 24
+  macos: 27.0.1
+stack:
+  torch: 2.14.1
+  comfyui: 0.41.3
+  aux: a587a4c1594524c1d2de5cd1a86cd868ff448e1c
+  python: 3.12.15
+date: 2026-10-17
+results:
+  - case: txt2img-1024
+    candidate: sdxl-base-1.0
+    flags: []
+    seconds: 39.09
+    runs:
+      - 39.09
+      - 44.55
+      - 38.32
+    peakFootprint: 12110155880
+    vramTotal: 25769803776
+    vramFree: 5273321472
+    aligned: null
+  - case: txt2img-1024
+    candidate: sdxl-base-1.0
+    flags:
+      - --force-fp16
+    seconds: 36.32
+    runs:
+      - 36.65
+      - 36.32
+      - 36.31
+    peakFootprint: 13350572088
+    vramTotal: 25769803776
+    vramFree: 5197807616
+    aligned: null
+  - case: txt2img-1024
+    candidate: sdxl-base-1.0+sdxl-lightning-8step
+    flags: &a1 []
+    seconds: 12.11
+    runs:
+      - 12.11
+      - 12.1
+      - 13.18
+    peakFootprint: 14003376712
+    vramTotal: 25769803776
+    vramFree: 9932210176
+    aligned: null
+  - case: txt2img-1024
+    candidate: sdxl-base-1.0+sdxl-lightning-8step
+    flags:
+      - --force-fp16
+    seconds: 19.35
+    runs:
+      - 19.7
+      - 19.35
+      - 18.84
+    peakFootprint: 13083971904
+    vramTotal: 25769803776
+    vramFree: 13938049024
+    aligned: null
+  - case: repaint-1152
+    candidate: cn-union-sdxl
+    flags: *a1
+    seconds: 34.57
+    runs:
+      - 34.57
+      - 43.26
+      - 33.7
+    peakFootprint: 13848990784
+    vramTotal: 25769803776
+    vramFree: 13138427904
+    aligned: true
+  - case: repaint-1152
+    candidate: cn-depth-sdxl-small+cn-mistoline
+    flags: *a1
+    seconds: 40.2
+    runs:
+      - 15.43
+      - 40.2
+      - 40.43
+    peakFootprint: 15257097160
+    vramTotal: 25769803776
+    vramFree: 11979931648
+    aligned: true
+  - case: upscale-4x
+    candidate: realesrgan-x4plus
+    flags: []
+    seconds: 2.27
+    runs:
+      - 2.27
+      - 2.27
+      - 2.28
+    peakFootprint: 5339088840
+    vramTotal: 25769803776
+    vramFree: 11054022656
+    aligned: null
+  - case: upscale-4x
+    candidate: realesrgan-x4plus-anime6b
+    flags: []
+    seconds: 1.02
+    runs:
+      - 1.02
+      - 1.02
+      - 1.02
+    peakFootprint: 5189207960
+    vramTotal: 25769803776
+    vramFree: 10988355584
+    aligned: null

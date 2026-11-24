@@ -1,0 +1,25 @@
+# A Final Unity, lab (world 4): the canonical walkthrough (Plan 9). Original ids only.
+seed 42
+start 4 1 0
+advance 8
+# o_04011c to s02, o_040208 to s03, o_040304 to s04
+use 000000 04011c
+advance 8
+use 000000 040208
+advance 8
+use 000000 040304
+advance 8
+# o_040405: the turbolift menu, second option (s06)
+answer 1
+use 000000 040405
+advance 8
+# o_040617: the core repair (t133)
+use 000000 040617
+advance 8
+# o_04061c back to s04 (the walker timer carries the team to s03), o_04031f to s01
+use 000000 04061c
+advance 8
+use 000000 04031f
+# the beamout timer beams the team up
+advance 8
+end

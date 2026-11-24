@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Plan 16 Task 9: the viewscreen station's own background, repainted into a plate (R11, R15). Generic prompt: no game text, no trademarks.
+# Settings are plate.bridge's (Task 7): masked denoise, depth and lineart ControlNets, one style reference.
+id: plate.viewscreen
+kind: repaint
+source: { ship: viewscr }
+sampling: { seed: 160002, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  3D rendered large wall display screen in a curved grey metal frame on a starship deck, small lit panels below it,
+  physically based materials, soft lighting, crisp detail
+negative: blurry, painting, cartoon, cel shading, text, watermark, people, extra objects, warped perspective
+denoise: 0.6
+# The alignment points are the window's 8 outline points, the strip's text box and the original's strongest edges.
+mask: { protect: 0.2, pointRadius: 30, band: 12, emissiveSat: 0.35, emissiveVal: 0.3, emissiveLum: 0.88, emissiveGrow: 3 }
+# The de-dither pre-step (tools/art/src/dedither.ts): the original's dither is averaged out before the 4x upscale, which otherwise
+# turns it into streaks; edges, seam lines, displays (glow) and `keep` are left as they are.
+dedither: { method: bilateral, sigma: 1.5, factor: 3, minRange: 12, range: 72, passes: 3, glowSat: 0.6, glowLum: 2, glowGrow: 2 }
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+# R12: the interface strip the original paints along the bottom of the picture (rows 364-479), kept crisp as on the bridge's plate.
+keep:
+  - [0, 364, 640, 116]
+# R15: a seed inside the key-coloured window. The window is the flat region of that colour, kept at mask 0 in the repaint; the
+# game's picture is drawn into it through a render target.
+window: { at: [320, 180] }
+# R15: the strip's text box (traced on the decoded original: the black rectangle from x 66 to 526, y 386 to 475): the hailing object's name.
+areas:
+  name: [66, 386, 460, 90]
+reference:
+  - { refs: [set.bridge.viewscreen.1, set.bridge.lcars.1], model: style, weight: 1.0, weightType: style transfer }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

@@ -1,0 +1,78 @@
+# A Final Unity, a new game through lab (world 4), then the ship's steps to the zoo's beam-down (Plan 12 Task 8).
+# Original ids only. The route was found with `tracediff route --to` and settled in the TS sim; the choices below are by index.
+seed 1
+start ship
+# the opening on the bridge (c008): the first option of the menu at c008@3 k13 sets ship.scout_escape_type (the life pod after the first mission).
+# The hub (c022@4 k17) shows after it, and the first mission's hail (c007@3) is answered with its second option
+# (picks: 0, 0, 1)
+pick 0
+pick 0
+pick 1
+advance 400
+# the first mission's planet: sector 156, star 3, planet 3 (the scripted warp's code 92076056); the arrival t64 sets the beam target
+station astrogation
+plot 156 3 3
+engage warp 300
+advance 450
+# the recommended team (o_000001 Riker, o_000004 Worf, o_000005 Crusher, o_000006 La Forge) to lab.s01 (world 4)
+station transporter
+beam
+advance 8
+# the lab leg is lab.walk's route with Riker as the actor (lab.walk's dev start has Picard, who is not on this team)
+# o_04011c to s02, o_040208 to s03, o_040304 to s04
+use 000001 04011c
+advance 8
+use 000001 040208
+advance 8
+use 000001 040304
+advance 8
+# o_040405: the turbolift menu, second option (s06)
+answer 1
+use 000001 040405
+advance 8
+# o_040617: the core repair (t133)
+use 000001 040617
+advance 8
+# o_04061c back to s04, o_04031f to s01; the beamout timer beams the team up
+use 000001 04061c
+advance 8
+use 000001 04031f
+advance 8
+# aboard again: the ending hail (c007@11) plays itself
+advance 5
+checkpoint after-mertens
+# t27 (25 s) hails c020@3, whose course option is a scripted warp to sector 292, star 5. The arrival t26 hails
+# c020@8 and c020@5: the crew is beamed aboard (ship.beam_crew_aboard) and c008@5 sets the lounge's contacts.
+# The hub (c022@4) shows again on arrival (pick 0)
+pick 0
+advance 140
+# the lounge: o_5f0401 (c027@3). Menu picks by index: 1, 0, 0, 0, then k5 of c027@2 (1) and k0 of c027@2 (1); the last runs c022@1,
+# whose only option is the course for the next stop (t144 on)
+pick 1
+pick 0
+pick 0
+pick 0
+pick 1
+pick 1
+lounge 5f0401
+# the transit and the arrival (t144 then t90 make o_5f0121 a contact)
+advance 400
+# o_5f0121 (c011@3): k0 (pick 1) enables t48; then the last option (pick 0) ends it
+pick 1
+pick 0
+comms 5f0121
+# t48 (timer) hails c003@0 (the hub first, then the second hail option), whose conversation (c003@7) is five option-0 picks;
+# k10 runs c022@0, the course for the next stop (t51 on)
+pick 0
+pick 0
+pick 0
+pick 0
+pick 0
+advance 100
+# the arrival t51 hails c003@4: k3 (pick 1) sets the beam target (t53, t54)
+pick 1
+advance 400
+# the zoo's team is Data, Worf, Crusher and Troi
+station transporter
+beam
+end

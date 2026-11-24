@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: lab
+markers:
+  entry: { x: 0, z: 0 }
+  bench: { x: 3, z: 2 }
+  guard: { x: 6, z: 0 }
+regions: {}

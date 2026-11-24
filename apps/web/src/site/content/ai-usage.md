@@ -1,0 +1,1 @@
+This project was developed with the use of Claude agents, as most software will be in the coming years. If that is an issue for you, you can play the original game via emulation without these enhancements. I am not interested in discussions on the topic of AI usage.

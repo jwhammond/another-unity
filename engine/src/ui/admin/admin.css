@@ -1,0 +1,133 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/*
+ * The admin console (adminConsole.tsx): the original's 420 by 478 console at (110,1) of the 640 by 480 screen, everything in it placed by
+ * the original's rectangles in percent. With the original's pictures (art.admin) they carry every label; without them, CSS stand-ins in the
+ * console's own colours draw the same controls at the same rectangles.
+ */
+/* (over everything the game shows: the room, the ship's screens and the HUD take no click while the console is up) */
+.au-admin-shade { position: absolute; inset: 0; z-index: 30; pointer-events: auto; }
+.au-admin-console {
+  --au-admin-ink: #208ce0; --au-admin-lit: #68e0fc; --au-admin-face: #3c3c3c; --au-admin-key: #c6c6a8; --au-admin-key-lit: #f4f0a0;
+  position: absolute; left: 17.1875%; top: 0.2083%; width: 65.625%; height: 99.5833%;
+  container-type: size; font-family: 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif; color: var(--au-admin-lit);
+  /* (one of the original's pixels) */
+  --au-admin-px: calc(100cqw / 420);
+}
+.au-admin-pic { position: absolute; display: block; image-rendering: pixelated; pointer-events: none; user-select: none; }
+.au-admin-frame { width: 100%; height: 100%; }
+/* the words in the game's own font (BitmapWords): its hard pixels, scaled with the console; the CSS words under them stay in the page, unseen */
+.au-admin-bt { position: absolute; image-rendering: pixelated; pointer-events: none; }
+.au-admin-console .au-admin-quiet, .au-admin-console .au-admin-row .au-admin-quiet { color: transparent; }
+.au-admin-caret { animation: au-admin-caret 1s steps(1) infinite; }
+.au-admin-hover { visibility: hidden; }
+.au-admin-btn:not(:disabled):hover .au-admin-hover, .au-admin-btn:focus-visible .au-admin-hover { visibility: visible; }
+.au-admin-console .au-admin-btn { position: absolute; box-sizing: border-box; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; overflow: visible; cursor: inherit; font: inherit; }
+.au-admin-console .au-admin-btn:disabled { opacity: 1; }
+.au-admin-console .au-admin-btn:focus-visible { outline: 1px dotted var(--au-admin-lit); outline-offset: 0; }
+.au-admin-console button[aria-pressed='true'] { outline: 0; }
+.au-admin-label { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; white-space: nowrap; letter-spacing: 0.04em; }
+
+/* the message strip: the current message, centred */
+.au-admin-message { position: absolute; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: calc(var(--au-admin-px) * 12); color: var(--au-admin-lit); pointer-events: none; }
+
+/* a slot's name, at the screen's left edge and 2 in, 12 pixels high */
+.au-admin-row .au-admin-name { display: flex; align-items: flex-end; box-sizing: border-box; width: 100%; height: 100%; padding: 0 0 calc(var(--au-admin-px) * 3) calc(var(--au-admin-px) * 2); font-size: calc(var(--au-admin-px) * 12); line-height: 1; white-space: pre; color: var(--au-admin-lit); text-align: left; }
+.au-admin-row[data-editing] .au-admin-name::after { content: '_'; animation: au-admin-caret 1s steps(1) infinite; }
+@keyframes au-admin-caret { 50% { visibility: hidden; } }
+/* (the remake's AUTOSAVE and IMPORT on the load page: the screen's own words, lit under the pointer) */
+.au-admin-console .au-admin-plain { font-size: calc(var(--au-admin-px) * 12); color: var(--au-admin-ink); }
+.au-admin-console .au-admin-plain:hover, .au-admin-console .au-admin-plain:focus-visible { color: var(--au-admin-lit); outline: 0; }
+/* (a row has the focus as the pointer has it: lit by its own picture, not an outline) */
+.au-admin-console .au-admin-row:focus-visible { outline: 0; }
+
+/* the sound bars: a click's height is the level */
+.au-admin-bar { position: absolute; touch-action: none; }
+.au-admin-bar:focus-visible { outline: 1px dotted var(--au-admin-lit); }
+.au-admin-seg { position: absolute; box-sizing: border-box; background: #0c3058; border: 1px solid #1c4c80; }
+.au-admin-seg[data-seg='on'] { background: var(--au-admin-ink); border-color: var(--au-admin-lit); }
+
+.au-admin-leds { pointer-events: none; }
+.au-admin-cover { position: absolute; background-repeat: no-repeat; image-rendering: pixelated; pointer-events: none; }
+.au-admin-led { position: absolute; box-sizing: border-box; border: calc(var(--au-admin-px) * 6) solid transparent; border-width: calc(var(--au-admin-px) * 7) calc(var(--au-admin-px) * 3); background: #0c3058; background-clip: content-box; border-radius: 50%; }
+.au-admin-led[data-led='1'] { background-color: #2c78c8; }
+.au-admin-led[data-led='2'] { background-color: #b8f0ff; box-shadow: 0 0 calc(var(--au-admin-px) * 3) var(--au-admin-lit); }
+
+/*
+ * the SETTINGS page (settingsPage.tsx): on the sound page's frame, its insides cleared; tabs and buttons in pills of the CANCEL shape (round ends in
+ * the screen's blue, the word between), settings in the F1 options screen's cells (the dark blue of the bars' segments), the chosen one lit
+ */
+.au-admin-inside { position: absolute; background: #000; border-radius: calc(var(--au-admin-px) * 6) calc(var(--au-admin-px) * 6) 0 0; }
+.au-admin-rule { position: absolute; background: var(--au-admin-ink); }
+.au-admin-setname { position: absolute; display: flex; align-items: center; font-size: calc(var(--au-admin-px) * 13); letter-spacing: 0.04em; color: var(--au-admin-ink); white-space: nowrap; pointer-events: none; }
+.au-admin-console .au-admin-cap { color: var(--au-admin-ink); }
+.au-admin-console .au-admin-cap::before, .au-admin-console .au-admin-cap::after { content: ''; position: absolute; top: 0; bottom: 0; width: calc(var(--au-admin-px) * 13); background: var(--au-admin-ink); }
+.au-admin-console .au-admin-cap::before { left: 0; border-radius: calc(var(--au-admin-px) * 8) 0 0 calc(var(--au-admin-px) * 8) / calc(var(--au-admin-px) * 9) 0 0 calc(var(--au-admin-px) * 9); }
+.au-admin-console .au-admin-cap::after { right: 0; border-radius: 0 calc(var(--au-admin-px) * 8) calc(var(--au-admin-px) * 8) 0 / 0 calc(var(--au-admin-px) * 9) calc(var(--au-admin-px) * 9) 0; }
+.au-admin-console .au-admin-cap[data-on], .au-admin-console .au-admin-cap:hover, .au-admin-console .au-admin-cap:focus-visible { color: var(--au-admin-lit); outline: 0; }
+.au-admin-console .au-admin-cap[data-on]::before, .au-admin-console .au-admin-cap[data-on]::after,
+.au-admin-console .au-admin-cap:hover::before, .au-admin-console .au-admin-cap:hover::after,
+.au-admin-console .au-admin-cap:focus-visible::before, .au-admin-console .au-admin-cap:focus-visible::after { background: var(--au-admin-lit); }
+.au-admin-console .au-admin-cap .au-admin-label, .au-admin-console .au-admin-cell .au-admin-label { font-size: calc(var(--au-admin-px) * 13); }
+.au-admin-tabword { left: 50%; width: auto; transform: translateX(-50%); }
+.au-admin-console .au-admin-cell { color: var(--au-admin-ink); background: #0c3058; border: var(--au-admin-px) solid #185c90; }
+.au-admin-console .au-admin-cell[data-on] { color: var(--au-admin-lit); background: #2068ac; border-color: var(--au-admin-lit); }
+.au-admin-console .au-admin-cell:not([data-on]):hover, .au-admin-console .au-admin-cell:focus-visible { color: var(--au-admin-lit); border-color: var(--au-admin-ink); outline: 0; }
+.au-admin-console .au-admin-cell[data-on]:focus-visible { border-color: #fcfcfc; }
+.au-admin-hbar { cursor: inherit; }
+.au-admin-hseg { position: absolute; overflow: hidden; }
+/* (the sound bar's segment picture on its side: 16 long and 7 across, turned a quarter) */
+.au-admin-hseg img { position: absolute; left: 50%; top: 50%; width: 228.5714%; height: 43.75%; transform: translate(-50%, -50%) rotate(90deg); image-rendering: pixelated; pointer-events: none; user-select: none; }
+/* the KEYS tab: the F1 screen's key table, a key's cell then its action's */
+.au-admin-console .au-admin-keyrow { position: absolute; display: grid; grid-template-columns: 44fr 100fr; box-sizing: border-box; }
+.au-admin-console .au-admin-keyrow:disabled { cursor: inherit; }
+.au-admin-keycell { box-sizing: border-box; background: #10446c; border: var(--au-admin-px) solid #185c90; margin: 0 0 calc(var(--au-admin-px) * -1) 0; display: flex; align-items: center; padding-left: calc(var(--au-admin-px) * 3); font-size: calc(var(--au-admin-px) * 9); color: var(--au-admin-lit); white-space: nowrap; overflow: hidden; }
+.au-admin-keycell + .au-admin-keycell { margin-left: calc(var(--au-admin-px) * -1); }
+
+/* ---- the CSS stand-ins, with no published pictures ---- */
+.au-admin-face { position: absolute; inset: 0; background: var(--au-admin-face); border-radius: calc(var(--au-admin-px) * 14); box-shadow: inset 0 0 0 calc(var(--au-admin-px) * 2) #2a2a2a; }
+.au-admin-face::before { content: ''; position: absolute; left: 10.476%; top: 9.833%; width: 79.048%; height: 53.556%; background: #000; border: calc(var(--au-admin-px) * 6) solid var(--au-admin-ink); border-radius: calc(var(--au-admin-px) * 12); box-sizing: border-box; }
+.au-admin-console:not([data-page='paused']) .au-admin-face::before { border-color: var(--au-admin-lit); }
+.au-admin-words { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; font-size: calc(var(--au-admin-px) * 12); line-height: 1.4; letter-spacing: 0.06em; color: var(--au-admin-ink); pointer-events: none; }
+.au-admin-console:not(.au-admin-art) .au-admin-pill { font-size: calc(var(--au-admin-px) * 14); color: var(--au-admin-ink); background: #000; border: calc(var(--au-admin-px) * 2) solid var(--au-admin-ink); border-radius: calc(var(--au-admin-px) * 9); }
+.au-admin-console:not(.au-admin-art) .au-admin-pill[data-on], .au-admin-console:not(.au-admin-art) .au-admin-pill:hover { color: #000; background: var(--au-admin-lit); border-color: var(--au-admin-lit); }
+.au-admin-console:not(.au-admin-art) .au-admin-key { font-size: calc(var(--au-admin-px) * 13); color: var(--au-admin-key); background: #2e2e2e; border: calc(var(--au-admin-px) * 2) solid; border-color: #5a5a5a #1a1a1a #1a1a1a #5a5a5a; border-radius: calc(var(--au-admin-px) * 6); }
+.au-admin-console:not(.au-admin-art) .au-admin-key[data-on], .au-admin-console:not(.au-admin-art) .au-admin-key:not(:disabled):hover { color: var(--au-admin-key-lit); text-shadow: 0 0 calc(var(--au-admin-px) * 3) var(--au-admin-key-lit); }
+.au-admin-console:not(.au-admin-art) .au-admin-key:disabled { color: #5a5a5a; }
+.au-admin-console:not(.au-admin-art) .au-admin-row { border-bottom: 1px solid var(--au-admin-ink); }
+.au-admin-console:not(.au-admin-art) .au-admin-row[data-on] { border-bottom-color: var(--au-admin-lit); background: rgba(104, 224, 252, 0.12); }
+
+/*
+ * Tactical's F1 Combat Options (combatOptions.tsx): final.spr in the 640 by 480 screen's box (the console's box, or the largest 4:3 box of the wide
+ * view's frame), everything placed by the original's rectangles in percent; black around the picture and beyond the box, and the preview's window
+ * cut out of the face (its clip-path), where the space view's canvas draws the Enterprise. Without the picture, CSS stand-ins in final.spr's colours.
+ */
+.au-options { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; overflow: hidden; container-type: size; pointer-events: auto; }
+.au-options-box {
+  --au-options-px: calc(100cqw / 640);
+  position: relative; flex: none; width: min(100cqw, 133.3333cqh); aspect-ratio: 4 / 3; box-shadow: 0 0 0 200vmax #000;
+  font-family: 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif; color: #208ce0;
+}
+.au-options-face { position: absolute; inset: 0; background: #000; pointer-events: none; }
+.au-options-picture { position: absolute; display: block; image-rendering: pixelated; user-select: none; }
+.au-options-standin { position: absolute; box-sizing: border-box; background: #000; border: calc(var(--au-options-px) * 6) solid #404040; border-radius: calc(var(--au-options-px) * 8); }
+.au-options-window { position: absolute; box-sizing: border-box; border: calc(var(--au-options-px) * 3) solid #10446c; border-radius: calc(var(--au-options-px) * 2); }
+.au-options-heading { position: absolute; box-sizing: border-box; background: #04141f; border: 1px solid #10446c; }
+.au-options-preview { position: absolute; pointer-events: none; }
+.au-options-message { position: absolute; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; font-size: calc(var(--au-options-px) * 10); color: #68e0fc; pointer-events: none; }
+.au-options-quiet { color: transparent; }
+.au-options-ctl { position: absolute; box-sizing: border-box; display: block; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; overflow: hidden; }
+.au-options-ctl:focus-visible { outline: 1px dotted #68e0fc; outline-offset: 0; }
+.au-options-ctl:hover:not(.au-options-cell) { box-shadow: inset 0 0 0 1px #68e0fc; }
+.au-options-cell:hover, .au-options-cycle:hover { box-shadow: inset 0 0 0 1px #208ce0; }
+.au-options-button:hover, .au-options-button:active { box-shadow: none; background: rgba(104, 224, 252, 0.12); border-radius: calc(var(--au-options-px) * 10); }
+.au-options-keycell, .au-options-line { position: absolute; }
+.au-options-caption { position: absolute; pointer-events: none; }
+.au-options-words { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; white-space: nowrap; font-size: calc(var(--au-options-px) * 10); line-height: 1; }
+.au-options-left { justify-content: flex-start; }
+.au-options-keyrow { background: #0c2c44; }
+.au-options[data-art] .au-options-keyrow { background: transparent; }
+.au-options-plain { background: #404040; border: calc(var(--au-options-px) * 2) solid #1c1c1c; border-radius: calc(var(--au-options-px) * 10); color: #0c0c0c; }
+.au-options-plain .au-options-words { font-size: calc(var(--au-options-px) * 18); font-weight: bold; letter-spacing: 0.08em; }
+/* (a chosen cell is lit by its fill and word, as final.spr's: not the page's pressed outline) */
+.au-options button[aria-pressed='true'] { outline: 0; }
+.au-options button[aria-pressed='true']:focus-visible { outline: 1px dotted #68e0fc; }

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6: static repaint of a viewscreen caller (see hail.mertens). Generic prompt: no game text, no actor or character names.
+id: hail.vulc
+kind: repaint
+source: { hail: viewvulc }
+sampling: { seed: 171012, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  portrait photograph of a man with straight dark hair, pointed ears and slanted eyebrows, grey high-necked tunic, in a rocky desert canyon with white cliffs behind him, soft light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra people, extra limbs, blurry
+denoise: 0.35
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+size: { work: [1536, 736], out: [2120, 1016] }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 10 NPC card (the second Dr. Hyunh, sprite w3s3vihy; the same prompt and seed as `card.zoo_hyunh_s09`, so she looks the same in both rooms; off at entry, walker-scaled): zoo.dr_hyunh_foertsch.030a (screen zoo.s03, sprite w3s3vihy.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks zoo.s03` stands it over the plate. Generic prompt: no game text.
+id: card.zoo_hyunh_s03
+kind: card
+object: zoo_hyunh_s03
+sprite: w3s3vihy.spr
+anims: [0]
+prop: { screen: zoo.s03, objects: [zoo.dr_hyunh_foertsch.030a], anim: 0, animate: [0] }
+group: 1
+sampling: { seed: 92118, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a woman standing, dark hair in a hood, fitted blue science fiction jumpsuit with boots, realistic skin, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.3
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.85 }

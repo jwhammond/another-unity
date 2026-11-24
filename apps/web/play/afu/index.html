@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- (a home-screen install opens fullscreen and landscape: manifest.webmanifest) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>Another Unity</title>
+    <!-- (no favicon request, whose 404 would be a console error in the smoke test) -->
+    <link rel="icon" href="data:," />
+    <style>
+      /* the loading screen: in the page before any script, so a slow start is never blank (loading.ts drives it).
+         Rounded elbows, pill segments and numeric labels in the palette of a starship's panels; CSS only, no images or fonts. */
+      #loading { --o: #ff9900; --peach: #ffcc99; --lav: #cc99cc; --blue: #9999ff; --sky: #99ccff; --red: #cc6666; --ink: #000; --side: 112px; --bar: 26px; --r: 28px;
+        position: fixed; inset: 0; z-index: 50; display: grid; grid-template-columns: var(--side) 1fr; grid-template-rows: auto 1fr auto; gap: 4px; padding: 10px 12px; box-sizing: border-box; overflow: hidden; color: var(--sky); background: #000;
+        font: 14px/1.4 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; transition: opacity 0.4s ease-out; }
+      #loading.au-loading-done { opacity: 0; pointer-events: none; }
+      #loading * { box-sizing: border-box; }
+      /* the stars: three tiled layers, drifting at their own speeds */
+      .lc-stars { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+        background-image: radial-gradient(1px 1px at 20px 30px, #fff 50%, transparent), radial-gradient(1px 1px at 130px 80px, #9ac 50%, transparent), radial-gradient(1.5px 1.5px at 70px 160px, #fff 50%, transparent), radial-gradient(1px 1px at 190px 140px, #cde 50%, transparent),
+          radial-gradient(1px 1px at 60px 40px, #fff 50%, transparent), radial-gradient(1px 1px at 240px 210px, #9ac 50%, transparent), radial-gradient(1.5px 1.5px at 300px 90px, #cde 50%, transparent), radial-gradient(1px 1px at 330px 260px, #fff 50%, transparent);
+        background-size: 220px 220px, 220px 220px, 220px 220px, 220px 220px, 370px 370px, 370px 370px, 370px 370px, 370px 370px; animation: lc-drift 90s linear infinite; }
+      @keyframes lc-drift { to { background-position: -220px 110px, -220px 110px, -220px 110px, -220px 110px, -370px 185px, -370px 185px, -370px 185px, -370px 185px; } }
+      /* the frame: the top elbow and bar, the side column, the bottom elbow and bar */
+      /* each elbow is one block (one rule, below): the corner, its arm down the side column and its strip along the bar, with a black rounded cut-out
+         (as .lc-elbow::after in site.css). It runs 4px into the gap beside the side column so the arm meets the first side pill. */
+      .lc-elbow { background: var(--o); display: flex; align-items: flex-end; justify-content: flex-end; padding: 0 8px 4px 0; color: var(--ink); font-weight: bold; font-size: 12px;
+        position: relative; width: calc(100% + var(--r) + 4px); height: calc(var(--bar) + var(--r) + 4px); }
+      .lc-elbow::after { content: ''; position: absolute; right: 0; width: calc(var(--r) + 4px); height: calc(var(--r) + 4px); background: #000; }
+      .lc-elbow span { position: relative; z-index: 1; }
+      .lc-elbow.top { border-top-left-radius: 44px; align-self: start; margin-bottom: -4px; align-items: flex-start; padding-top: 4px; }
+      .lc-elbow.top::after { bottom: 0; border-top-left-radius: calc(var(--r) + 4px); }
+      .lc-elbow.bottom { border-bottom-left-radius: 44px; align-self: end; margin-top: -4px; align-items: flex-end; }
+      .lc-elbow.bottom::after { top: 0; border-bottom-left-radius: calc(var(--r) + 4px); }
+      .lc-row { display: flex; gap: 4px; align-items: stretch; min-width: 0; height: var(--bar); margin-left: calc(var(--r) + 4px); }
+      .lc-row.top { align-self: start; margin-top: 0; }
+      .lc-row.bottom { align-self: end; }
+      .lc-pill { display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; overflow: hidden; white-space: nowrap; background: var(--c, var(--o)); color: var(--ink); font-size: 12px; font-weight: bold; animation: lc-light 8s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.7s); }
+      .lc-pill.cap-l { border-radius: 99px 0 0 99px; } .lc-pill.cap-r { border-radius: 0 99px 99px 0; }
+      .lc-pill.o { --c: var(--o); } .lc-pill.p { --c: var(--peach); } .lc-pill.l { --c: var(--lav); } .lc-pill.b { --c: var(--blue); } .lc-pill.s { --c: var(--sky); } .lc-pill.r { --c: var(--red); }
+      @keyframes lc-light { 0%, 55%, 100% { filter: brightness(0.62); } 18%, 38% { filter: brightness(1.15); } }
+      .lc-side { display: flex; flex-direction: column; gap: 4px; min-height: 0; }
+      .lc-side .lc-pill { justify-content: flex-end; align-items: flex-end; padding: 0 8px 3px 0; height: auto; }
+      .lc-side .lc-pill:last-child { border-radius: 0; }
+      .lc-side .lc-pill:first-child, .lc-side .lc-pill:last-child { animation: none; }
+      .lc-main { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; min-height: 0; padding: 12px clamp(8px, 4vw, 40px); text-align: center; }
+      .lc-flavor { margin: 0; min-height: 2.8em; max-width: 34em; font-size: clamp(16px, 3.4vw, 26px); letter-spacing: 0.14em; color: var(--peach); display: block; }
+      .lc-flavor::after { content: ''; display: inline-block; width: 0.6em; height: 1.05em; margin-left: 6px; background: var(--peach); animation: lc-blink 1s steps(2) infinite; }
+      @keyframes lc-blink { 50% { opacity: 0; } }
+      .lc-barwrap { position: relative; width: min(640px, 100%); }
+      /* the progress bar: a track of segments the fill lights as it grows (the mask cuts both into segments) */
+      .au-loading-bar { --seg: 5%; position: relative; height: 30px; overflow: hidden; container-type: inline-size;
+        -webkit-mask: repeating-linear-gradient(90deg, #000 0 calc(var(--seg) - 4px), transparent calc(var(--seg) - 4px) var(--seg)); mask: repeating-linear-gradient(90deg, #000 0 calc(var(--seg) - 4px), transparent calc(var(--seg) - 4px) var(--seg));
+        background: #1b1330; }
+      .au-loading-fill { width: 0; height: 100%; overflow: hidden; transition: width 0.5s ease-out; }
+      /* (the colours sit on a ramp as wide as the whole bar, so each segment keeps its colour as it fills) */
+      .au-loading-fill::before { content: ''; display: block; width: 100cqw; height: 100%;
+        background: linear-gradient(90deg, var(--o) 0 20%, var(--peach) 20% 40%, var(--lav) 40% 60%, var(--blue) 60% 80%, var(--sky) 80% 100%); }
+      /* (the scan: a bright band passing along the track) */
+      .lc-scan { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+      .lc-scan::before { content: ''; position: absolute; top: 0; bottom: 0; width: 16%; left: -16%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent); animation: lc-scan 5.5s ease-in-out infinite; }
+      @keyframes lc-scan { to { left: 100%; } }
+      .lc-reads { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; font-size: 12px; color: var(--lav); }
+      .lc-reads b { color: var(--sky); font-weight: normal; font-variant-numeric: tabular-nums; }
+      .au-loading-status { display: flex; align-items: center; gap: 8px; justify-content: center; margin: 0; min-height: 1.4em; font-size: 12px; color: var(--blue); }
+      .lc-pulse { width: 9px; height: 9px; border-radius: 50%; background: var(--o); animation: lc-pulse 2.4s ease-in-out infinite; flex: none; }
+      @keyframes lc-pulse { 50% { transform: scale(0.55); opacity: 0.45; } }
+      .lc-start { display: none; font: inherit; font-size: clamp(18px, 4vw, 26px); font-weight: bold; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink); background: var(--o); border: 0; border-radius: 99px; padding: 10px 56px 10px 60px; cursor: pointer; animation: lc-pulse-btn 1.8s ease-in-out infinite; }
+      .lc-start:hover, .lc-start:focus-visible { background: var(--peach); outline: 3px solid var(--sky); outline-offset: 3px; }
+      @keyframes lc-pulse-btn { 50% { filter: brightness(0.82); } }
+      #loading.au-loading-ready .lc-start { display: inline-block; }
+      /* an autosave waits: Start reads Continue, and a smaller, quieter button starts over */
+      .lc-new { display: none; font: inherit; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--peach); background: transparent; border: 1px solid var(--peach); border-radius: 99px; padding: 5px 22px; cursor: pointer; }
+      .lc-new:hover, .lc-new:focus-visible { background: var(--peach); color: var(--ink); outline: 2px solid var(--sky); outline-offset: 2px; }
+      #loading.au-loading-ready.au-loading-resume .lc-new { display: inline-block; }
+      .lc-load { display: none; font: inherit; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sky); background: transparent; border: 1px solid var(--sky); border-radius: 99px; padding: 5px 22px; cursor: pointer; }
+      .lc-load:hover, .lc-load:focus-visible { background: var(--sky); color: var(--ink); outline: 2px solid var(--peach); outline-offset: 2px; }
+      #loading.au-loading-ready.au-loading-saves .lc-load { display: inline-block; }
+      .lc-slots { display: none; flex-direction: column; gap: 4px; width: min(420px, 100%); }
+      #loading.au-loading-ready.au-loading-slots .lc-slots { display: flex; }
+      .lc-slot { font: inherit; font-size: 13px; text-align: left; white-space: pre; overflow: hidden; text-overflow: ellipsis; color: var(--ink); background: var(--lav); border: 0; border-radius: 99px; padding: 6px 18px; cursor: pointer; }
+      .lc-slot:hover, .lc-slot:focus-visible { background: var(--peach); outline: 2px solid var(--sky); outline-offset: 2px; }
+      /* the deploy build's unity: "Game files…" asks for the player's CD again (loading.ts offerGameFiles), with Start or a failure */
+      .lc-files { display: none; font: inherit; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lav); background: transparent; border: 1px solid var(--lav); border-radius: 99px; padding: 5px 22px; cursor: pointer; }
+      .lc-files:hover, .lc-files:focus-visible { background: var(--lav); color: var(--ink); outline: 2px solid var(--sky); outline-offset: 2px; }
+      #loading.au-loading-ready.au-loading-files .lc-files, #loading.au-loading-failed.au-loading-files .lc-files { display: inline-block; }
+      #loading.au-loading-ready .lc-barwrap, #loading.au-loading-ready .lc-reads { opacity: 0.7; }
+      #loading.au-loading-ready .lc-scan, #loading.au-loading-ready .lc-pulse { display: none; }
+      /* a failure: the message in red, the rest quiet */
+      #loading.au-loading-failed { --o: var(--red); }
+      #loading.au-loading-failed .lc-flavor, #loading.au-loading-failed .lc-scan { display: none; }
+      #loading.au-loading-failed .au-loading-fill::before { background: var(--red); }
+      #loading.au-loading-failed .au-loading-status { color: #ff8a8a; white-space: pre-wrap; font-size: 15px; letter-spacing: 0.04em; text-transform: none; }
+      #loading.au-loading-failed .lc-pulse { background: #ff4444; animation: none; }
+      @media (max-width: 560px) { #loading { --side: 56px; --bar: 22px; --r: 16px; padding: 6px 8px; } .lc-side .lc-pill span { display: none; } .lc-row .lc-pill span.opt { display: none; } .lc-elbow.top, .lc-elbow.bottom { border-radius: 0; border-top-left-radius: 28px; } .lc-elbow.bottom { border-top-left-radius: 0; border-bottom-left-radius: 28px; } .lc-elbow span { display: none; } }
+      /* (a phone on its side: little height, so the frame thins and the side column drops its labels) */
+      @media (max-height: 480px) { #loading { --side: 64px; --bar: 16px; --r: 12px; padding: 4px 8px; gap: 3px; font-size: 12px; } .lc-main { gap: 7px; padding-top: 4px; padding-bottom: 4px; } .lc-flavor { font-size: 15px; min-height: 2.4em; } .au-loading-bar { height: 20px; } .lc-pill, .lc-elbow { font-size: 10px; } .lc-side .lc-pill span { display: none; } .lc-start { padding: 6px 40px; font-size: 17px; } .lc-elbow.top, .lc-elbow.bottom { border-radius: 0; border-top-left-radius: 20px; } .lc-elbow.bottom { border-top-left-radius: 0; border-bottom-left-radius: 20px; } }
+      @media (prefers-reduced-motion: reduce) { #loading, #loading * , #loading *::before, #loading *::after { animation: none !important; transition: none !important; } .lc-flavor::after { opacity: 1; } }
+      /* fullscreen/landscape button: only on a touch device whose browser has fullscreen (au-touch, au-can-fullscreen: landscape.ts); hidden once fullscreen */
+      .au-fs { display: none; font: bold 12px/1 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #000; background: #cc99cc; border: 0; border-radius: 99px; padding: 8px 16px; cursor: pointer; }
+      .au-fs:active { background: #ffcc99; }
+      html.au-touch.au-can-fullscreen:not(.au-fullscreen) .au-fs { display: inline-block; }
+      .au-fs-hud { position: absolute; top: 6px; right: 6px; z-index: 5; opacity: 0.85; padding: 6px 12px; }
+      /* while the battle's console or HUD is up, in the bottom bar's free right end: not over the console's Full control or the HUD's target (Plan 27) */
+      #game:has(.au-console) .au-fs-hud { top: auto; bottom: 14px; right: 10px; }
+      #loading .au-fs { margin-top: 2px; }
+      /* the rotate overlay: over everything while a touch device is held upright, so play is in landscape */
+      #rotate { display: none; position: fixed; inset: 0; z-index: 100; background: #000; color: #99ccff; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; text-align: center; text-transform: uppercase; letter-spacing: 0.14em; font: 15px/1.5 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif; }
+      html.au-touch.au-portrait #rotate { display: flex; }
+      #rotate::before, #rotate::after { content: ''; position: absolute; left: 0; right: 0; height: 26px; background: linear-gradient(90deg, #ff9900 0 38%, #ffcc99 38.5% 52%, #cc99cc 52.5% 74%, #9999ff 74.5% 88%, #cc6666 88.5%); }
+      #rotate::before { top: 0; border-bottom-right-radius: 26px; border-bottom-left-radius: 0; margin-right: 40px; }
+      #rotate::after { bottom: 0; border-top-right-radius: 26px; margin-right: 40px; }
+      #rotate h2 { margin: 0; font-size: 22px; font-weight: bold; color: #ffcc99; letter-spacing: 0.2em; }
+      #rotate p { margin: 0; font-size: 12px; color: #cc99cc; }
+      #rotate .code { color: #9999ff; }
+      #rotate svg { width: 120px; height: 120px; animation: rotate-turn 3.2s ease-in-out infinite; }
+      @keyframes rotate-turn { 0%, 15% { transform: rotate(0); } 55%, 100% { transform: rotate(-90deg); } }
+      @media (prefers-reduced-motion: reduce) { #rotate svg { animation: none; transform: rotate(-90deg); } }
+    </style>
+  </head>
+  <body>
+    <div id="loading">
+      <div class="lc-stars"></div>
+      <div class="lc-elbow top"><span>04-1138</span></div>
+      <div class="lc-row top">
+        <b class="lc-pill o" style="--i:0;flex:5"><span>31-0207</span></b>
+        <b class="lc-pill p" style="--i:1;flex:2"></b>
+        <b class="lc-pill l" style="--i:2;flex:4"><span class="opt">62-4471</span></b>
+        <b class="lc-pill b" style="--i:3;flex:1"></b>
+        <b class="lc-pill r" style="--i:4;flex:2"></b>
+        <b class="lc-pill s cap-r" style="--i:5;flex:3"><span class="opt">08-5530</span></b>
+      </div>
+      <div class="lc-side">
+        <b class="lc-pill o" style="--i:2;flex:3"><span>47-212</span></b>
+        <b class="lc-pill p" style="--i:4;flex:2"><span>03-881</span></b>
+        <b class="lc-pill b" style="--i:1;flex:4"><span>90-340</span></b>
+        <b class="lc-pill r" style="--i:3;flex:1"><span>16-077</span></b>
+        <b class="lc-pill o" style="--i:0;flex:2"><span>58-605</span></b>
+      </div>
+      <div class="lc-main">
+        <p class="lc-flavor" aria-hidden="true"></p>
+        <div class="lc-barwrap">
+          <div class="au-loading-bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="au-loading-fill"></div><div class="lc-scan"></div></div>
+        </div>
+        <div class="lc-reads" aria-hidden="true">
+          <span>Load <b data-read="pct">000</b></span><span>Node <b data-tick="4">0000</b></span><span>Flux <b data-tick="3">000</b></span><span>Sync <b data-tick="5">00000</b></span>
+        </div>
+        <p class="au-loading-status" role="status"><i class="lc-pulse"></i><span class="au-loading-text">Loading</span></p>
+        <button type="button" class="lc-start">Start</button>
+        <button type="button" class="lc-new">New game</button>
+        <button type="button" class="lc-load" aria-expanded="false">Load game</button>
+        <div class="lc-slots" role="group" aria-label="Saved games"></div>
+        <button type="button" class="lc-files">Game files…</button>
+        <button type="button" class="au-fs" aria-label="Fullscreen, landscape">Landscape</button>
+      </div>
+      <div class="lc-elbow bottom"><span>77-3092</span></div>
+      <div class="lc-row bottom">
+        <b class="lc-pill b" style="--i:3;flex:3"><span class="opt">12-6140</span></b>
+        <b class="lc-pill o" style="--i:1;flex:2"></b>
+        <b class="lc-pill r" style="--i:5;flex:1"></b>
+        <b class="lc-pill p" style="--i:0;flex:5"><span>55-0913</span></b>
+        <b class="lc-pill l cap-r" style="--i:2;flex:2"></b>
+      </div>
+    </div>
+    <div id="rotate" role="alert" aria-live="assertive">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><rect x="38" y="12" width="44" height="96" rx="9" fill="none" stroke="#ff9900" stroke-width="5"/><rect x="48" y="22" width="24" height="64" rx="3" fill="#9999ff" opacity="0.35"/><circle cx="60" cy="97" r="4" fill="#cc99cc"/><path d="M96 28a46 46 0 0 1 10 28" fill="none" stroke="#ffcc99" stroke-width="5" stroke-linecap="round"/><path d="M110 50l-4 10-9-6z" fill="#ffcc99"/></svg>
+      <h2>Rotate your device</h2>
+      <p>Play in landscape</p>
+      <p class="code">Display mode 01-90</p>
+    </div>
+    <div id="game">
+      <canvas id="view"></canvas>
+      <div id="labels"></div>
+      <div id="ui"></div>
+    </div>
+    <script type="module" src="/src/boot.ts"></script>
+  </body>
+</html>

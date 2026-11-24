@@ -1,0 +1,272 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Away-team avatar test, Riker only. Three earlier tries were rejected: the game's 48x50 head repainted toward show crops (commit
+# 09ab1cc: nothing looked like the person), one show crop relit and repainted at a low denoise (7c26778: a likeness, but too smooth and
+# too plainly that photo), and that result pixelated (8c8135a: mush). Now a NEW picture is generated instead of repainting a photo:
+# identity from IP-Adapter FaceID on InsightFace embeddings of five show frames from five episodes (face.3-7: none is face.1), averaged
+# so no single frame shows through; composition and colour masses from the game portrait blurred past its features (img2img at
+# 0.75-1.0); the painted look from the prompt, IP-Adapter style transfer on the game portrait and a palette transfer. Each variant is
+# shown smooth (512) and pixelated (64x64, 32 k-means colours, no dither), scored by InsightFace against held-out frames (face.8-11,
+# face.1-2) with the margin over the other crew. FaceID runs on the local ComfyUI (art/models.yaml): the COMFY_URL server's
+# IPAdapterInsightFaceLoader still fails there (numpy ABI mismatch, re-checked 2026-10-19). Prompts may name the show, the character and
+# the actor (the user's rule since 2026-10-19); never game text.
+# Round 5 (riker.compare5.png): style LoRAs for the look. retro-* add the SDXL RetroArt LoRA (trigger r3tr0) to mix-d90 (run locally);
+# st-* restyle a first-stage picture (`from`) with FLUX Krea dev and the st25style LoRA (trigger st25style), and st-scratch* are that
+# LoRA alone on the blurred layout, no identity (both on the COMFY_URL server: art avatar --variant <name> with COMFY_URL set).
+id: avatar.riker
+kind: avatar
+object: riker
+base: { sprite: smhdrikr.spr, frame: 0 }
+size: { work: 1024, out: 256 }
+layout: { blur: 40 }
+identity:
+  refs: [crew.riker.face.3, crew.riker.face.4, crew.riker.face.5, crew.riker.face.6, crew.riker.face.7]
+  holdout: [crew.riker.face.8, crew.riker.face.9, crew.riker.face.10, crew.riker.face.11, crew.riker.face.1, crew.riker.face.2]
+  others:
+    - crew.data.face.1
+    - crew.data.face.2
+    - crew.troi.face.1
+    - crew.troi.face.2
+    - crew.worf.face.1
+    - crew.worf.face.2
+    - crew.crusher.face.1
+    - crew.crusher.face.2
+    - crew.la_forge.face.1
+    - crew.la_forge.face.2
+# Run 2026-10-19 (likeness: mean InsightFace cosine to the six held-out frames, then the margin over the nearest other crew member;
+# the real frames score 0.83-0.84, the rejected photo repaint sdxl-d40-r25 0.55): smooth / pixel
+#   pv2-w80-d90 0.55+0.44 / 0.48+0.38   pv2-w100-d90 0.56+0.48 / 0.53+0.44   pv2-w80-d75 0.60+0.55 / 0.48+0.44
+#   pv2-w80-d100 0.55+0.47 / 0.44+0.33  pv2-w80-st70 0.49+0.40 / 0.44+0.37   port-w70-d90 0.55+0.44 / 0.47+0.40
+#   port-w100-d90 0.57+0.44 / 0.50+0.38 mix-d90 0.66+0.61 / 0.61+0.58
+# Picked then (riker.compare4.png): mix-d90, Plus V2 and Portrait together, the best score and the one whose likeness survives the
+# 64x64 pixel step best. More style weight (st70) costs likeness. Those seven variants are in git history (893c710).
+# Round 5 scores, smooth / pixel:
+#   mix-d90 0.66+0.61 / 0.61+0.58      retro-l60 0.55+0.49 / 0.49+0.44   retro-l90 0.44+0.38 / 0.41+0.37
+#   st-d45 0.53+0.50 / 0.48+0.43       st-d60 0.45+0.42 / 0.40+0.36      st-d75 0.26+0.20 / 0.31+0.24
+#   st-d60-redux 0.42+0.38 / 0.39+0.32 st-d60-mix 0.52+0.48 / 0.47+0.40  st-scratch 0.04-0.05 / 0.03-0.05  st-scratch-d90 0.07-0.01 / 0.08-0.00
+# The LoRAs trade likeness for look: each step toward the painted style costs score, and st25style alone draws a generic bearded man.
+# Picked then: st-d45 (RetroArt 0.6, then st25style 0.45 over it), the most game-like
+# painting above 0.5; mix-d90 the likeness-first one. Those variants are in git history (dc65736).
+# Round 6 (riker.compare6.png, sorted by smooth likeness; the top row shows round 5's mix-d90 and st-d45): a stronger likeness, aiming
+# at 0.72 smooth and 0.65 pixel. id-* raise FaceID (Plus V2 1.0-1.3 with its structure weight 1.5-2.0, LoRA 0.7-0.8, Portrait 0.8-1.0),
+# add IP-Adapter plus-face on all five refs batched (plusFace), drop the style transfer and name the character; det-* repaint the face
+# again (detail: a square on the InsightFace box, blended back through a feathered ellipse); st-* restyle with FLUX st25style on the
+# COMFY_URL server; idlast-d40 puts FaceID last, over st-det-d45; ref3-* start from a reference frame instead of the blurred layout.
+# Scores, smooth / pixel (dropped from the list: id-w130-cat, Plus V2 embeds concatenated, 0.64+0.55 / 0.58+0.50; id-plain-s2, another
+# seed, 0.65+0.59 / 0.61+0.55; ref3-d85 0.65+0.58 / 0.64+0.56; ref3-d60-mix, round 5's weights on face.3, 0.65+0.56 / 0.57+0.46):
+#   st-plain-d35 0.68+0.60 / 0.63+0.54  id-plain 0.67+0.59 / 0.64+0.56   det-w100 0.67+0.60 / 0.65+0.58  ref3-d75 0.66+0.59 / 0.62+0.59
+#   id-w100 0.66+0.57 / 0.64+0.56       idlast-d40 0.66+0.61 / 0.62+0.56 id-pf50 0.65+0.57 / 0.59+0.55   ref3-d55 0.65+0.58 / 0.58+0.51
+#   st-det-d35 0.65+0.55 / 0.65+0.56    id-real 0.65+0.58 / 0.60+0.54    det2-w100 0.64+0.59 / 0.61+0.55 id-w130 0.62+0.53 / 0.59+0.49
+#   st-det-d45 0.62+0.60 / 0.61+0.57
+# Every painted picture lands at 0.62-0.68 whatever the identity weight: more FaceID (w130) scores lower, plus-face and a second face
+# pass add nothing, and even a reference frame (0.84) repainted at denoise 0.55 falls to 0.65. The ceiling is the painted rendering,
+# not the adapters' strength; the palette transfer costs under 0.01. The FLUX st25style restyle at 0.35 costs 0.00-0.02 (at 0.45, 0.05).
+# Picked by the user 2026-10-19: id-real, shown as its 64x64 k-means-32 pixel version ("Id-real pixel is my favorite"): FaceID at
+# 1.0 with plus-face 0.4, a "realistic oil painting" prompt at cfg 4, palette 0.3. st-det-d35 was the suggestion before the review.
+pick: grab
+sheet: { name: compare6, columns: 3, pairs: true, smooth: 512, maxWidth: 1600, refCount: 3, previous: [mix-d90, st-d45], sort: smooth }
+pixel: { grid: [64, 64], filter: area, palette: { kmeans: 32 }, dither: none }
+# The pick (the user's, 2026-10-19, treatment B of the grab probe): the full show frame behind its ref, its face box fitted to the game portrait's, the person
+# cut out by BiRefNet (portrait) with pymatting's foreground colours, graded halfway to the game figure, on the portrait's own backdrop
+# (art avatar <recipe> --variant grab; grab.ts). The variants below are the earlier rounds, kept.
+grab:
+  ref: crew.riker.face.3
+  gameFace: [13.54, 12.18, 35.29, 43.6]
+  matte: { model: birefnet-portrait, feather: 1 }
+  grade: 0.5
+variants:
+  - name: id-w100
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      r3tr0, retro game art, digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his
+      late thirties, head and shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full
+      beard, blue-grey eyes, black high-collared uniform tunic, warm orange key light from the right, teal blue shadows on the left side of
+      the face, thin blue rim light, mottled dark blue painted background, bold painterly brushwork, early 1990s computer game character
+      portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    style: { weight: 0.4 }
+    palette: 0.5
+  - name: id-w130
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      r3tr0, retro game art, digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his
+      late thirties, head and shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full
+      beard, blue-grey eyes, black high-collared uniform tunic, warm orange key light from the right, teal blue shadows on the left side of
+      the face, thin blue rim light, mottled dark blue painted background, bold painterly brushwork, early 1990s computer game character
+      portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.8 }, weight: 1.3, v2: 2.0 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 1.0 }
+    style: { weight: 0.4 }
+    palette: 0.5
+  - name: id-plain
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late thirties, head and
+      shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard, blue-grey eyes,
+      black high-collared uniform tunic, warm key light from the right, cool blue shadows, thin blue rim light, dark blue painted
+      background, painterly brushwork, early 1990s computer game character portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    palette: 0.3
+  - name: id-pf50
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late thirties, head and
+      shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard, blue-grey eyes,
+      black high-collared uniform tunic, warm key light from the right, cool blue shadows, thin blue rim light, dark blue painted
+      background, painterly brushwork, early 1990s computer game character portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.5 }
+    palette: 0.3
+  - name: det-w100
+    model: sdxl
+    sampling: { seed: 73401, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late thirties, head and
+      shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard, blue-grey eyes,
+      black high-collared uniform tunic, warm key light from the right, cool blue shadows, thin blue rim light, dark blue painted
+      background, painterly brushwork, early 1990s computer game character portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.5
+    from: id-w100
+    detail: { expand: 1.3, feather: 0.3 }
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.5 }
+  - name: det2-w100
+    model: sdxl
+    sampling: { seed: 73402, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late thirties, head and
+      shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard, blue-grey eyes,
+      black high-collared uniform tunic, warm key light from the right, cool blue shadows, thin blue rim light, dark blue painted
+      background, painterly brushwork, early 1990s computer game character portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.45
+    from: det-w100
+    detail: { expand: 1.3, feather: 0.3 }
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.6 }
+  - name: id-real
+    model: sdxl
+    sampling: { seed: 73008, steps: 30, cfg: 4, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      realistic oil painting portrait of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late
+      thirties, head and shoulders, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard,
+      blue-grey eyes, black high-collared uniform tunic, warm key light from the right, cool blue shadows, dark blue background,
+      painted brushwork
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.9
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3
+  - name: st-det-d45
+    model: flux
+    guidance: 4.5
+    sampling: { seed: 73501, steps: 28, cfg: 1, sampler: euler, scheduler: simple }
+    prompt: >-
+      st25style, a painted early-1990s VGA sci-fi adventure game character portrait of Commander William Riker from Star Trek: The
+      Next Generation, played by Jonathan Frakes: head and shoulders, slight three-quarter view, short dark brown hair swept back, short
+      neatly trimmed full beard, blue-grey eyes, black high-collared uniform tunic, warm orange key light from the right, teal blue shadows
+      on the left side of the face, thin blue rim light, mottled dark blue background, visible brush strokes
+    denoise: 0.45
+    loras: [{ model: flux-st25style-lora, strength: 0.9 }]
+    from: det-w100
+    palette: 0.3
+  - name: st-det-d35
+    model: flux
+    guidance: 4.5
+    sampling: { seed: 73502, steps: 28, cfg: 1, sampler: euler, scheduler: simple }
+    prompt: >-
+      st25style, a painted early-1990s VGA sci-fi adventure game character portrait of Commander William Riker from Star Trek: The
+      Next Generation, played by Jonathan Frakes: head and shoulders, slight three-quarter view, short dark brown hair swept back, short
+      neatly trimmed full beard, blue-grey eyes, black high-collared uniform tunic, warm orange key light from the right, teal blue shadows
+      on the left side of the face, thin blue rim light, mottled dark blue background, visible brush strokes
+    denoise: 0.35
+    loras: [{ model: flux-st25style-lora, strength: 0.9 }]
+    from: det-w100
+    palette: 0.3
+  - name: ref3-d75
+    model: sdxl
+    sampling: { seed: 73601, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late thirties, head and
+      shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard, blue-grey eyes,
+      black high-collared uniform tunic, warm key light from the right, cool blue shadows, thin blue rim light, dark blue painted
+      background, painterly brushwork, early 1990s computer game character portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.75
+    baseRef: crew.riker.face.3
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3
+  - name: ref3-d55
+    model: sdxl
+    sampling: { seed: 73603, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his late thirties, head and
+      shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full beard, blue-grey eyes,
+      black high-collared uniform tunic, warm key light from the right, cool blue shadows, thin blue rim light, dark blue painted
+      background, painterly brushwork, early 1990s computer game character portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.55
+    baseRef: crew.riker.face.3
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }
+    palette: 0.3
+  - name: st-plain-d35
+    model: flux
+    guidance: 4.5
+    sampling: { seed: 73503, steps: 28, cfg: 1, sampler: euler, scheduler: simple }
+    prompt: >-
+      st25style, a painted early-1990s VGA sci-fi adventure game character portrait of Commander William Riker from Star Trek: The
+      Next Generation, played by Jonathan Frakes: head and shoulders, slight three-quarter view, short dark brown hair swept back, short
+      neatly trimmed full beard, blue-grey eyes, black high-collared uniform tunic, warm orange key light from the right, teal blue shadows
+      on the left side of the face, thin blue rim light, mottled dark blue background, visible brush strokes
+    denoise: 0.35
+    loras: [{ model: flux-st25style-lora, strength: 0.9 }]
+    from: id-plain
+    palette: 0.3
+  - name: idlast-d40
+    model: sdxl
+    sampling: { seed: 73701, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      r3tr0, retro game art, digital painting of Commander William Riker from Star Trek: The Next Generation (Jonathan Frakes) in his
+      late thirties, head and shoulders portrait, slight three-quarter view, short dark brown hair swept back, short neatly trimmed full
+      beard, blue-grey eyes, black high-collared uniform tunic, warm orange key light from the right, teal blue shadows on the left side of
+      the face, thin blue rim light, mottled dark blue painted background, bold painterly brushwork, early 1990s computer game character
+      portrait
+    negative: photograph, photo, 3d render, smooth airbrushed skin, cartoon, anime, text, watermark, signature, deformed, blurry, long bushy beard, glowing eyes, hat
+    denoise: 0.4
+    from: st-det-d45
+    detail: { expand: 1.3, feather: 0.3 }
+    faceid:
+      - { model: ip-adapter-faceid-plusv2-sdxl, lora: { model: ip-adapter-faceid-plusv2-sdxl-lora, strength: 0.7 }, weight: 1.0, v2: 1.5 }
+      - { model: ip-adapter-faceid-portrait-sdxl-unnorm, weight: 0.8 }
+    plusFace: { weight: 0.4 }

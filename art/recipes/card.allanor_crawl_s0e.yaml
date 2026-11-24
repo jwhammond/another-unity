@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# M6 NPC card: allanor.death_crawl (screen allanor.s0e, sprite w2s10dth.spr). A prop card (a still of the sprite's first frame, upscaled 4x and lightly repainted, silhouette
+# and position kept exactly); `art masks allanor.s0e` stands it over the plate. Generic prompt: no game text.
+# The recipe first named anim 208, an entry offset, not an index (the sprite has 3 animations, 0-2); anim 1 is the one that starts on the frame the original draws (0002).
+id: card.allanor_crawl_s0e
+kind: card
+object: allanor_crawl_s0e
+sprite: w2s10dth.spr
+anims: [1]
+prop: { screen: allanor.s0e, objects: [allanor.death_crawl], anim: 1 }
+group: 1
+sampling: { seed: 92107, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  a smooth grey metallic egg-shaped hovering robot shell, glossy physically based metal, soft studio light, sharp focus, neutral grey background
+negative: blurry, painting, cartoon, cel shading, pixel art, text, watermark, deformed, extra limbs, extra people, noisy, speckled
+denoise: 0.2
+depth: { strength: 0.8 }
+lineart: { strength: 1.0 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14, speckle: 0.6 }

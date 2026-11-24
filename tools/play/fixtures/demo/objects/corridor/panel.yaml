@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: panel
+name: Control Panel
+screen: corridor
+at: panel
+description: { text: "An alien control panel. It is dark." }
+on:
+  use:
+    - when:
+        other: tricorder
+        near: { dist: 1 }
+        who: data
+      do:
+        - say: { who: data, text: "The panel draws power from a buried conduit.", voice: "d@01" }
+        - choose:
+            question: "Reroute the power?"
+            options:
+              - text: "Reroute it"
+                do:
+                  - do:
+                      - alter: { object: door, state: 1 }
+                      - path: { enable: [doorway] }
+                      - say: { who: picard, text: "Well done, Mr. Data." }
+              - text: "Leave it"
+                do:
+                  - do:
+                      - say: { who: picard, text: "Leave it for now." }
+        - alter: { object: panel, state: 1 }
+          stop: true
+    - do:
+        - say: { who: picard, text: "We need to understand it first." }

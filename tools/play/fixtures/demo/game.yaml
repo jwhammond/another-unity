@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+id: demo
+start:
+  screen: corridor
+  entrance: arrival
+  awayTeam: [picard, data]
+  leader: picard
+  seed: 42
+rules:
+  talkDistance: 2
+  items: { phaser: phaser, tricorder: tricorder, communicator: communicator }
+  lines:
+    failTalk: { conversation: ship, situation: 2 }
+    failUse: { conversation: ship, situation: 3 }
+    failOther: { conversation: ship, situation: 4 }
+    failPhaser: { conversation: ship, situation: 5 }
+    tricorderNothing: { conversation: ship, situation: 23 }

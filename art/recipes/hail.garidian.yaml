@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Static repaint of a viewscreen caller (the Garidian commander's hail): the sprite's first frame, upscaled 4x and repainted lightly.
+# Faithful but modernised: pose, costume, framing and the frame's edges stay; skin, cloth and light are cleaner. Generic prompt: no game text,
+# no show, species or actor names. No show reference fits this character, so no IP-Adapter reference.
+id: hail.garidian
+kind: repaint
+source: { hail: viewpent }
+sampling: { seed: 170001, steps: 30, cfg: 4.5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a woman with short white hair and sharp dark arched eyebrows, pale skin, red lips, high collared red and orange uniform,
+  seated in a dim green panelled room with purple window blinds, realistic skin and fabric, soft cinematic light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, watermark, deformed, extra people, extra limbs, blurry
+denoise: 0.35
+depth: { strength: 1.0 }
+lineart: { strength: 0.9 }
+size: { work: [1536, 728], out: [2120, 1008] }
+post:
+  - depth: { resolution: 1024 }
+  - align: { maxShift: 2 }

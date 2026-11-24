@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Batch 8b rollout, a script-played animated prop: the isolinear rod of Horst III's fourth screen (o_070406, horst3.s04). Off at entry. `aperture` turns it on and plays animation 0
+# (6 frames, w7s4rod.spr, 98x76 at 530,320); `isolinear_rod` plays animation 2 (5 frames, to a pause) and turns it off. Animation 3 only jumps back to 0 and no script plays it.
+# Generic prompt: no game text.
+id: card.horst3_isolinear_rod
+kind: card
+object: horst3_isolinear_rod
+sprite: w7s4rod.spr
+anims: [0, 2]
+prop: { screen: horst3.s04, objects: [horst3.isolinear_rod], anim: 0, animate: [0, 2] }
+group: 2
+sampling: { seed: 92401, steps: 20, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  photograph of a short green cylindrical tube with a pale band around it, a glowing data rod, science fiction prop, soft studio light, sharp focus
+negative: cartoon, painting, cel shading, pixel art, text, letters, watermark, deformed, people, blurry
+denoise: 0.35
+lineart: { strength: 0.9 }
+checks: { flickerRatio: 2.5, flickerMax: 14, deltaE: 14 }

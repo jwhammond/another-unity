@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# A generic test material (Plan 14 Task 6): brushed grey panelling, tileable. Not derived from the game.
+# Tuning notes (seamRatio fine / coarse after the inpaint), same prompt family, 1024 px, 30 steps:
+#   "flat grey panels in a grid" seeds 6001-6002 gave a mosaic of tiny tiles with a lit patch and a dark band at the
+#   wrap; the fine ratio passed (0.33) but the coarse one (brightness jump at the wrap) did not (7.3).
+#   Asking for uniform lighting and large panels, negative "glare, highlight, light falloff, mosaic": seed 6003
+#   band 96 d0.7 coarse 1.88 (fail), 6004 band 64 d0.8 coarse 4.19 (fail), this one passes and looks seamless in the 3x3.
+id: tex.panel-grey
+kind: texture
+sampling: { seed: 6005, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+prompt: >-
+  seamless tileable albedo texture, large rectangular brushed grey metal wall panels with thin dark seams and a
+  few small recessed screws, perfectly uniform diffuse lighting with no highlights or shadows, flat straight-on
+  orthographic view, physically based material, high detail
+negative: >-
+  perspective, vignette, shadow, gradient, glare, highlight, reflection, light falloff, text, watermark, logo,
+  border, frame, people, rust, dirt, stripes, tiny tiles, mosaic
+size: 1024
+seam: { band: 96, denoise: 0.8 }
+post:
+  - normal: { strength: 2 }
+  - tilePreview: true
