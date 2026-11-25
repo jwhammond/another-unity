@@ -498,6 +498,19 @@ mouth doesn't shimmer the rest of the face. Each repainted strip must pass the c
 two hours for all five cold. It needs `COMFY_URL` (or a local ComfyUI) for the upscaler. A run beside another on the same ComfyUI uploads its frames under its own
 name (`makeCard`'s `input`), because the shared `card-in` is overwritten by whoever uploads last.
 
+**Painting from masters** (`master:` in a `bridgecrew` recipe, bridgerepaint.ts `paintFromMasters`) replaces painting each frame alone and
+holding it. A frame that differs from an earlier master in at most `maxChange` of its figure takes that master's paint, and only what moved is
+repainted. That is the differing pixels, grown by `grow` and faded over `feather`, painted under a noise mask at `denoise` (else the recipe's).
+Every pixel that stays still is the master's paint exactly, so a talking face cannot shimmer elsewhere. Any other frame is a master, painted whole
+with its head pass. `hold` doesn't apply; `fixups` do, after. With `faceFromMaster`, a frame painted from a master is pulled toward the master's own
+painted head (cropped as the head pass crops it, at `faceWeight`) instead of the face references, so a head that turns or talks keeps its master's face.
+
+**Trying a recipe without publishing it:** `art bridge trial <recipe.yaml…>` makes one crew member's strips from each recipe file and sets
+their idle and talk animations over the bridge plate. Each recipe sits in a folder of its own, named for the variant, under the file name
+its id needs. The output goes to `$ART_CACHE/work/bridge-trial/<folder>.<id>/`: a sheet and a video of each animation, and, for several
+recipes, `idles.mp4` with their idles side by side. Paints are cached as for publishing, so a variant that shares a master's paint costs only
+what it paints anew.
+
 **Crew.** `art strips <object> [--sprite <file>] --upscale-only` turns a sprite's used animations into strips of equal cells, with one anchor
 per animation, the dithered foot patch smoothed, and the sprite's own pixel height (`pixelHeight`). A `card.<id>.yaml` recipe (`kind: card`)
 repaints those frames toward a likeness: `art batch art/recipes/card.worf.yaml`. The original alpha is forced onto every repainted frame,

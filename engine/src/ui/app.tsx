@@ -16,6 +16,7 @@ import type { AstroFonts } from '../view/bitmapText';
 import { actionLine, VERBS, type Dialog, type SpokenLine, type UiStore, type VerbMode } from './store';
 import { setTheatre } from './theatre';
 import { useStore } from './useStore';
+import type { FeedbackPort } from '../web/feedback';
 
 /** The interface strip of a ship plate, in the original's pixels: rows 364 to 480 of the 640 by 480 screen (the bridge's STRIP). */
 const STRIP_TOP = 364 / 480;
@@ -78,6 +79,8 @@ export interface UiSession {
   adminArt?: () => AdminArt | undefined;
   /** The game's bitmap fonts (art.fonts), which the admin console's words are drawn in, whatever the art setting; null until loaded or without them. */
   adminFonts?: () => AstroFonts | null;
+  /** The FEEDBACK page's check and send; absent where the site has none. */
+  feedback?: FeedbackPort;
 }
 
 const VERB_LABELS: Record<VerbMode, string> = { walk: 'Walk', look: 'Look', use: 'Use', talk: 'Talk' };
@@ -94,6 +97,12 @@ export function GameUi({ ui }: { ui: UiSession }) {
   const toggleLog = () => ui.store.set({ panel: state.panel === 'transcript' ? 'none' : 'transcript' });
   // (the original's admin button drops the held item first: phase4_rest.md §6.1; a refused press, say in a battle, keeps it)
   const openAdmin = ui.settings ? () => { if (ui.settings?.openAdmin()) ui.store.set({ held: null }); } : undefined;
+  // (the bar's Feedback: the admin console, opened on its FEEDBACK page)
+  const openFeedback = ui.settings && ui.feedback ? () => {
+    ui.store.set({ adminStart: 'feedback' });
+    if (ui.settings?.openAdmin()) ui.store.set({ held: null });
+    else ui.store.set({ adminStart: null });
+  } : undefined;
   const labels = useHotspotLabels();
   // H shows or hides the names and outlines over the clickable areas (not while typing, and not with a modifier)
   useEffect(() => {
@@ -214,10 +223,11 @@ export function GameUi({ ui }: { ui: UiSession }) {
           <button aria-pressed={state.panel === 'transcript'} onClick={toggleLog}>Log</button>
           <button aria-pressed={labels} title="Show the names and outlines over the clickable areas (H)" onClick={() => setHotspotLabels(!labels)}>Hotspots</button>
           {openAdmin && <button aria-pressed={state.panel === 'admin'} onClick={openAdmin}>Admin</button>}
+          {openFeedback && <button title="Tell us about a bug or anything else" onClick={openFeedback}>Feedback</button>}
         </div>
       </div>}
       <Transcript lines={state.transcript} open={state.panel === 'transcript'} />
-      {state.panel === 'admin' && ui.settings && <AdminConsole settings={ui.settings} saves={ui.saves} store={ui.store} art={ui.adminArt?.()} fonts={ui.adminFonts?.()} />}
+      {state.panel === 'admin' && ui.settings && <AdminConsole settings={ui.settings} saves={ui.saves} store={ui.store} art={ui.adminArt?.()} fonts={ui.adminFonts?.()} feedback={ui.feedback} />}
       {state.dialog && <DialogView dialog={state.dialog} store={ui.store} tricorder={aboard ? undefined : faces?.tricorder()} />}
       {state.message && (
         <div class="au-message" role="alert">

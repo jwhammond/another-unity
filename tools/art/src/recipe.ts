@@ -277,6 +277,34 @@ export const bridgeCrewRecipe = cardRecipe
     fixups: z
       .array(z.object({ anim: z.number().int().min(0), frame: z.number().int().min(0), box: z.tuple([z.number().int().min(0), z.number().int().min(0), z.number().int().positive(), z.number().int().positive()]), from: z.number().int().min(0), mode: z.enum(['copy', 'tone']).optional() }).strict())
       .optional(),
+    /**
+     * Frames painted from masters (bridgerepaint.ts paintFromMasters), in place of each frame painted alone and held: a frame that differs from an
+     * earlier master in at most `maxChange` of its figure takes that master's paint, with only what moved (grown by `grow` upscaled pixels and
+     * blended in over `feather`) repainted, at `denoise` (else the recipe's), in the master's colours. Any other frame is a master of its own,
+     * painted whole. Nothing that stays still can change, so nothing shimmers. `hold` doesn't apply; `fixups` do, after.
+     */
+    master: z
+      .object({
+        maxChange: z.number().min(0).max(1).default(0.35),
+        grow: z.number().min(0).max(128).default(16),
+        feather: z.number().min(1).max(128).default(12),
+        denoise: z.number().min(0.1).max(1).optional(),
+        /**
+         * The likeness a frame painted from a master is pulled toward: the master's own painted head (its head box, as the head pass crops it) in
+         * place of the face references, at `faceWeight` (else theirs). A head that turns or talks then keeps the face the master was given.
+         */
+        faceFromMaster: z.boolean().default(false),
+        /** The recipe's head pass (`face`) on a frame painted from a master whose head moved, as a master's is: the face as good as a master's. */
+        facePass: z.boolean().default(false),
+        /**
+         * The head pass painted for several frames at once: a master's head with those of its frames whose head moved, this many to one canvas, as
+         * the room crew's frames are painted together, so they come out as one face. Every frame's body is painted first, its head last.
+         */
+        headGroup: z.number().int().min(1).max(6).optional(),
+        faceWeight: z.number().min(0).max(1.5).optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type BridgeCrewRecipe = z.infer<typeof bridgeCrewRecipe>;

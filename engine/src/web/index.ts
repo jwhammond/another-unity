@@ -36,3 +36,4 @@ export * from './cues';
 export * from '../dev/trace';
 // (the overlay itself is its own entry, '@another-unity/engine/dev/overlay', so the app can load it only for ?dev)
 export type { DevPort } from '../dev/overlay';
+export * from './feedback';

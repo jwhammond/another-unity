@@ -16,10 +16,16 @@ export interface KitDeps {
  * The pictures to publish: portraits by file id and icons by item, and for a portrait the other object ids it is recorded under (`speakers`:
  * the game's objects that show the same head, e.g. each id of one character, which the subtitle looks up by its object name).
  */
-export interface Kit { portraits: Record<string, string>; icons: Record<string, string>; speakers: Record<string, string[]> }
+export interface Kit {
+  portraits: Record<string, string>;
+  icons: Record<string, string>;
+  speakers: Record<string, string[]>;
+  /** For an icon, the game objects it is recorded under besides its own id (IconRecipe.objects). */
+  iconObjects?: Record<string, string[]>;
+}
 
 /** The ids with an avatar in `dir` (<id>.png, but not the sheets and variants: <id>.<something>.png) among `crew`, and the item icons (item.<object>.png) among `items`. */
-export async function findKit(dir: string, crew: string[], items: string[], speakers: Record<string, string[]> = {}): Promise<Kit> {
+export async function findKit(dir: string, crew: string[], items: string[], speakers: Record<string, string[]> = {}, iconObjects: Record<string, string[]> = {}): Promise<Kit> {
   const names = new Set(await readdir(dir));
   const portraits: Record<string, string> = {};
   const icons: Record<string, string> = {};
@@ -29,8 +35,13 @@ export async function findKit(dir: string, crew: string[], items: string[], spea
       portraits[id] = join(dir, `${id}.png`);
       if (speakers[id]?.length) aliases[id] = speakers[id]!;
     }
-  for (const id of items) if (names.has(`item.${id}.png`)) icons[id] = join(dir, `item.${id}.png`);
-  return { portraits, icons, speakers: aliases };
+  const objects: Record<string, string[]> = {};
+  for (const id of items)
+    if (names.has(`item.${id}.png`)) {
+      icons[id] = join(dir, `item.${id}.png`);
+      if (iconObjects[id]?.length) objects[id] = iconObjects[id]!;
+    }
+  return { portraits, icons, speakers: aliases, iconObjects: objects };
 }
 
 /**
@@ -38,14 +49,14 @@ export async function findKit(dir: string, crew: string[], items: string[], spea
  * pixels stay hard) and presentation.yaml's art.portraits.<crew> and art.icons.<item>. Local and git-ignored, like the rest of art/.
  * Every WebP is read back and must be the PNG exactly; a mismatch refuses the publish before anything is renamed or recorded.
  */
-export async function publishKit(gameDir: string, kit: Pick<Kit, 'portraits' | 'icons'> & Partial<Pick<Kit, 'speakers'>>, deps: KitDeps = {}): Promise<string[]> {
+export async function publishKit(gameDir: string, kit: Pick<Kit, 'portraits' | 'icons'> & Partial<Pick<Kit, 'speakers' | 'iconObjects'>>, deps: KitDeps = {}): Promise<string[]> {
   const encode = deps.encode ?? ((png, out) => toWebp(png, out, { quality: 100, lossless: true }));
   const decode = deps.decode ?? readWebp;
   const jobs: { section: 'portraits' | 'icons'; id: string; png: string; rel: string }[] = [];
   for (const [id, png] of Object.entries(kit.portraits)) jobs.push({ section: 'portraits', id, png, rel: `art/avatars/${id}.webp` });
   for (const [id, png] of Object.entries(kit.icons)) jobs.push({ section: 'icons', id, png, rel: `art/icons/${id}.webp` });
   for (const j of jobs) if (!/^[a-z0-9_]+$/.test(j.id)) throw new Error(`"${j.id}" isn't an object id`);
-  for (const others of Object.values(kit.speakers ?? {})) for (const who of others) if (!/^[a-z0-9_.]+$/.test(who)) throw new Error(`"${who}" isn't an object id`);
+  for (const others of [...Object.values(kit.speakers ?? {}), ...Object.values(kit.iconObjects ?? {})]) for (const who of others) if (!/^[a-z0-9_.]+$/.test(who)) throw new Error(`"${who}" isn't an object id`);
   const staged: { tmp: string; dest: string }[] = [];
   try {
     for (const j of jobs) {
@@ -69,6 +80,8 @@ export async function publishKit(gameDir: string, kit: Pick<Kit, 'portraits' | '
     for (const who of others) {
       if (kit.portraits[id]) doc.setIn(['art', 'portraits', who], `art/avatars/${id}.webp`);
     }
+  for (const [id, objects] of Object.entries(kit.iconObjects ?? {}))
+    for (const o of objects) if (kit.icons[id]) doc.setIn(['art', 'icons', o], `art/icons/${id}.webp`);
   await writeFile(path, String(doc));
   return jobs.map(j => j.rel);
 }

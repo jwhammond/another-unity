@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# A mission item's inventory icon repainted (art icon) from the game's own: w4s8iext.spr (icon.map), shown by 1 object.
+# Two denoise levels; picked on the review sheet (items.compare.png, 2026-11-25): the pixel version of d65.
+id: icon.pulse_negator
+kind: icon
+object: pulse_negator
+objects:
+  - lab.pulse_negator
+source: { sprite: w4s8iext.spr, frame: 0 }
+pixel: { kmeans: 24, scale: 4 }
+variants:
+  - name: d50
+    sampling: { seed: 75030, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of a tangle of fine wires and small components around a red cross-shaped core, an engineering part, studio product shot, soft key light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.5
+    palette: 0.4
+  - name: d65
+    sampling: { seed: 75031, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of a tangle of fine wires and small components around a red cross-shaped core, an engineering part, studio product shot, soft key light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.65
+    palette: 0.4
+pick: d65

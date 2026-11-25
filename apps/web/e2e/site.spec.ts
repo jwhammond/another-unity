@@ -45,8 +45,8 @@ for (const m of MISSIONS) {
 test('the A Final Unity "Missions" pill lands on the list of the worlds', async ({ page }) => {
   await page.goto('/engineering/afu/missions/zoo/');
   await page.getByRole('navigation', { name: 'A Final Unity' }).getByRole('link', { name: 'Missions' }).click();
-  await page.waitForURL('**/engineering/afu/#missions');
-  await expect(page.locator('#missions').getByRole('navigation', { name: 'Worlds' }).getByRole('link')).toHaveCount(6);
+  await page.waitForURL('**/engineering/afu/missions/');
+  await expect(page.getByRole('navigation', { name: 'Worlds' }).getByRole('link')).toHaveCount(6);
 });
 
 test('the Enterprise page shows the engineering, holodeck and astrogation screens when the media is built, placeholders otherwise', async ({ page }) => {
@@ -98,11 +98,11 @@ test('an old game link opens the game at /play/afu/', async ({ page }) => {
   await expect(page.locator('#loading, canvas').first()).toBeAttached();
 });
 
-test('home: the game card opens its details and ENGAGE opens the game tab', async ({ page, context }) => {
+test('home: the game card is open on load, and ENGAGE opens the game tab', async ({ page, context }) => {
   const errors: string[] = []; page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Another Unity/i);
-  await page.locator('[data-game="afu"]').click();
+  await expect(page.locator('[data-game="afu"]')).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByText('It is currently in beta playtests.')).toBeVisible();
   const [tab] = await Promise.all([context.waitForEvent('page'), page.getByRole('button', { name: /engage/i }).click()]);
   await tab.waitForURL('**/play/afu/', { waitUntil: 'commit' });
@@ -115,7 +115,6 @@ test('home: the game card opens its details and ENGAGE opens the game tab', asyn
 
 test('home: pressing ENGAGE twice focuses the game tab and does not restart it', async ({ page, context }) => {
   await page.goto('/');
-  await page.locator('[data-game="afu"]').click();
   const [tab] = await Promise.all([context.waitForEvent('page'), page.getByRole('button', { name: /engage/i }).click()]);
   await tab.waitForURL('**/play/afu/', { waitUntil: 'commit' });
   await tab.waitForLoadState('domcontentloaded');
@@ -129,25 +128,22 @@ test('home: pressing ENGAGE twice focuses the game tab and does not restart it',
   await tab.close();
 });
 
-test('engineering hub links to every sub-page, and the A Final Unity pages link to each other', async ({ page }) => {
-  await page.goto('/engineering/');
+test('the missions page links to every mission, and the A Final Unity pages link to each other', async ({ page }) => {
+  await page.goto('/engineering/afu/missions/');
   const hrefs = await page.locator('.lc-hub a').evaluateAll(as => as.map(a => a.getAttribute('href')));
-  for (const h of ['/engineering/engine/', '/engineering/afu/', '/engineering/afu/characters/', '/engineering/afu/enterprise/', ...['horst3', 'mertens', 'allanor', 'zoo', 'frigis', 'unity'].map(w => `/engineering/afu/missions/${w}/`)])
-    expect(hrefs).toContain(h);
-  for (const path of ['/engineering/afu/', '/engineering/afu/characters/', '/engineering/afu/enterprise/', '/engineering/afu/missions/zoo/']) {
+  for (const h of ['horst3', 'mertens', 'allanor', 'zoo', 'frigis', 'unity'].map(w => `/engineering/afu/missions/${w}/`)) expect(hrefs).toContain(h);
+  for (const path of ['/engineering/afu/', '/engineering/afu/characters/', '/engineering/afu/enterprise/', '/engineering/afu/tactical/', '/engineering/afu/missions/', '/engineering/afu/missions/zoo/']) {
     await page.goto(path);
-    await expect(page.locator('.lc-subnav a')).toHaveCount(4);
+    await expect(page.locator('.lc-subnav a')).toHaveCount(5);
   }
 });
 
-test('home: screenshots of the page, collapsed and expanded, wide and narrow', async ({ page }) => {
+test('home: screenshots of the page (A Final Unity open on load), wide and narrow', async ({ page }) => {
   test.skip(!process.env.SHOTS, 'set SHOTS=<dir> to write screenshots');
   for (const [name, w, h] of [['1280', 1280, 900], ['390', 390, 844]] as const) {
     await page.setViewportSize({ width: w, height: h });
     await page.goto('/');
     await expect(page.locator('[data-game="afu"]')).toBeVisible();
-    await page.screenshot({ path: `${process.env.SHOTS}/home-${name}-collapsed.png`, fullPage: true });
-    await page.locator('[data-game="afu"]').click();
     await expect(page.getByText('It is currently in beta playtests.')).toBeVisible();
     await page.screenshot({ path: `${process.env.SHOTS}/home-${name}-expanded.png`, fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -157,7 +153,7 @@ test('home: screenshots of the page, collapsed and expanded, wide and narrow', a
 test('engineering pages: one h1 each, the AI note on the engine page, no console errors', async ({ page }) => {
   const errors: string[] = []; page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('requestfailed', r => errors.push(`failed: ${r.url()}`));
-  for (const path of ['/engineering/', '/engineering/engine/', '/engineering/afu/']) {
+  for (const path of ['/engineering/engine/', '/engineering/afu/', '/engineering/afu/tactical/', '/engineering/afu/missions/']) {
     await page.goto(path);
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     await expect(page.locator('.lc-frame')).toHaveCount(1);
@@ -174,7 +170,7 @@ test('engineering pages: element screenshots, wide and narrow', async ({ page })
   test.skip(!process.env.SHOTS, 'set SHOTS=<dir> to write screenshots');
   for (const [name, w, h] of [['1280', 1280, 900], ['390', 390, 844]] as const) {
     await page.setViewportSize({ width: w, height: h });
-    for (const [slug, path] of [['engineering', '/engineering/'], ['engine', '/engineering/engine/'], ['afu', '/engineering/afu/'], ['characters', '/engineering/afu/characters/'], ['enterprise', '/engineering/afu/enterprise/'], ['mission', '/engineering/afu/missions/mertens/']]) {
+    for (const [slug, path] of [['engine', '/engineering/engine/'], ['tactical', '/engineering/afu/tactical/'], ['missions', '/engineering/afu/missions/'], ['afu', '/engineering/afu/'], ['characters', '/engineering/afu/characters/'], ['enterprise', '/engineering/afu/enterprise/'], ['mission', '/engineering/afu/missions/mertens/']]) {
       await page.goto(path);
       await expect(page.locator('.lc-frame')).toBeVisible();
       await page.evaluate(() => Promise.all([...document.images].map(i => { i.loading = 'eager'; return i.decode().catch(() => {}); })));

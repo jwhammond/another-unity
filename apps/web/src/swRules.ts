@@ -16,7 +16,7 @@ const CODE_EXT = /\.(m?js|css|woff2?|svg)$/i;
 
 /** Files of the shell that sit outside /assets/ (the index, and what public/ holds). */
 export const GAME_PAGE = '/play/afu/';
-export const SITE_PAGES = ['/', '/engineering/', '/engineering/engine/', '/engineering/afu/', '/engineering/afu/characters/', '/engineering/afu/enterprise/',
+export const SITE_PAGES = ['/', '/engineering/engine/', '/engineering/afu/', '/engineering/afu/characters/', '/engineering/afu/enterprise/', '/engineering/afu/tactical/', '/engineering/afu/missions/',
   ...['horst3', 'mertens', 'allanor', 'zoo', 'frigis', 'unity'].map(w => `/engineering/afu/missions/${w}/`)];
 export const SHELL_ROOT = ['/index.html', `${GAME_PAGE}index.html`, '/icon.svg', '/manifest.webmanifest', ...SITE_PAGES.filter(p => p !== '/').map(p => `${p}index.html`)];
 

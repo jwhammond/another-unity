@@ -16,7 +16,7 @@ import type { ExperimentalFamily } from './families';
 import { BUDGET_BYTES, chosenResult, runBench, type BenchCase, type BenchFile } from './bench';
 import { checkComfyUrl, ComfyHttp, isLoopback, withGenerator } from './comfy';
 import type { Models, Sampling } from './graphs';
-import { decodePng, encodePng, type Rgba } from './image';
+import { areaResize, decodePng, encodePng, type Rgba } from './image';
 import { gen, parseSize, samplingFor } from './gen';
 import { blenderPath, runBlender, runBlenderRecipe } from './blender';
 import { CARD_SCALE, makeCard, makeStrips, publishCard, publishStrips, upscaledAlphaKey, writeCardMeta } from './card';
@@ -34,7 +34,8 @@ import { exportShipOriginals, readZipMember, shipOriginal, type ItemRect } from 
 import { backgroundOf, parseRecipe, plateStation, PLATE_STEMS, type PlateStation, type RepaintRecipe, type Recipe } from './recipe';
 import { shipInputs } from './shipscreen';
 import { bridgeStrips, readScript, viewStrips, type BridgeStrip, type Upscale, type ViewStrip } from './bridgeanim';
-import { recipeRepaint } from './bridgerepaint';
+import { recipeRepaint, repaintFromFile } from './bridgerepaint';
+import { grid, overPlate } from './bridgetrial';
 import { bridgePalette, colourFrame, firstSpriteFrame, firstSpritePosition, shipGameZip, viewFrame, viewPalette } from './shipsprite';
 import { hailOriginal, publishHail } from './hail';
 import { edgePoints, EDGE_POINTS } from './points';
@@ -145,7 +146,7 @@ async function bridgeCrew(images: string | undefined, log: (m: string) => void, 
  * The bridge crew's animation strips for `art ship publish`: each sprite decoded again from the game's .spr with the bridge's palette, played from
  * the idle animation (and the ship's idle and talk ones), every frame at its own offset from the card's place.
  */
-async function bridgeStripsFor(images: string | undefined, log: (m: string) => void, background?: Rgba): Promise<{ object: string; file: string; strips: Map<number, BridgeStrip> }[]> {
+async function bridgeStripsFor(images: string | undefined, log: (m: string) => void, background?: Rgba, pick?: { object: string; recipe: string }): Promise<{ object: string; file: string; strips: Map<number, BridgeStrip> }[]> {
   const ship = parseYaml(readFileSync(join(REPO, 'games', 'unity', 'ship.yaml'), 'utf8')) as ShipYaml;
   const zip = gameZip();
   const palette = bridgePalette(await readZipMember(zip, 'bridge.rm'), await readZipMember(zip, 'standard.pal'));
@@ -173,9 +174,12 @@ async function bridgeStripsFor(images: string | undefined, log: (m: string) => v
     };
     const out = [];
     for (const o of ship.bridge.objects) {
+      // (`art bridge trial`: one crew member, from a recipe file of its own)
+      if (pick && o.object !== pick.object) continue;
       const script = readScript(await readZipMember(zip, o.file.toLowerCase()));
       // (Plan 33: a crew member with a recipe, art/recipes/bridgecrew.<object>.yaml, is repainted over the upscale)
-      const repaint = await recipeRepaint(join(REPO, 'art', 'recipes'), o.object, { generator: g, models, cache, scale: CARD_SCALE, log });
+      const deps = { generator: g, models, cache, scale: CARD_SCALE, log };
+      const repaint = pick ? await repaintFromFile(pick.recipe, o.object, deps) : await recipeRepaint(join(REPO, 'art', 'recipes'), o.object, deps);
       const strips = await bridgeStrips(script, palette, [o.x, o.y], spots[o.file] ?? [o.x, o.y], background, undefined, upscale, o.file, repaint);
       log(`${o.object}: ${[...strips].map(([i, s]) => `anim ${i} ${s.frames} frames${s.loop ? ' loop' : s.next !== undefined ? ` then ${s.next}` : ''}`).join(', ')}`);
       out.push({ object: o.object, file: o.file, strips });
@@ -204,7 +208,7 @@ async function publishPlate(cache: ReturnType<typeof artCache>, recipe: RepaintR
   return files;
 }
 
-const USAGE = 'usage: art doctor | art refs list [--season N] | art refs scan --season N --episode N [--every 20] | art refs grab [--manifest art/refs/ship.yaml] [--only id…] [--record] | art refs board [--manifest art/refs/ship.yaml] [--tag crew:riker] | art fetch [--model <id>] [--record] | art gen --prompt <text> [--seed N] [--size WxH] --out <file.png> | art bench [--runs 3] [--out art/bench/<date>-m5-pro.yaml] | art blender <script.py> [--params <json>] --out <file.glb> | art run <recipe.yaml> | art verify <recipe.yaml> | art batch <recipe.yaml…> | art post <recipe.yaml> [--run dir | --all] | art publish <recipe.yaml> | art card <object> <frame.png> | art align <plate.png> --screen <world.sNN> [--max-shift 2] | art masks <world.sNN> | art strips <object> [--sprite <file>] --upscale-only | art ship originals | art hail publish <name> | art ship build [bridge] | art ship publish [station] [--set] | art half | art sheet plate.<station> | art compare <file.yaml> [--family f] [--variant v] [--fresh] [--sheet-only] [--wait <minutes>] | art avatar <recipe.yaml> [--variant v|grab] [--sheet-only] [--base-only] | art avatars <recipe.yaml…> [--name crew.compare] | art icon <recipe.yaml…> [--variant v] [--sheet-only] [--name kit.compare] | art publish-kit | art panel publish | art cursors publish | art tricorder publish | art phaser publish | art astro publish | art transporter publish | art sensor publish | art engineering publish | art holodeck publish';
+const USAGE = 'usage: art doctor | art refs list [--season N] | art refs scan --season N --episode N [--every 20] | art refs grab [--manifest art/refs/ship.yaml] [--only id…] [--record] | art refs board [--manifest art/refs/ship.yaml] [--tag crew:riker] | art fetch [--model <id>] [--record] | art gen --prompt <text> [--seed N] [--size WxH] --out <file.png> | art bench [--runs 3] [--out art/bench/<date>-m5-pro.yaml] | art blender <script.py> [--params <json>] --out <file.glb> | art run <recipe.yaml> | art verify <recipe.yaml> | art batch <recipe.yaml…> | art post <recipe.yaml> [--run dir | --all] | art publish <recipe.yaml> | art card <object> <frame.png> | art align <plate.png> --screen <world.sNN> [--max-shift 2] | art masks <world.sNN> | art strips <object> [--sprite <file>] --upscale-only | art ship originals | art hail publish <name> | art ship build [bridge] | art ship publish [station] [--set] | art half | art sheet plate.<station> | art compare <file.yaml> [--family f] [--variant v] [--fresh] [--sheet-only] [--wait <minutes>] | art avatar <recipe.yaml> [--variant v|grab] [--sheet-only] [--base-only] | art avatars <recipe.yaml…> [--name crew.compare] | art icon <recipe.yaml…> [--variant v] [--sheet-only] [--name kit.compare] | art publish-kit | art panel publish | art bridge trial <recipe.yaml…> | art cursors publish | art tricorder publish | art phaser publish | art astro publish | art transporter publish | art sensor publish | art engineering publish | art holodeck publish';
 
 function run(cmd: string, args: string[]): Promise<{ code: number; out: string }> {
   return new Promise((resolve, reject) => {
@@ -1122,6 +1126,68 @@ export async function runArt(argv: string[], log: (line: string) => void): Promi
     log(`published the phaser's table: ${table.muzzles.length} muzzles for ${table.crew.join(', ')}`);
     return 0;
   }
+  if (cmd === 'bridge' && rest[0] === 'trial') {
+    // a crew member's strips from each recipe file, over the bridge's plate: a sheet and a video of each animation, and the idles side by side;
+    // published nowhere (bridgetrial.ts). Under $ART_CACHE/work/bridge-trial/<file name>/
+    const files = rest.slice(1);
+    if (files.length === 0) {
+      log('usage: art bridge trial <bridgecrew recipe.yaml…>');
+      return 2;
+    }
+    const cache = artCache();
+    const images = process.env.IMAGES_DIR;
+    const bg = join(cache.root, 'originals', 'ship', 'bridge.png');
+    const background = existsSync(bg) ? decodePng(readFileSync(bg)) : undefined;
+    const plate = await readWebp(join(REPO, 'games', 'unity', 'art', 'ship', 'bridge', 'plate.webp'));
+    const shipArt = (parseYaml(readFileSync(join(REPO, 'games', 'unity', 'presentation.yaml'), 'utf8')) as { art: { ship: { bridge: { crew: { object: string; at: [number, number] }[] } } } }).art.ship.bridge;
+    const idles: string[] = [];
+    for (const file of files) {
+      const recipe = parseRecipe(readFileSync(file, 'utf8'), file);
+      if (recipe.kind !== 'bridgecrew') {
+        log(`${file} is not a bridgecrew recipe`);
+        return 2;
+      }
+      // (a recipe's file is named for its id, so variants are told apart by their folders)
+      const name = `${basename(dirname(resolve(file)))}.${basename(file, '.yaml')}`;
+      const out = join(cache.work, 'bridge-trial', name);
+      mkdirSync(out, { recursive: true });
+      const at = shipArt.crew.find(c => c.object === recipe.object)?.at;
+      if (!at) throw new Error(`no ${recipe.object} on the bridge`);
+      const [made] = await bridgeStripsFor(images, log, background, { object: recipe.object, recipe: file });
+      for (const [index, s] of made!.strips) {
+        if (index !== 0 && index !== 2) continue;
+        // (the plate round the figure: its cell's size, a margin, kept on the screen)
+        const w = Math.min(640, Math.ceil(s.cell[0] / s.scale) + 40);
+        const h = Math.min(480, Math.ceil(s.cell[1] / s.scale) + 20);
+        const x = Math.max(0, Math.min(640 - w, Math.round(at[0] - w / 2)));
+        const y = Math.max(0, Math.min(480 - h, at[1] + 10 - h));
+        const shots = Array.from({ length: s.frames }, (_, k) => overPlate(plate, s, k, at, [x, y, w, h]));
+        const dir = join(out, `anim${index}`);
+        mkdirSync(dir, { recursive: true });
+        const list: string[] = [];
+        shots.forEach((f, k) => {
+          writeFileSync(join(dir, `f${String(k).padStart(3, '0')}.png`), encodePng(f));
+          list.push(`file 'f${String(k).padStart(3, '0')}.png'`, `duration ${(Math.max(1, s.delays[k]!) / 1000).toFixed(3)}`);
+        });
+        // (twice through, and the last frame again: the concat demuxer holds the last only if it is named twice)
+        const twice = [...list, ...list, list[list.length - 2]!];
+        writeFileSync(join(dir, 'list.txt'), `${twice.join('\n')}\n`);
+        const video = join(out, `anim${index}.mp4`);
+        const r = await run('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', join(dir, 'list.txt'), '-vf', 'scale=trunc(iw/4)*2:trunc(ih/4)*2,format=yuv420p', '-r', '30', video]);
+        if (r.code !== 0) log(`ffmpeg: ${r.out}`);
+        else if (index === 0) idles.push(video);
+        const small = shots.map(f => areaResize(f, Math.round(f.width / 2), Math.round(f.height / 2)));
+        writeFileSync(join(out, `anim${index}.sheet.png`), encodePng(grid(small, 6)));
+        log(`${name}: anim ${index}, ${s.frames} frames: ${video}`);
+      }
+    }
+    if (idles.length > 1) {
+      const both = join(cache.work, 'bridge-trial', 'idles.mp4');
+      const r = await run('ffmpeg', ['-loglevel', 'error', '-y', ...idles.flatMap(v => ['-i', v]), '-filter_complex', `hstack=inputs=${idles.length}`, both]);
+      log(r.code === 0 ? `side by side: ${both}` : `ffmpeg: ${r.out}`);
+    }
+    return 0;
+  }
   if (cmd === 'cursors' && rest[0] === 'publish') {
     // the away team's pointers (cursor.dat) from the game zip, as they are: each verb's pointer and its lit one, the exit arrows; 4x nearest-neighbour, lossless WebP, art.cursors
     const zip = gameZip();
@@ -1203,7 +1269,13 @@ export async function runArt(argv: string[], log: (line: string) => void): Promi
       const r = avatarRecipe.parse(parseYaml(readFileSync(join(recipes, `avatar.${id}.yaml`), 'utf8')));
       if (r.speakers.length) speakers[id] = r.speakers;
     }
-    const kit = await findKit(outDir, ids('avatar'), ids('icon'), speakers);
+    // (an icon recipe's `objects`: the game objects it is recorded under besides its own name)
+    const iconObjects: Record<string, string[]> = {};
+    for (const id of ids('icon')) {
+      const r = iconRecipe.parse(parseYaml(readFileSync(join(recipes, `icon.${id}.yaml`), 'utf8')));
+      if (r.objects.length) iconObjects[id] = r.objects;
+    }
+    const kit = await findKit(outDir, ids('avatar'), ids('icon'), speakers, iconObjects);
     const written = await publishKit(join(REPO, 'games', 'unity'), kit);
     log(`published ${Object.keys(kit.portraits).length} portraits and ${Object.keys(kit.icons).length} icons from ${outDir}: ${written.join(', ')}`);
     return 0;

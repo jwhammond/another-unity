@@ -20,3 +20,6 @@ hold: { tolerance: 20, feather: 12 }
 # face through the talk. The walks' (3 and 4) flicker is 4.9-6.2 a pair, in the room card's own walk range (median 4.9-6.7); against
 # their medians (0.3, 1.8: mostly a held pose) the room cards' ratio rule would fail them, so the bridge's gate drops that rule and keeps the absolute limits (checks).
 face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
+# Painted from masters (2026-11-24, after the Picard trials in docs/unity-local.md): a frame that moves little from a master keeps its
+# paint and repaints only what moved, and a frame whose head moved has the head pass too, so the body never shimmers between frames.
+master: { maxChange: 0.35, grow: 16, feather: 12, facePass: true }

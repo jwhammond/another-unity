@@ -127,6 +127,46 @@ should leave no long first frame) and at the busiest battle, 82 (148 calls at it
 so it can read higher). A tap resets the worst-case figures. Report the fps, the worst frame
 and the calls, with the phone's model. The overlay is a separate chunk, so a link without `?perf` loads none of it.
 
+## Feedback
+
+The game's SETTINGS > GAME > SEND FEEDBACK page sends a player's report to `functions/api/feedback.ts`, which keeps it in an R2 bucket.
+A report holds what the player wrote, their email if they gave one, and what the game fills in:
+- where they are (screen, ship station, away team, battle), the difficulty and their settings record;
+- the last 30 lines of the conversation log, the build (`au-version`), the browser and screen, and the page's last 50 errors and warnings;
+- their save, unless they turned INCLUDE MY SAVE off. Mid-battle it is the last autosave, since a battle can't be saved.
+
+The player's IP address and the Turnstile token are not kept. Only the country Cloudflare reports is.
+
+**Bots** are kept out by:
+- the request's Origin, which must be this site;
+- the shape and size checks;
+- a hidden trap field, which only a bot fills (its report gets a 201 and is dropped);
+- Cloudflare Turnstile, verified on the server for this hostname and the `feedback` action, with each token good for one send.
+
+The feature stays off (503, and the page says "Feedback cannot be sent from here") until all three settings below exist.
+
+**Setting it up, once:**
+1. **R2:** create a bucket, for example `au-feedback`, under R2 > Create bucket. Then in Workers & Pages > `another-unity` > Settings > Bindings,
+   add an R2 bucket binding named `FEEDBACK` for that bucket. Add it to Production and to Preview if you use previews.
+2. **Turnstile:** Turnstile > Add widget, mode Managed, with hostnames `another-unity.pages.dev` and your own domain when you have one.
+3. **Keys:** in the project's Settings > Variables and Secrets, add:
+   - `TURNSTILE_SITE_KEY` as a plain variable, the widget's site key;
+   - `TURNSTILE_SECRET_KEY` as a secret, the widget's secret key.
+4. **Optional:** add `FEEDBACK_WEBHOOK` as a secret, a Discord or Slack incoming-webhook URL. Each kept report posts one line there.
+5. **Deploy again,** so the new settings take effect. Then send a test report from the game.
+
+**Reading the reports:** R2 > `au-feedback`, under `reports/<date>/`, one JSON file per report, named by its time and its short id. That is
+the id the player was shown. To reproduce a report, save its `save` field to a `.json` file and load it in the game with SETTINGS > GAME > IMPORT.
+
+**Trying it locally:** `deploy:preview` turns feedback on when both keys are set, with a local bucket in place of R2. Turnstile's test keys
+always pass, so the round trip works offline from Cloudflare's checks:
+
+```sh
+TURNSTILE_SITE_KEY=1x00000000000000000000AA TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA E2E_PORT=5292 npm run deploy:preview
+```
+
+A deploy with `DEPLOY_FUNCTIONS=0` has no functions, so it has no feedback either.
+
 ## Headers and caching
 
 `apps/web/deploy/_headers` (copied into the output):

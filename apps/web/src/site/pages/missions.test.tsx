@@ -78,7 +78,7 @@ describe('the mission pages', () => {
     manifest(false);
     const root = await show('zoo');
     const pill = [...root.querySelectorAll('nav[aria-label="A Final Unity"] a')].find(a => a.textContent === 'Missions')!;
-    expect(pill.getAttribute('href')).toBe('/engineering/afu/#missions');
+    expect(pill.getAttribute('href')).toBe('/engineering/afu/missions/');
   });
 
   it('links to the previous and next mission', async () => {

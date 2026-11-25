@@ -8,7 +8,7 @@ afterEach(() => { document.body.innerHTML = ''; vi.unstubAllGlobals(); vi.restor
 const tick = () => new Promise<void>(r => setTimeout(r, 0));
 
 describe('the engineering pages', () => {
-  for (const name of ['engineering', 'engine', 'afu', 'characters', 'enterprise', 'mission']) {
+  for (const name of ['engine', 'afu', 'characters', 'enterprise', 'tactical', 'mission', 'missions']) {
     it(`${name}: renders in one frame with one h1`, async () => {
       const { pageFor } = await import('../loader');
       if (name === 'mission') document.body.dataset.world = 'horst3';
@@ -25,10 +25,15 @@ describe('the engineering pages', () => {
         // (the three screens with no single plate, as pictures of the screen as played; the placeholders name their ids)
         for (const id of ['ship.engineering', 'ship.holodeck', 'ship.astrogation.screen']) expect(root.textContent).toContain(id);
       }
-      if (name === 'afu') {
-        expect(root.querySelectorAll('#missions nav[aria-label="Worlds"] a').length).toBe(6);
-        expect(root.querySelector('#missions[class~="lc-panel"]')).not.toBeNull();
+      if (name === 'missions') {
+        // (the six worlds as a menu at the top, before any panel, then a panel for each with a link to its page)
+        const first = root.querySelector('.lc-content')!.children;
+        expect(first[1]!.matches('nav[aria-label="Worlds"]')).toBe(true);
+        expect(first[1]!.querySelectorAll('a').length).toBe(6);
+        expect(root.querySelectorAll('.lc-hub > .lc-panel').length).toBe(6);
+        expect(root.querySelector('.lc-hub .lc-panel p')!.textContent!.length).toBeGreaterThan(20);
       }
+      if (name === 'afu') expect(root.querySelector('a[href="/engineering/afu/missions/"]')).not.toBeNull();
       if (name === 'engine') {
         expect(root.textContent).toContain('I am not interested in discussions on the topic of AI usage.');
         const svg = root.querySelector('svg[role="img"]')!;

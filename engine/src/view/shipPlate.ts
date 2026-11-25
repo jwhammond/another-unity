@@ -3,6 +3,7 @@ import { DoubleSide, LinearFilter, LinearMipmapLinearFilter, Mesh, MeshBasicMate
 import { CardPlayer } from './actors';
 import type { ArtLoaders, CardAnim, CardArt, Rect, ShipArt } from './art';
 import { BeamRun, dissolveLevel, dissolveTick, setDissolve, type BeamTarget, type SparkleFrame } from './beam';
+import { applyLook, placeShadow, setCell, shadowMesh, type CardLook, type CardShadow, type LookUniforms } from './cardLook';
 import type { PresentationClock } from './timeline';
 import type { ShipSet, Viewport } from './shipSet';
 
@@ -61,6 +62,10 @@ export interface PlateCard {
    * crew use two of their six, and a strip is megabytes.
    */
   only?: number[];
+  /** How it is set into the plate: its edge, its colours (cardLook.ts). Without it, drawn as published. */
+  look?: CardLook;
+  /** A soft shadow on the floor at its feet. */
+  shadow?: CardShadow;
 }
 
 /** The animations to load for a card: `only` and the chain each falls into, or all of them. */
@@ -122,6 +127,10 @@ interface Placed {
   depth: number;
   /** A card that does not animate: its height at full size and its aspect, to lay it out again where it is moved. */
   still?: { heightPx: number; aspect: number; anchor: [number, number] };
+  /** Its look's uniforms (PlateCard.look), kept on the frame it shows. */
+  look?: LookUniforms;
+  /** Its shadow (PlateCard.shadow), and the shadow's own shape. */
+  shadow?: { mesh: Mesh<PlaneGeometry, MeshBasicMaterial>; shape: CardShadow };
   /** What it plays, if it is animated. */
   play?: { player: CardPlayer; anims: NonNullable<CardArt['anims']>; textures: Map<number, Texture>; scale: number; at: [number, number] };
 }
@@ -222,6 +231,12 @@ export async function loadShipPlate(art: Extract<ShipArt, { kind: 'plate' }>, lo
     p.mesh.geometry.dispose();
     p.mesh.material.dispose();
     for (const t of p.textures) t.dispose();
+    if (p.shadow) {
+      scene.remove(p.shadow.mesh);
+      p.shadow.mesh.geometry.dispose();
+      // (the soft disc is shared: only the material goes)
+      p.shadow.mesh.material.dispose();
+    }
   };
   let clock = 0;
 
@@ -236,6 +251,14 @@ export async function loadShipPlate(art: Extract<ShipArt, { kind: 'plate' }>, lo
     mesh.renderOrder = 1000 - c.depth;
     mesh.name = `card:${c.key}`;
     const entry: Placed = { mesh, textures: anim ? loaded.map(([, t]) => t) : [texture], at: c.at, scale, depth: c.depth };
+    if (c.look) entry.look = applyLook(mesh.material, c.look);
+    if (c.shadow) {
+      const s = shadowMesh(c.shadow, c.at, scale);
+      // (on the floor, under the card and any card in front of it)
+      s.renderOrder = 1000 - c.depth - 0.5;
+      s.name = `shadow:${c.key}`;
+      entry.shadow = { mesh: s, shape: c.shadow };
+    }
     if (anim) {
       // (a strip of equal cells: its cell, in the original's pixels, is the cell over its scale)
       const anims = c.all ? Object.fromEntries(wanted.map(i => [i, c.art.anims![i]!])) : { [c.anim!]: anim };
@@ -252,9 +275,11 @@ export async function loadShipPlate(art: Extract<ShipArt, { kind: 'plate' }>, lo
       entry.still = { heightPx: c.art.pixelHeight ?? frameH, aspect: frameW / frameH, anchor: c.art.anchor };
       texture.repeat.set(1 / c.art.frames, 1);
       texture.offset.set(0, 0);
+      if (entry.look) setCell(entry.look, texture);
     }
     drop(c.key);
     placed.set(c.key, entry);
+    if (entry.shadow) scene.add(entry.shadow.mesh);
     scene.add(mesh);
   };
 
@@ -272,6 +297,7 @@ export async function loadShipPlate(art: Extract<ShipArt, { kind: 'plate' }>, lo
     if (p.mesh.material.map !== texture) p.mesh.material.map = texture;
     texture.repeat.set(f.uv[2] - f.uv[0], f.uv[3] - f.uv[1]);
     texture.offset.set(f.uv[0], f.uv[1]);
+    if (p.look) setCell(p.look, texture);
   }
 
   const beams: BeamRun[] = [];
@@ -364,6 +390,11 @@ export async function loadShipPlate(art: Extract<ShipArt, { kind: 'plate' }>, lo
         p.depth = m.at[1];
         p.mesh.renderOrder = 1000 - p.depth;
         p.mesh.visible = m.visible;
+        if (p.shadow) {
+          placeShadow(p.shadow.mesh, p.shadow.shape, m.at, m.scale);
+          p.shadow.mesh.renderOrder = 1000 - p.depth - 0.5;
+          p.shadow.mesh.visible = m.visible;
+        }
         if (p.play) {
           p.play.at = m.at;
           p.play.scale = m.scale;

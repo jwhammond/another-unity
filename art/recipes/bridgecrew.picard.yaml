@@ -19,3 +19,6 @@ hold: { tolerance: 20, feather: 12 }
 # Run on the 4080 (2026-10-30, 30 distinct frames), with the head pass from the start (face, denoise 0.4): a close likeness, eyes clear,
 # the same face through the talk. Flicker median 0.3-4.3, worst pair 7.5 (the walks).
 face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
+# Painted from masters (2026-11-24, after the Picard trials in docs/unity-local.md): a frame that moves little from a master keeps its
+# paint and repaints only what moved, and a frame whose head moved has the head pass too, so the body never shimmers between frames.
+master: { maxChange: 0.35, grow: 16, feather: 12, facePass: true }

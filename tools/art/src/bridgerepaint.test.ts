@@ -4,11 +4,12 @@ import { parse as parseYaml } from 'yaml';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { applyFixups, blendFace, cardFor, crewRepaint, faceBox, faceCard, holdStill, paintText, recipeRepaint } from './bridgerepaint';
+import { applyFixups, blendFace, cardFor, crewRepaint, faceBox, faceCard, holdStill, paintFromMasters, paintText, recipeRepaint } from './bridgerepaint';
+import { maskCanvas } from './cardrepaint';
 import type { ArtCache } from './cache';
 import type { Generator, Job } from './generator';
 import type { Models } from './graphs';
-import { encodePng } from './image';
+import { decodePng, encodePng } from './image';
 import type { ModelsFile } from './models';
 import type { CrewFrame } from './bridgeanim';
 import type { Rgba } from './image';
@@ -287,6 +288,97 @@ hold: { tolerance: 6, feather: 12 }
     }
   });
 
+  it('with masters: the first frame painted whole, a frame that moves a little painted once more, under a noise mask, and cached', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'bridge-master-'));
+    try {
+      const jobs: Job[] = [];
+      const g = { ...fakeGenerator(), run: async (job: Job) => { jobs.push(job); return { image: encodePng(solid(1024, 1024, [90, 90, 90])) }; } };
+      const moved = figure();
+      for (let y = 20; y < 28; y++) for (let x = 20; x < 28; x++) moved.png.data.set([250, 30, 30, 255], (y * 48 + x) * 4);
+      const text = `${RECIPE}master: { maxChange: 0.35, grow: 4, feather: 4 }\n`;
+      const out = await crewRepaint(deps(text, dir, g)).paint([figure(), moved]);
+      expect(jobs).toHaveLength(2);
+      const classes = (j: Job) => Object.values(j.graph).map(n => (n as { class_type: string }).class_type);
+      expect(classes(jobs[0]!)).not.toContain('SetLatentNoiseMask');
+      expect(classes(jobs[1]!)).toContain('SetLatentNoiseMask');
+      expect(Object.keys(jobs[1]!.inputs).some(n => n.startsWith('card-mask-'))).toBe(true);
+      // (a pixel far from the change is the first frame's paint, exactly)
+      expect(px(out[1]!, 10, 80)).toEqual(px(out[0]!, 10, 80));
+      await crewRepaint(deps(text, dir, g)).paint([figure(), moved]);
+      expect(jobs).toHaveLength(2);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("faceFromMaster: a frame painted from a master is given the master's painted head, not the face crops, as its likeness", async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'bridge-master-face-'));
+    try {
+      const jobs: Job[] = [];
+      const g = { ...fakeGenerator(), run: async (job: Job) => { jobs.push(job); return { image: encodePng(solid(1024, 1024, [90, 90, 90])) }; } };
+      const moved = figure();
+      for (let y = 20; y < 28; y++) for (let x = 20; x < 28; x++) moved.png.data.set([250, 30, 30, 255], (y * 48 + x) * 4);
+      const text = `${RECIPE}reference:\n  - { refs: [crew.data.face.1, crew.data.face.2], model: face, weight: 0.8, weightType: linear, mask: head }\nmaster: { maxChange: 0.35, grow: 4, feather: 4, faceFromMaster: true, faceWeight: 0.6 }\n`;
+      const photos = [new Uint8Array([1]), new Uint8Array([2])];
+      const ipadapter = { face: 'f.bin', style: 's.bin', clipVision: 'cv.safetensors' };
+      await crewRepaint({ ...deps(text, dir, g), refs: photos, models: { ...models, ipadapter } as never }).paint([figure(), moved]);
+      expect(jobs).toHaveLength(2);
+      const refs = (j: Job) => Object.entries(j.inputs).filter(([n]) => n.startsWith('card-ref-'));
+      // (the master: both photos; the moved frame: one picture, a PNG of the master's head)
+      expect(refs(jobs[0]!)).toHaveLength(2);
+      const [[, head]] = refs(jobs[1]!) as [[string, Uint8Array]];
+      expect(refs(jobs[1]!)).toHaveLength(1);
+      expect([...head.subarray(1, 4)]).toEqual([0x50, 0x4e, 0x47]);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('facePass: a frame painted from a master whose head moved has the head pass too; one whose head stayed does not', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'bridge-master-headpass-'));
+    try {
+      const jobs: Job[] = [];
+      // (each paint a grey of its own: a part that came back the master's colour would be the master's body, and its head pass a cache hit)
+      const g = { ...fakeGenerator(), run: async (job: Job) => { jobs.push(job); return { image: encodePng(solid(1024, 1024, [80 + 10 * jobs.length, 90, 90])) }; } };
+      const mark = (y0: number) => {
+        const f = figure();
+        for (let y = y0; y < y0 + 6; y++) for (let x = 20; x < 26; x++) f.png.data.set([250, 30, 30, 255], (y * 48 + x) * 4);
+        return f;
+      };
+      const text = `${RECIPE}face: { denoise: 0.4 }\nmaster: { maxChange: 0.35, grow: 2, feather: 2, facePass: true }\n`;
+      // (the master: its body and its head; the head moved (near the top): a part and a head; the feet moved: a part alone)
+      await crewRepaint(deps(text, dir, g)).paint([figure(), mark(10), mark(80)]);
+      expect(jobs).toHaveLength(5);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('headGroup: every body painted first, then the master\'s head and the moved heads on one canvas; a frame whose head stayed takes the master\'s', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'bridge-master-heads-'));
+    try {
+      const jobs: Job[] = [];
+      const g = { ...fakeGenerator(), run: async (job: Job) => { jobs.push(job); return { image: encodePng(solid(1024, 1024, [80 + 10 * jobs.length, 90, 90])) }; } };
+      const mark = (y0: number) => {
+        const f = figure();
+        for (let y = y0; y < y0 + 6; y++) for (let x = 20; x < 26; x++) f.png.data.set([250, 30, 30, 255], (y * 48 + x) * 4);
+        return f;
+      };
+      const text = `${RECIPE}face: { denoise: 0.4 }\nmaster: { maxChange: 0.35, grow: 2, feather: 2, headGroup: 4 }\n`;
+      const out = await crewRepaint(deps(text, dir, g)).paint([figure(), mark(10), mark(80)]);
+      // (the master's body, two parts, and one canvas of two heads)
+      expect(jobs).toHaveLength(4);
+      const heads = jobs[3]!;
+      expect(Object.keys(heads.inputs).filter(n => n.startsWith('card-work-'))).toHaveLength(1);
+      // (the feet frame's head is the master's, finished)
+      expect(px(out[2]!, 24, 12)).toEqual(px(out[0]!, 24, 12));
+      await crewRepaint(deps(text, dir, g)).paint([figure(), mark(10), mark(80)]);
+      expect(jobs).toHaveLength(4);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   it('fixups don\'t repaint, and are applied before the hold', async () => {
     // (two frames painted 90 and 150 grey: frame 0 takes a box from frame 1, and frame 1, the same as frame 0 but for a corner, is held on it)
     const dir = mkdtempSync(join(tmpdir(), 'bridge-fixups-'));
@@ -329,5 +421,72 @@ hold: { tolerance: 6, feather: 12 }
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
+  });
+});
+
+describe('paintFromMasters', () => {
+  /** A 40x40 opaque frame at the origin, grey, with an optional 4x4 square of another colour at (x, y). */
+  const frame = (mark?: { x: number; y: number; rgb: [number, number, number] }) => {
+    const png = solid(40, 40, [100, 100, 100]);
+    if (mark) for (let y = mark.y; y < mark.y + 4; y++) for (let x = mark.x; x < mark.x + 4; x++) png.data.set([...mark.rgb, 255], (y * 40 + x) * 4);
+    // (scale 1: dx is the frame's middle, dy its foot)
+    return { png, dx: 20, dy: 40 };
+  };
+  const opts = { maxChange: 0.35, grow: 2, feather: 2, tolerance: 20 };
+
+  it('paints the first frame whole, and a frame that moves a little from it only where it moved, keeping the rest exactly', async () => {
+    const frames = [frame(), frame({ x: 10, y: 10, rgb: [255, 0, 0] })];
+    const parts: Float32Array[] = [];
+    const out = await paintFromMasters(frames, 1, opts, {
+      whole: async f => ({ ...f.png, data: f.png.data.map((v, i) => (i % 4 === 3 ? v : 50)) }),
+      // (the part pass paints everything green: only the mask lets it through)
+      part: async (init, mask) => { parts.push(mask); return { ...init, data: init.data.map((v, i) => (i % 4 === 1 ? 200 : i % 4 === 3 ? v : 0)) }; },
+    });
+    expect(parts).toHaveLength(1);
+    expect(px(out[0]!, 0, 0)).toEqual([50, 50, 50, 255]);
+    // (far from the change: the master's paint, exactly)
+    expect(px(out[1]!, 35, 35)).toEqual([50, 50, 50, 255]);
+    // (on the change: the part's paint)
+    expect(px(out[1]!, 11, 11)).toEqual([0, 200, 0, 255]);
+    // (the mask is 1 on the change and its grow, 0 far off)
+    expect(parts[0]![11 * 40 + 11]).toBe(1);
+    expect(parts[0]![35 * 40 + 35]).toBe(0);
+  });
+
+  it('a frame the same as its master takes its paint with no repaint at all', async () => {
+    let parts = 0;
+    const out = await paintFromMasters([frame(), frame()], 1, opts, {
+      whole: async f => ({ ...f.png, data: f.png.data.map((v, i) => (i % 4 === 3 ? v : 77)) }),
+      part: async init => { parts++; return init; },
+    });
+    expect(parts).toBe(0);
+    expect(px(out[1]!, 5, 5)).toEqual([77, 77, 77, 255]);
+  });
+
+  it('a frame that differs too much is a master of its own, painted whole', async () => {
+    const changed = frame();
+    changed.png = solid(40, 40, [250, 250, 250]);
+    let wholes = 0;
+    await paintFromMasters([frame(), changed], 1, opts, { whole: async f => { wholes++; return f.png; }, part: async init => init });
+    expect(wholes).toBe(2);
+  });
+
+  it('keeps each frame its own alpha', async () => {
+    const second = frame({ x: 10, y: 10, rgb: [255, 0, 0] });
+    second.png.data[3] = 0;
+    const out = await paintFromMasters([frame(), second], 1, opts, { whole: async f => f.png, part: async init => init });
+    expect(out[1]!.data[3]).toBe(0);
+  });
+});
+
+describe('maskCanvas', () => {
+  it("lays each frame's mask into its slot, 0 outside the slots", () => {
+    const f = solid(10, 20, [0, 0, 0]);
+    const plane = new Float32Array(10 * 20).fill(1);
+    const slot = { x: 0, y: 0, w: 10, h: 20, cx: 100, cy: 50, cw: 50, ch: 100 };
+    const png = decodePng(maskCanvas([plane], [f], [slot]));
+    expect(png.width).toBe(1024);
+    expect(png.data[(100 * 1024 + 120) * 4]).toBe(255);
+    expect(png.data[(10 * 1024 + 10) * 4]).toBe(0);
   });
 });

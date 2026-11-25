@@ -8,9 +8,11 @@ const GithubMark = () => (
 export function Footer() {
   return (
     <footer class="lc-footer">
-      <a class="lc-pill tone-a1" href="https://github.com/jwhammond/another-unity" target="_blank" rel="noopener"><GithubMark /> GitHub</a>
-      <a class="lc-pill tone-a2" href="https://ko-fi.com/sz750108" target="_blank" rel="noopener"><Coffee size={16} aria-hidden="true" /> Buy Me a Coffee</a>
-      <p class="lc-legal">Star Trek and all related marks, characters and game assets belong to their owners (CBS Studios / Paramount and the original publishers). James Hammond does not own this IP. Another Unity is a non-commercial fan project made for preservation and study under fair use, and is not affiliated with or endorsed by the rights holders.</p>
+      <p class="lc-legal">Star Trek and all related marks, characters and game assets belong to their owners (CBS Studios / Paramount and the original publishers). Another Unity claims no ownership of them. It is a non-commercial fan project made for preservation and study under fair use, and is not affiliated with or endorsed by the rights holders.</p>
+      <div class="lc-footer-links">
+        <a class="lc-pill tone-a1" href="https://github.com/jwhammond/another-unity" target="_blank" rel="noopener"><GithubMark /> GitHub</a>
+        <a class="lc-pill tone-a2" href="https://ko-fi.com/sz750108" target="_blank" rel="noopener"><Coffee size={16} aria-hidden="true" /> Buy Me a Coffee</a>
+      </div>
     </footer>
   );
 }

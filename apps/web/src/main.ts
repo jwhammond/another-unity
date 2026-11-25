@@ -15,7 +15,11 @@ import { BRIDGES, GAMES, GATES, SHIP_STARTS } from './games';
 import { onContentChange } from './hot';
 import { bindFullscreenButtons, isTouchDevice, requestLandscape } from './landscape';
 import { bindLoading, offerGameFiles, trackStep } from './loading';
+import { installErrorLog } from './feedback/errorLog';
+import { feedbackTransport } from './feedback/transport';
 
+// (the last errors and warnings, for a feedback report: feedback/errorLog.ts)
+installErrorLog();
 const params = new URLSearchParams(location.search);
 // (players get the dev tools and window.__au only with ?dev: Decision 16. A deploy build (docs/deploy.md: VITE_AU_DEPLOY=1) has no ?dev
 // at all: the flag is replaced at build time, so the dev branches and what only they use are dropped from the bundle)
@@ -145,6 +149,8 @@ async function main(): Promise<void> {
     audio,
     saves,
     log: (level, m) => console[level](m),
+    // (SETTINGS > GAME > SEND FEEDBACK: the report goes to the site's Pages Function, behind Turnstile)
+    feedback: feedbackTransport(),
     // (at least 0.1: ?speed=0 or a negative speed would stop the game)
     speed: Math.max(0.1, Number(params.get('speed')) || 1),
     holdMusic: gameId in BRIDGES,

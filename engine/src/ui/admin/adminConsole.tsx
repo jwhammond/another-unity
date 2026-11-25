@@ -11,6 +11,8 @@ import { useStore } from '../useStore';
 import { ADMIN_FONT, at, BitmapWords, CANT_SAVE, Control, errorText, H, INK, LIT, ORIGIN, Pic, rect, screenRect, modalKey, SEGMENTS, useModal, W, within, type Rect } from './parts';
 import { guardKeyUp, offerKey } from './rebinding';
 import { SettingsPage, type Bar } from './settingsPage';
+import { FeedbackPage } from './feedbackPage';
+import type { FeedbackPort } from '../../web/feedback';
 
 /**
  * The admin console (the original's "RGCD" PADD: main\adminmnu.cpp, phase4_rest.md §6.2), drawn from adminmnu.spr and adminmnu.mrg where
@@ -19,7 +21,7 @@ import { SettingsPage, type Bar } from './settingsPage';
  */
 
 /** The original's states 0-6 (paused, load, save, sound, new, quit; its "loading" state 2 is a load under way), and the remake's SETTINGS. */
-export type AdminPage = 'paused' | 'load' | 'save' | 'sound' | 'new' | 'quit' | 'settings';
+export type AdminPage = 'paused' | 'load' | 'save' | 'sound' | 'new' | 'quit' | 'settings' | 'feedback';
 
 /** The LEDs move on every 20 ticks of the original's 60 Hz clock (`11e06`). */
 export const LED_MS = Math.round((20 * 1000) / 60);
@@ -45,6 +47,8 @@ const CLICK = {
   music: screenRect(336, 83, 459, 241),
   // (the remake's: the autosave, load-only, in the screen's free band above CANCEL)
   autosave: rect(150, 254, 267, 266),
+  // (the remake's: FEEDBACK, a grey key as RESUME is, on the console's bare face between its RGCD plate and RESUME)
+  feedback: rect(122, 432, 254, 469),
 } as const;
 
 /** Slot `i` (0-8): row i spans y 59+21i to 80+21i of the original's screen, across the screen. */
@@ -90,6 +94,7 @@ const MESSAGES: Record<AdminPage, string> = {
   quit: 'Quit game',
   sound: 'Sound levels',
   settings: 'Settings',
+  feedback: 'Send feedback',
 };
 const TYPING = 'Press Enter to save';
 const DIFFICULTY: readonly ('ensign' | 'lieutenant' | 'captain')[] = ['ensign', 'lieutenant', 'captain'];
@@ -125,6 +130,8 @@ export interface AdminConsoleProps {
   fonts?: AstroFonts | null;
   /** How wide a name is drawn (the game's font's own widths, else nameWidth; a test's own). */
   measure?: (text: string) => number;
+  /** SETTINGS' FEEDBACK page's check and send; without it, no FEEDBACK. */
+  feedback?: FeedbackPort;
 }
 
 /**
@@ -145,13 +152,18 @@ function usePreloadedPages(art: AdminArt | undefined): void {
   }, [art]);
 }
 
-export function AdminConsole({ settings, saves, store, art, fonts, measure }: AdminConsoleProps) {
+export function AdminConsole({ settings, saves, store, art, fonts, measure, feedback }: AdminConsoleProps) {
   const font = fonts?.fonts[ADMIN_FONT];
   const bitmap = font !== undefined ? fonts! : null;
   // (the original's rule is the name's drawn width: in the font it is drawn in)
   const widthOf = measure ?? (font ? (t: string) => font.stringWidth(t) : nameWidth);
   useStore(store);
-  const [page, setPage] = useState<AdminPage>('paused');
+  // (opened by the bar's Feedback: on its page, and its CANCEL goes back to the paused page rather than SETTINGS)
+  const [fromBar] = useState(() => store.state.adminStart === 'feedback' && feedback !== undefined);
+  const [page, setPage] = useState<AdminPage>(fromBar ? 'feedback' : 'paused');
+  useEffect(() => { if (store.state.adminStart !== null) store.set({ adminStart: null }); }, []);
+  /** Where FEEDBACK's CANCEL goes: SETTINGS when it was opened from there, else the paused page. */
+  const feedbackBack = useRef<AdminPage>('paused');
   const [note, setNote] = useState<string | null>(null);
   const [metas, setMetas] = useState<SaveMeta[]>([]);
   /** The save page's chosen slot (0-8) and the name being typed for it. */
@@ -307,7 +319,7 @@ export function AdminConsole({ settings, saves, store, art, fonts, measure }: Ad
   const autosave = metas.find(m => m.slot === 0);
   const message = note ?? (page === 'save' && chosen !== null ? TYPING : MESSAGES[page]);
   // (SETTINGS has the sound page's frame, lit as a page's is, its insides cleared for its own)
-  const frameFor: Partial<Record<AdminPage, number>> = { load: 1, save: 2, new: 3, quit: 4, sound: 5, settings: 5 };
+  const frameFor: Partial<Record<AdminPage, number>> = { load: 1, save: 2, new: 3, quit: 4, sound: 5, settings: 5, feedback: 5 };
   const frame = frameFor[page];
   const level = DIFFICULTY[now.difficulty] ?? 'lieutenant';
   const canDifficulty = settings.canChangeDifficulty();
@@ -338,6 +350,7 @@ export function AdminConsole({ settings, saves, store, art, fonts, measure }: Ad
         }} />}
         <Control name="NEW" r={CLICK.new} kind="pill" label={art ? undefined : 'NEW'} on={page === 'new'} onClick={pageButton('new')} />
         <Control name="QUIT" r={CLICK.quit} kind="pill" label={art ? undefined : 'QUIT'} on={page === 'quit'} onClick={pageButton('quit')} />
+        {feedback && <Control name="FEEDBACK" r={CLICK.feedback} kind="key" label="FEEDBACK" on={page === 'feedback'} data={{ 'data-remake': '' }} onClick={() => { feedbackBack.current = 'paused'; toggle('feedback')(); }} />}
 
         {(page === 'load' || page === 'save') && (
           <>
@@ -385,7 +398,8 @@ export function AdminConsole({ settings, saves, store, art, fonts, measure }: Ad
           </Control>
         )}
 
-        {page === 'settings' && <SettingsPage settings={settings} saves={saves} store={store} art={art} fonts={bitmap} set={set} setBar={setBar} say={setNote} grab={grab} run={run} />}
+        {page === 'settings' && <SettingsPage settings={settings} saves={saves} store={store} art={art} fonts={bitmap} set={set} setBar={setBar} say={setNote} grab={grab} run={run} feedback={feedback ? () => { beep(); feedbackBack.current = 'settings'; go('feedback'); } : undefined} />}
+        {page === 'feedback' && feedback && <FeedbackPage feedback={feedback} say={setNote} back={() => { beep(); go(feedbackBack.current); }} />}
 
         {(page === 'new' || page === 'quit') && (
           <>

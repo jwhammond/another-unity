@@ -54,6 +54,8 @@ const masterSeg = (j: number): Rect => [MASTER_X + 6 * j, rowY(0) + 2, 7, MASTER
 const MASTER: Rect = [MASTER_X, rowY(0) + 2, 6 * SEGMENTS + 1, MASTER_SEG_H];
 /** The sound bar's foot (y 243 of the screen): a click dx along the master bar is the sound bar's click dx up from it. */
 const BAR_FOOT = 243;
+/** SEND FEEDBACK's pill, centred on GAME's row 5. */
+const FEEDBACK_W = 150;
 
 /** The KEYS tab's table: the F1 screen's two columns (the key, then what it does), here two tables of ten 15-high rows side by side. */
 const KEY_ROWS = 10;
@@ -86,9 +88,11 @@ export interface SettingsPageProps {
    */
   grab: MutableRef<((e: KeyboardEvent) => boolean) | null>;
   run(what: () => Promise<void>, closing: boolean): Promise<void>;
+  /** Opens the FEEDBACK page; absent where the site has no feedback. */
+  feedback?: () => void;
 }
 
-export function SettingsPage({ settings, saves, store, art, fonts, set, setBar, say, grab, run }: SettingsPageProps) {
+export function SettingsPage({ settings, saves, store, art, fonts, set, setBar, say, grab, run, feedback }: SettingsPageProps) {
   const [tab, setTab] = useState<Tab>('game');
   const picker = useRef<HTMLInputElement>(null);
   const now = settings.get();
@@ -222,6 +226,8 @@ export function SettingsPage({ settings, saves, store, art, fonts, set, setBar, 
           {onOff('HOTSPOT LABELS', 2, now.hotspots, hotspots => ({ hotspots }))}
           {onOff('MOVIES', 3, now.movies, movies => ({ movies }))}
           {onOff('3D SOUND', 4, now.threeD, threeD => ({ threeD }))}
+          {/* (the remake's: a report to the developer, on the row left free above the actions) */}
+          {feedback && pill('SEND FEEDBACK', [62 + Math.round((296 - FEEDBACK_W) / 2), rowY(5), FEEDBACK_W, PILL_H], feedback)}
           {actions.map(a => {
             const r: Rect = [actionX, rowY(6), a.width, PILL_H];
             actionX += a.width + 14;

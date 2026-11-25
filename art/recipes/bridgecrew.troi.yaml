@@ -24,3 +24,6 @@ face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
 # Plan 34: the open-mouth talk frame's head pass drew the lips black; they take the next frame's lips (its strip's cell pixels, 4x).
 fixups:
   - { anim: 2, frame: 1, box: [83, 74, 20, 10], from: 2 }
+# Painted from masters (2026-11-24, after the Picard trials in docs/unity-local.md): a frame that moves little from a master keeps its
+# paint and repaints only what moved, and a frame whose head moved has the head pass too, so the body never shimmers between frames.
+master: { maxChange: 0.35, grow: 16, feather: 12, facePass: true }

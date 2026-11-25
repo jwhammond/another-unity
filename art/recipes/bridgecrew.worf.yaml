@@ -24,3 +24,6 @@ face: { denoise: 0.4, pad: 0.3, feather: 0.15 }
 # the open mouth; it takes the next frame's mouth (its strip's cell pixels, 4x).
 fixups:
   - { anim: 2, frame: 3, box: [89, 77, 12, 9], from: 4 }
+# Painted from masters (2026-11-24, after the Picard trials in docs/unity-local.md): a frame that moves little from a master keeps its
+# paint and repaints only what moved, and a frame whose head moved has the head pass too, so the body never shimmers between frames.
+master: { maxChange: 0.35, grow: 16, feather: 12, facePass: true }

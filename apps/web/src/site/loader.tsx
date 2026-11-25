@@ -5,12 +5,13 @@ import { NAV } from './pages/nav';
 
 const pages: Record<string, () => Promise<{ default: ComponentType }>> = {
   home: () => import('./pages/Home'),
-  engineering: () => import('./pages/Engineering'),
   engine: () => import('./pages/Engine'),
   afu: () => import('./pages/Afu'),
   characters: () => import('./pages/Characters'),
   enterprise: () => import('./pages/Enterprise'),
   mission: () => import('./pages/Mission'),
+  missions: () => import('./pages/MissionList'),
+  tactical: () => import('./pages/Tactical'),
 };
 
 export class UnknownPage extends Error {}

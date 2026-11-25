@@ -41,7 +41,7 @@ async function main(): Promise<number> {
   const cwd = withFunctions ? REPO : tmpdir();
   const shown = `npx ${args.join(' ')}${withFunctions ? '' : '   (from the temp dir: no functions/)'}`;
   console.log(`\nsummary: ${report.count} files, ${(report.total / 1024 / 1024).toFixed(1)} MiB`);
-  console.log(`functions (SITE_PASSWORD gate): ${withFunctions ? 'included (a no-op unless the project has SITE_PASSWORD)' : 'not included (DEPLOY_FUNCTIONS=0)'}`);
+  console.log(`functions (the SITE_PASSWORD gate, /api/feedback): ${withFunctions ? 'included (the gate is a no-op unless the project has SITE_PASSWORD; feedback is off until its keys and bucket are set)' : 'not included (DEPLOY_FUNCTIONS=0: no feedback)'}`);
   console.log(`command: ${shown}`);
   if (dry) {
     console.log('\ndeploy: --dry-run: nothing uploaded.');

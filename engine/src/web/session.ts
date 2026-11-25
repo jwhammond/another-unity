@@ -69,7 +69,9 @@ import { TransporterDirector } from './transporterDirector';
 import { exitCursorPort } from './exitCursor';
 import { astroFontsPort } from './astroFontsSession';
 import { addToPad, canEnergize, chooseRecommended, energizeAndArrive, moveToEquipment, moveToKit, removeFromPad, restoreTransporter, transporterRoom, clipDifficulty } from '../sim/transporter';
+import { BRIDGE_LOOK, BRIDGE_SHADOWS } from '../view/bridgeLook';
 import type { Settings } from './settings';
+import { FEEDBACK_SAVE_MAX, recentLines, type FeedbackGame, type FeedbackPort, type FeedbackTransport } from './feedback';
 import { CONSOLE_SOUNDS, pageStorage, SettingsRecord, type ConsoleSound, type SettingsOverrides, type SettingsPort } from './settingsPort';
 import type { AstroSelection, BridgeItemView, ShipPort } from './shipPort';
 import { WebGLRenderTarget, type Camera, type Scene, type Texture, type WebGLRenderer } from 'three';
@@ -113,6 +115,8 @@ export interface SessionParts {
   /** Null without IndexedDB: no save slots (export and import still work). */
   saves?: SaveSlots | null;
   log?: (level: 'warn' | 'error', message: string) => void;
+  /** The site's feedback check and send (apps/web/src/feedback): without it, the console has no FEEDBACK. */
+  feedback?: FeedbackTransport;
   /** Game speed: 1 is real time (the app's `?speed=N`). */
   speed?: number;
   /**
@@ -451,7 +455,9 @@ export class Session {
       if (!card) return;
       // (the idle animation, the start of the original's loop, when the card has one; `playCards` moves it to the talk one while it speaks)
       const idle = card.anims?.[BRIDGE_IDLE] !== undefined ? { anim: BRIDGE_IDLE, all: true, only: [BRIDGE_IDLE, BRIDGE_TALK] } : {};
-      await plate.placeCards([{ key: c.object, art: card, at: c.at, depth: c.depth, ...idle }]).catch((err: unknown) => this.log('warn', `the crew card of ${c.object} could not be loaded (${message(err)})`));
+      // (set into the repainted plate: its edge, colours and shadow; bridgeLook.ts)
+      const look = { look: BRIDGE_LOOK, shadow: BRIDGE_SHADOWS[c.object] };
+      await plate.placeCards([{ key: c.object, art: card, at: c.at, depth: c.depth, ...idle, ...look }]).catch((err: unknown) => this.log('warn', `the crew card of ${c.object} could not be loaded (${message(err)})`));
     }));
     return plate;
   }
@@ -2246,7 +2252,7 @@ export class Session {
   }
 
   uiPort(): UiSession {
-    return { store: this.store, input: () => this.input, faces: () => this.faces(), saves: this.parts.saves ? this.savesPort() : undefined, settings: this.settingsPort(), adminArt: () => this.adminArt(), adminFonts: () => this.adminFontsLoader.astroFonts() };
+    return { store: this.store, input: () => this.input, faces: () => this.faces(), saves: this.parts.saves ? this.savesPort() : undefined, settings: this.settingsPort(), adminArt: () => this.adminArt(), adminFonts: () => this.adminFontsLoader.astroFonts(), feedback: this.parts.feedback ? this.feedbackPort(this.parts.feedback) : undefined };
   }
 
   /**
@@ -2660,6 +2666,58 @@ export class Session {
       },
       exportText: () => this.world.save(),
       importText: text => this.load(text),
+    };
+  }
+
+  /** Where the player is and how the game is set, for a feedback report. */
+  feedbackGame(): FeedbackGame {
+    const s = this.world.state;
+    let settings: Settings | null = null;
+    try {
+      settings = this.settingsPort().get();
+    } catch {
+      // (no settings record: the report goes without it)
+    }
+    const combat = s.ship.combat;
+    return {
+      game: this.pkg.id,
+      screen: s.screen,
+      onShip: s.onShip !== null,
+      station: s.onShip === null ? null : s.ship.station,
+      gameOver: s.onShip?.gameOver === true,
+      awayTeam: [...s.awayTeam],
+      currentActor: s.currentActor,
+      beamWorld: s.beamWorld,
+      combat: combat ? { scenario: combat.scenario, step: this.battlePort().battle()?.b.steps ?? null } : null,
+      difficulty: this.difficulty,
+      settings,
+      recentLines: recentLines(this.store.state.transcript),
+    };
+  }
+
+  /**
+   * The report's save: the game as it is now; mid-battle or mid-action, when it can't be saved, the last autosave instead, with a note
+   * saying so. A save over FEEDBACK_SAVE_MAX is left out, with a note.
+   */
+  private async feedbackSave(): Promise<{ save: string | null; saveNote: string | null }> {
+    let save: string | null = null;
+    let saveNote: string | null = null;
+    if (this.idle && !this.inCombat) save = this.world.save();
+    else {
+      save = (await this.parts.saves?.get(AUTOSAVE_SLOT).catch(() => undefined)) ?? null;
+      saveNote = save === null ? 'The game could not be saved just then, and there is no autosave.' : 'The game could not be saved just then: this is the last autosave.';
+    }
+    if (save !== null && save.length > FEEDBACK_SAVE_MAX) return { save: null, saveNote: `The save was left out: ${save.length} characters, over ${FEEDBACK_SAVE_MAX}.` };
+    return { save, saveNote };
+  }
+
+  private feedbackPort(transport: FeedbackTransport): FeedbackPort {
+    return {
+      check: box => transport.check(box),
+      send: async ({ message, email, includeSave, token, trap }) => {
+        const { save, saveNote } = includeSave ? await this.feedbackSave() : { save: null, saveNote: 'The player left the save out.' };
+        return transport.send({ message, email, save, saveNote, game: this.feedbackGame() }, token, trap);
+      },
     };
   }
 

@@ -29,6 +29,7 @@ import { VoiceTable } from '../view/voices';
 import type { SpaceSceneModule } from './combatView';
 import { AUTOSAVE_SLOT, CHANGE_REFUSED, JUMP_REFUSED, SAVE_REFUSED, Session, SWAP_FAILED, type SessionParts } from './session';
 import { DEFAULT_SETTINGS, SETTINGS_KEY, type Settings } from './settings';
+import type { FeedbackReport, FeedbackTransport } from './feedback';
 import { planetColours } from './viewscreenImage';
 import type { SpaceView } from '../view/space';
 
@@ -3810,5 +3811,49 @@ contacts: { comms: [], lounge: [] }
       expect([s.input.key('Escape'), s.store.state.panel]).toEqual([false, 'none']);
       vi.unstubAllGlobals();
     });
+  });
+});
+
+describe('feedback', () => {
+  async function withFeedback() {
+    const saves = await SaveSlots.open('mini', new IDBFactory());
+    const reports: FeedbackReport[] = [];
+    const feedback: FeedbackTransport = {
+      check: async () => ({ token: () => 't', reset: () => {}, dispose: () => {} }),
+      send: async (report, token, trap) => { reports.push(report); expect([token, trap]).toEqual(['tok', '']); return 'id1'; },
+    };
+    const s = await Session.start(pkg(), { saves, log: () => {}, feedback });
+    return { s, saves, reports };
+  }
+
+  it('has no feedback port without the site\'s transport', async () => {
+    const { s } = await start();
+    expect(s.uiPort().feedback).toBeUndefined();
+  });
+
+  it('sends what the player wrote with where they are, their settings, the last lines and the game as it is now', async () => {
+    const { s, reports } = await withFeedback();
+    s.store.set({ transcript: [{ who: 'picard', name: 'Picard', text: 'Make it so.' }] });
+    expect(await s.uiPort().feedback!.send({ message: 'Hi', email: 'a@b.c', includeSave: true, token: 'tok', trap: '' })).toBe('id1');
+    const r = reports[0]!;
+    expect(r).toMatchObject({ message: 'Hi', email: 'a@b.c', saveNote: null });
+    expect(r.save).toBe(s.world.save());
+    expect(r.game).toMatchObject({ game: 'mini', screen: s.world.state.screen, onShip: false, station: null, combat: null, recentLines: ['Picard: Make it so.'] });
+    expect(r.game.settings).not.toBeNull();
+  });
+
+  it('leaves the save out when the player says so', async () => {
+    const { s, reports } = await withFeedback();
+    await s.uiPort().feedback!.send({ message: 'Hi', email: '', includeSave: false, token: 'tok', trap: '' });
+    expect(reports[0]).toMatchObject({ save: null, saveNote: 'The player left the save out.' });
+  });
+
+  it('mid-battle, when the game cannot be saved, sends the last autosave and says so', async () => {
+    const { s, saves, reports } = await withFeedback();
+    await saves.put(AUTOSAVE_SLOT, '{"autosave":1}', { label: 'Autosave', screen: 'room', savedAt: 1 });
+    s.world.state.ship.combat = { scenario: 8, enterprise: 'e', enemies: [], friends: [], destroyed: [], warped: false, redAlert: false } as never;
+    await s.uiPort().feedback!.send({ message: 'Hi', email: '', includeSave: true, token: 'tok', trap: '' });
+    expect(reports[0]).toMatchObject({ save: '{"autosave":1}', saveNote: 'The game could not be saved just then: this is the last autosave.' });
+    expect(reports[0]!.game.combat).toEqual({ scenario: 8, step: null });
   });
 });
