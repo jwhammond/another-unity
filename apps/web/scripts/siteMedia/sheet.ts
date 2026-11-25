@@ -35,3 +35,14 @@ export function frameAt(img: Rgba, cell: [number, number], columns: number, i: n
   }
   return out;
 }
+
+/** The away team's kit, as the site's icon row shows it (its alt text names them in this order). */
+export const KIT_ICONS = ['communicator', 'med_kit', 'med_tricorder', 'phaser', 'tricorder'] as const;
+
+/**
+ * The kit's icons out of presentation.yaml's art.icons, which also holds every mission item's icon under each object that shows it (dozens):
+ * all of them in one row was wider than WebP allows (16383 pixels).
+ */
+export function kitIcons(icons: Record<string, string>): string[] {
+  return KIT_ICONS.flatMap(id => (icons[id] ? [icons[id]] : []));
+}

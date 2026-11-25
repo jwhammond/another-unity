@@ -2684,7 +2684,7 @@ export class Session {
       screen: s.screen,
       onShip: s.onShip !== null,
       station: s.onShip === null ? null : s.ship.station,
-      gameOver: s.onShip?.gameOver === true,
+      gameOver: s.onShip?.gameOver != null,
       awayTeam: [...s.awayTeam],
       currentActor: s.currentActor,
       beamWorld: s.beamWorld,

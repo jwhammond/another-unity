@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
 import { addItem, newManifest, serialize, type MediaEntry, type MediaManifest } from './siteMedia/manifest';
 import { avatarOriginal, flat, nearest, readPublished, roomOriginal, scaleTo, strokeRect, writeWebp, GOLD, type Written } from './siteMedia/sources';
-import { frameAt, gridSheet } from './siteMedia/sheet';
+import { frameAt, gridSheet, kitIcons } from './siteMedia/sheet';
 import { crop, sceneRect } from './siteMedia/crop';
 import { fitCell, selectCards } from './siteMedia/characters';
 import { renderEngineering, renderHolodeck } from './siteMedia/screens';
@@ -185,7 +185,7 @@ export async function build(env: NodeJS.ProcessEnv = process.env, target = OUT, 
   }
 
   // icons: the published kit icons in one row
-  const icons = Object.values(art.icons).filter(r => existsSync(join(gameDir, r)));
+  const icons = kitIcons(art.icons).filter(r => existsSync(join(gameDir, r)));
   if (icons.length) {
     const imgs = await Promise.all(icons.map(r => readPublished(gameDir, r)));
     const h = Math.max(...imgs.map(i => i.height));

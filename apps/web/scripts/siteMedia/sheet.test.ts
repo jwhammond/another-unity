@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import { describe, expect, it } from 'vitest';
-import { frameAt, gridSheet } from './sheet';
+import { frameAt, gridSheet, KIT_ICONS, kitIcons } from './sheet';
 
 const solid = (w: number, h: number, rgb: [number, number, number]) => {
   const data = new Uint8Array(w * h * 4);
@@ -30,5 +30,14 @@ describe('frameAt', () => {
     const strip = gridSheet([solid(2, 2, [1, 1, 1]), solid(2, 2, [2, 2, 2]), solid(2, 2, [3, 3, 3]), solid(2, 2, [4, 4, 4])], 2);
     expect(frameAt(strip, [2, 2], 2, 3).data[0]).toBe(4);
     expect(frameAt(strip, [2, 2], 2, 1).data[0]).toBe(2);
+  });
+});
+
+describe('kitIcons', () => {
+  it("keeps the away team's five kit icons, in their order, and not the mission items recorded beside them", () => {
+    const icons: Record<string, string> = { artifact: 'art/icons/artifact.webp', phaser: 'art/icons/phaser.webp', communicator: 'art/icons/communicator.webp', 'carcass_blob': 'art/icons/carcass.webp' };
+    for (const id of ['tricorder', 'med_kit', 'med_tricorder']) icons[id] = `art/icons/${id}.webp`;
+    expect(kitIcons(icons)).toEqual(KIT_ICONS.map(id => `art/icons/${id}.webp`));
+    expect(kitIcons({ phaser: 'art/icons/phaser.webp', artifact: 'art/icons/artifact.webp' })).toEqual(['art/icons/phaser.webp']);
   });
 });
