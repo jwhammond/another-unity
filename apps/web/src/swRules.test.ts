@@ -126,8 +126,8 @@ describe('the manifest', () => {
     expect(m.version).toBe('v1');
     expect(m.shell).toEqual(['/index.html', '/icon.svg', '/manifest.webmanifest', '/assets/a.css', '/assets/a.js']);
     expect(m.data).toEqual(['/assets/g.yaml']);
-    const withPages = buildManifest('v1', [{ path: 'index.html', size: 3 }, { path: 'play/afu/index.html', size: 3 }, { path: 'engineering/index.html', size: 3 }]);
-    expect(withPages.shell).toEqual(['/index.html', '/play/afu/index.html', '/icon.svg', '/manifest.webmanifest', '/engineering/index.html']);
+    const withPages = buildManifest('v1', [{ path: 'index.html', size: 3 }, { path: 'play/afu/index.html', size: 3 }, { path: 'engineering/engine/index.html', size: 3 }]);
+    expect(withPages.shell).toEqual(['/index.html', '/play/afu/index.html', '/icon.svg', '/manifest.webmanifest', '/engineering/engine/index.html']);
     expect(m.assets).toEqual([{ url: '/assets/b.webp', size: 5 }, { url: '/assets/m.webm', size: 50 }]);
     expect(m.sealed).toEqual([]);
   });

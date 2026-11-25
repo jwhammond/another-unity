@@ -44,15 +44,17 @@ describe('launchGame', () => {
 });
 
 describe('Home', () => {
-  it('expands A Final Unity and keeps Elite Force disabled', async () => {
+  it('opens with A Final Unity expanded, collapses it on a press, and keeps Elite Force disabled', async () => {
     const root = document.createElement('div'); document.body.append(root);
     render(<Home />, root);
     const afu = root.querySelector<HTMLButtonElement>('[data-game="afu"]')!;
+    expect(afu.getAttribute('aria-expanded')).toBe('true');
+    expect(root.textContent).toContain('It is currently in beta playtests.');
+    afu.click();
+    await tick();
     expect(afu.getAttribute('aria-expanded')).toBe('false');
     afu.click();
     await tick();
-    expect(afu.getAttribute('aria-expanded')).toBe('true');
-    expect(root.textContent).toContain('It is currently in beta playtests.');
     const ef = root.querySelector<HTMLButtonElement>('[data-game="ef"]')!;
     expect(ef.getAttribute('aria-disabled')).toBe('true');
     ef.click();
@@ -71,7 +73,6 @@ describe('Home', () => {
     const root = document.createElement('div'); document.body.append(root);
     const rooms = () => [...root.querySelectorAll('.lc-readout > div')].find(r => r.textContent!.startsWith('Rooms with new art'))!.querySelector('dd')!.textContent;
     render(<Home />, root);
-    root.querySelector<HTMLButtonElement>('[data-game="afu"]')!.click();
     await tick();
     expect(rooms()).toBe('—');
     expect(root.textContent).not.toContain('Saves');

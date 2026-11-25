@@ -131,3 +131,26 @@
 /* (a chosen cell is lit by its fill and word, as final.spr's: not the page's pressed outline) */
 .au-options button[aria-pressed='true'] { outline: 0; }
 .au-options button[aria-pressed='true']:focus-visible { outline: 1px dotted #68e0fc; }
+
+/* the FEEDBACK page (feedbackPage.tsx): plain fields in the console's blues, on the settings page's cleared screen */
+.au-admin-console .au-admin-field {
+  position: absolute; box-sizing: border-box; margin: 0; padding: calc(var(--au-admin-px) * 2) calc(var(--au-admin-px) * 3);
+  font: inherit; font-size: calc(var(--au-admin-px) * 11); line-height: 1.25; color: var(--au-admin-lit); background: #06182c;
+  border: var(--au-admin-px) solid #185c90; border-radius: 0; resize: none; outline: 0;
+}
+.au-admin-console .au-admin-field::placeholder { color: var(--au-admin-ink); opacity: 1; }
+.au-admin-console .au-admin-field:focus-visible, .au-admin-console .au-admin-field:focus { border-color: var(--au-admin-lit); }
+.au-admin-field-label { position: absolute; display: flex; align-items: center; font-size: calc(var(--au-admin-px) * 12); letter-spacing: 0.04em; color: var(--au-admin-lit); }
+.au-admin-field-note { position: absolute; margin: 0; display: flex; align-items: center; font-size: calc(var(--au-admin-px) * 9); line-height: 1.1; color: var(--au-admin-ink); }
+/* (the anti-bot check: invisible unless it needs the player, when it shows over the console at its own size) */
+.au-admin-check { position: absolute; display: flex; justify-content: center; align-items: flex-start; overflow: visible; z-index: 2; }
+.au-admin-trap { position: absolute; left: -10000px; width: 1px; height: 1px; opacity: 0; }
+.au-admin-console .au-admin-cap:disabled { opacity: 0.45; }
+/* (the remake's FEEDBACK key on the console's face: drawn in CSS like the console's grey keys, with or without the original's pictures) */
+.au-admin-console .au-admin-key[data-remake] {
+  font-size: calc(var(--au-admin-px) * 15); letter-spacing: 0.06em; color: var(--au-admin-key); background: linear-gradient(#3a3a3a, #262626);
+  border: calc(var(--au-admin-px) * 2) solid; border-color: #6a6a6a #151515 #151515 #6a6a6a; border-radius: calc(var(--au-admin-px) * 6);
+}
+.au-admin-console .au-admin-key[data-remake][data-on], .au-admin-console .au-admin-key[data-remake]:hover, .au-admin-console .au-admin-key[data-remake]:focus-visible {
+  color: var(--au-admin-key-lit); text-shadow: 0 0 calc(var(--au-admin-px) * 3) var(--au-admin-key-lit); outline: 0;
+}

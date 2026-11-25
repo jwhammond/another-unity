@@ -10,8 +10,9 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=()
   Strict-Transport-Security: max-age=31536000
   # (the game: its own scripts, styles (the loading screen's are inline, and the UI sets style attributes), images and sounds, and the
-  # blob: and data: URLs the renderer and the audio decoder make. No other origin is reachable, and no plugin, frame or form post.)
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  # blob: and data: URLs the renderer and the audio decoder make. The one other origin is Cloudflare Turnstile's, the feedback page's check
+  # against bots (its script and its frame: functions/api/feedback.ts). No plugin or form post.)
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob: https://challenges.cloudflare.com; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 
 # The page, the worker and the manifest are checked on every load: a deploy is seen at once, and the worker never serves a stale index.
 /

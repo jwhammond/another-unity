@@ -64,10 +64,14 @@ html, body { margin: 0; background: var(--black); color: var(--ink); font: 17px/
 .lc-side-fill { flex: 1; min-height: 40px; width: 40%; background: var(--a3); border-radius: 0 0 0 22px; opacity: .9; }
 
 .lc-content { grid-column: 2; grid-row: 2; min-width: 0; max-width: 68ch; padding-top: 16px; }
+/* (the game select and the missions grid use the whole width; running text keeps its 68ch measure) */
+.lc-content:has(.lc-games), .lc-content:has(.lc-hub) { max-width: none; }
 
 /* footer */
-.lc-footer { grid-column: 2; grid-row: 3; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 16px; }
-.lc-legal { flex-basis: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--dim); max-width: 90ch; }
+/* (the legal notice on the left, the buttons at the far right; on a phone the buttons wrap under it) */
+.lc-footer { grid-column: 2; grid-row: 3; display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; justify-content: space-between; padding-top: 16px; }
+.lc-legal { flex: 1 1 40ch; margin: 0; font-size: 13px; line-height: 1.5; color: var(--dim); max-width: 90ch; }
+.lc-footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-left: auto; }
 
 .lc-pill {
   display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 10px 18px; background: var(--tone, var(--orange)); color: #000;
@@ -143,16 +147,17 @@ html, body { margin: 0; background: var(--black); color: var(--ink); font: 17px/
 .lc-game-tag { font: 600 12px/1 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
 .lc-game.is-off { cursor: not-allowed; filter: grayscale(1) brightness(.55); }
 .lc-game.is-off .lc-game-tag { color: var(--ink); }
-.lc-detail { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 24px; margin-top: 24px; align-items: start; }
-/* (the readout and ENGAGE come first in the markup, so they sit above the blurb when the grid stacks) */
-.lc-detail > .lc-panel { grid-column: 1; grid-row: 1; margin: 0; }
-.lc-detail-side { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
-.lc-detail-side .lc-pill { justify-content: center; padding: 16px 18px; font-size: 22px; font-weight: 700; letter-spacing: .2em; }
-@media (max-width: 760px) { .lc-detail { grid-template-columns: minmax(0, 1fr); } .lc-detail > .lc-panel, .lc-detail-side { grid-column: 1; grid-row: auto; } }
+.lc-detail { display: flex; flex-direction: column; gap: 24px; margin-top: 24px; }
+/* (the readout and ENGAGE in one row right under the cards, the blurb below them; on a phone they stack) */
+.lc-detail > .lc-panel { margin: 0; }
+.lc-detail-side { display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; }
+.lc-detail-side .lc-readout { flex: 1 1 260px; max-width: 420px; }
+.lc-detail-side .lc-pill { flex: 0 1 320px; justify-content: center; padding: 16px 18px; font-size: 22px; font-weight: 700; letter-spacing: .2em; }
+@media (max-width: 760px) { .lc-detail-side .lc-readout, .lc-detail-side .lc-pill { flex-basis: 100%; max-width: none; } }
 .lc-content img { display: block; max-width: 100%; height: auto; }
 
-/* Engineering hub and the engine diagram */
-.lc-hub { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 24px; max-width: 68ch; margin-top: 24px; }
+/* The missions grid and the engine diagram */
+.lc-hub { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px 24px; margin-top: 24px; }
 .lc-hub .lc-panel { margin: 0; }
 .lc-diagram { display: block; max-width: min(100%, 460px); height: auto; margin: 8px 0 32px; }
 
@@ -175,6 +180,8 @@ html, body { margin: 0; background: var(--black); color: var(--ink); font: 17px/
 .lc-hotspots figcaption { margin-top: 8px; font: 400 13px/1.4 var(--display); color: var(--dim); }
 .lc-pager { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0 8px; }
 .lc-subnav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+/* (on a wide screen the pills may run past a text page's 68ch measure, so they stay on one line) */
+@media (min-width: 761px) { .lc-subnav { width: max-content; max-width: calc(100vw - var(--side) - 64px); } }
 .lc-subnav [aria-current="page"] .lc-pill { outline: 2px solid currentColor; outline-offset: 2px; }
 /* The six worlds, under the A Final Unity pills of a mission page (and in the missions panel of the approach page): smaller pills, the current one a black pill outlined in its accent */
 .lc-worlds { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 20px; }

@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# A mission item's inventory icon repainted (art icon) from the game's own: w4s8ito4.spr (icon.map), shown by 1 object.
+# Two denoise levels; picked on the review sheet (items.compare.png, 2026-11-25): the pixel version of d65.
+id: icon.inverter_coupling
+kind: icon
+object: inverter_coupling
+objects:
+  - lab.inverter_coupling
+source: { sprite: w4s8ito4.spr, frame: 0 }
+pixel: { kmeans: 24, scale: 4 }
+variants:
+  - name: d50
+    sampling: { seed: 75038, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of an engineering clamp tool with red wires looping between its jaws, studio product shot, soft key light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.5
+    palette: 0.4
+  - name: d65
+    sampling: { seed: 75039, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of an engineering clamp tool with red wires looping between its jaws, studio product shot, soft key light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.65
+    palette: 0.4
+pick: d65

@@ -50,7 +50,7 @@ const FORBIDDEN_TEXT: { re: RegExp; why: string }[] = [
   { re: /Dev tools/, why: 'the dev overlay' },
   { re: /VITE_AU_DEPLOY/, why: 'an unreplaced VITE_AU_DEPLOY (the build was not a deploy build)' },
   { re: /-----BEGIN [A-Z ]*PRIVATE KEY-----/, why: 'a private key' },
-  { re: /\b(CLOUDFLARE_API_TOKEN|CF_API_TOKEN|JELLYFIN_[A-Z_]+|SITE_PASSWORD|COMFY_URL)\b/, why: 'the name of a secret or local setting' },
+  { re: /\b(CLOUDFLARE_API_TOKEN|CF_API_TOKEN|JELLYFIN_[A-Z_]+|SITE_PASSWORD|COMFY_URL|TURNSTILE_SECRET_KEY|FEEDBACK_WEBHOOK)\b/, why: 'the name of a secret or local setting' },
   { re: /\/Users\/[A-Za-z0-9._-]+\//, why: 'a local absolute path' },
 ];
 

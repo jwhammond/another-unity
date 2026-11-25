@@ -52,7 +52,7 @@ export function headBoxes(frames: Rgba[]): Box[] {
 }
 
 /** Where a frame of the group went on the canvas. */
-interface Slot {
+export interface Slot {
   /** The crop (the animation's opaque union) in the cell, in the cell's pixels. */
   x: number;
   y: number;
@@ -180,6 +180,31 @@ export function layoutCanvas(frames: Rgba[], crop: { x: number; y: number; w: nu
 }
 
 /**
+ * Per-frame strength masks laid out as layoutCanvas lays the frames: each plane (the frame's own pixels, 0-1, null for a whole repaint) scaled
+ * into its slot; everything outside a slot is 0. A grey PNG for repaintGraph's `mask` (differential diffusion: each pixel's denoise is its value
+ * times the recipe's).
+ */
+export function maskCanvas(planes: readonly (Float32Array | null)[], frames: readonly Rgba[], slots: readonly Slot[]): Uint8Array {
+  const plane = new Float32Array(CANVAS * CANVAS);
+  const px = [0, 0, 0, 0];
+  slots.forEach((slot, i) => {
+    const f = frames[i]!;
+    const m = planes[i];
+    const s = slot.cw / slot.w;
+    // (the plane as an image, so it is sampled as the frame is)
+    const img: Rgba = { width: f.width, height: f.height, data: new Uint8Array(f.width * f.height * 4) };
+    for (let k = 0; k < f.width * f.height; k++) img.data[k * 4] = Math.round((m ? m[k]! : 1) * 255);
+    for (let y = 0; y < slot.ch; y++) {
+      for (let x = 0; x < slot.cw; x++) {
+        sampleBilinear(img, slot.x + (x + 0.5) / s - 0.5, slot.y + (y + 0.5) / s - 0.5, px);
+        plane[(slot.cy + y) * CANVAS + slot.cx + x] = px[0]! / 255;
+      }
+    }
+  });
+  return planePng(plane, CANVAS);
+}
+
+/**
  * R6 step 4 for one frame: the canvas's slot, area-downscaled to the frame's crop and set into a cell. The alpha is the
  * upscaled original's, exactly. Colour is the repaint where the frame is opaque and the original's where it is not (the
  * edge's antialiasing and the foot shadow keep the sprite's own colour, so no grey ground bleeds in).
@@ -214,6 +239,11 @@ export interface RepaintOpts {
   keep?: (c: { frames: number[]; work: Uint8Array; out: Uint8Array; head: Uint8Array; figure: Uint8Array }) => void;
   /** An experimental family's models, for a recipe whose `model` isn't sdxl (Redux takes the references, unmasked). */
   family?: FamilyModels;
+  /**
+   * Per frame, how much of it is repainted (0-1 a pixel, in the frame's pixels; null: all of it): the bridge crew's frames painted from a master
+   * (bridgerepaint.ts paintFromMasters) repaint only what moves. sdxl only.
+   */
+  masks?: (Float32Array | null)[];
 }
 
 /** Consecutive groups of at most `group`, as even as can be (6 frames at 4 make 3 and 3, not 4 and 2). */
@@ -255,7 +285,10 @@ export async function repaintAnim(g: Generator, m: Models, r: CardRecipe, frames
     const w = window(c);
     return { strength: c.strength, start: w.startPercent, end: w.endPercent };
   };
+  if (opts.masks && opts.masks.length !== frames.length) throw new Error('repaintAnim: a mask for each frame');
+  if (opts.masks && r.model !== 'sdxl') throw new Error(`repaintAnim: masks are for sdxl, not ${r.model}`);
   const CANVAS_IN = `card-work-${stamp}.png`;
+  const MASK = `card-mask-${stamp}.png`;
   const HEAD = `card-head-${stamp}.png`;
   const FIGURE_MASK = `card-figure-${stamp}.png`;
 
@@ -290,10 +323,12 @@ export async function repaintAnim(g: Generator, m: Models, r: CardRecipe, frames
       });
       return { params: { ipadapter: file, clipVision: m.ipadapter.clipVision, weight: spec.weight, weightType: spec.weightType }, images, startPercent: w.startPercent, endPercent: w.endPercent, mask: spec.mask === 'head' ? HEAD : spec.mask === 'figure' ? FIGURE_MASK : undefined };
     });
+    const masked = opts.masks && group.some(i => opts.masks![i] !== null);
+    if (masked) inputs[MASK] = maskCanvas(group.map(i => opts.masks![i]!), group.map(i => frames[i]!), canvas.slots);
     const job = repaintGraph(
       m,
       r.sampling,
-      { prompt: r.prompt, negative: r.negative, denoise: r.denoise, size: [CANVAS, CANVAS], depth: absolute('depth'), lineart: absolute('lineart'), references },
+      { prompt: r.prompt, negative: r.negative, denoise: r.denoise, size: [CANVAS, CANVAS], depth: absolute('depth'), lineart: absolute('lineart'), references, ...(masked ? { mask: MASK } : {}) },
       CANVAS_IN,
       CANVAS_IN,
     );

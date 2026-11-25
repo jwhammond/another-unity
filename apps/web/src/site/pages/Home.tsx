@@ -15,7 +15,7 @@ import { useMediaCount } from '../media';
 import { installedTarget } from '../../legacy';
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const rooms = useMediaCount('room.');
   // (an installed app opens the game, as its start_url says; a browser tab shows the site)
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Home() {
             <Readout rows={[['Status', 'Beta playtest'], ['Away missions', '6'], ['Rooms with new art', rooms === 'loading' || rooms === 0 ? '—' : String(rooms)]]} />
             <Pill tone="a1" onClick={() => launchGame()}>Engage</Pill>
           </div>
-          <Panel tone="a3" heading="Star Trek: A Final Unity · Remastered"><Prose html={blurb} /></Panel>
+          <Panel tone="a3"><Prose html={blurb} /></Panel>
         </div>
       )}
       <h2 class="lc-label">Special thanks</h2>

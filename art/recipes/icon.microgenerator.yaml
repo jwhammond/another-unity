@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# A mission item's inventory icon repainted (art icon) from the game's own: w3s5imic.spr (icon.map), shown by 2 objects.
+# Two denoise levels; picked on the review sheet (items.compare.png, 2026-11-25): the pixel version of d65.
+id: icon.microgenerator
+kind: icon
+object: microgenerator
+objects:
+  - zoo.microgenerator.050c
+  - zoo.microgenerator.0511
+source: { sprite: w3s5imic.spr, frame: 0 }
+pixel: { kmeans: 24, scale: 4 }
+variants:
+  - name: d50
+    sampling: { seed: 75022, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of a dark triangular metal power unit with a glowing green triangle in its face, studio product shot, soft key light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.5
+    palette: 0.4
+  - name: d65
+    sampling: { seed: 75023, steps: 30, cfg: 5, sampler: dpmpp_2m, scheduler: karras }
+    prompt: >-
+      detailed realistic painting of a dark triangular metal power unit with a glowing green triangle in its face, studio product shot, soft key light from the upper left, crisp edges, plain dark background, early 1990s computer game inventory icon
+    negative: text, watermark, signature, hand, person, blurry, deformed, cartoon, extra objects, frame, border
+    denoise: 0.65
+    palette: 0.4
+pick: d65

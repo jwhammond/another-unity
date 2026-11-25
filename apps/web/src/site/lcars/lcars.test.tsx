@@ -16,10 +16,10 @@ afterEach(() => { document.body.innerHTML = ''; vi.unstubAllGlobals(); });
 describe('Frame', () => {
   it('renders the title, the nav with the current page marked, and the footer notice', () => {
     const root = document.createElement('div'); document.body.append(root);
-    render(<Frame section="home" title="Another Unity" code="01-1701" nav={[{ label: 'Home', href: '/', current: true }, { label: 'Engineering', href: '/engineering/' }]}><p>hi</p></Frame>, root);
+    render(<Frame section="home" title="Another Unity" code="01-1701" nav={[{ label: 'Home', href: '/', current: true }, { label: 'The engine', href: '/engineering/engine/' }]}><p>hi</p></Frame>, root);
     expect(root.querySelector('h1')!.textContent).toBe('Another Unity');
     expect(root.querySelector('[aria-current="page"]')!.textContent).toContain('Home');
-    expect(root.querySelector('footer')!.textContent).toContain('James Hammond does not own this IP');
+    expect(root.querySelector('footer')!.textContent).toContain('Another Unity claims no ownership');
   });
   it('refuses more than six side blocks', () => {
     const root = document.createElement('div');

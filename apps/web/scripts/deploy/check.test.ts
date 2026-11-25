@@ -36,7 +36,7 @@ describe('deploy checks: what must not ship', () => {
     }
   });
   it('fails dev hooks, secrets and source-map references inside code', () => {
-    for (const t of ['window.__au={ready:1}', 'x.astroKnow(1,2)', '//# sourceMappingURL=a.js.map', 'process.env.JELLYFIN_API_KEY', 'SITE_PASSWORD', 'const p="/Us' + 'ers/me/pcode/x"', 'exposeDebug(a)', '"Dev tools"']) {
+    for (const t of ['window.__au={ready:1}', 'x.astroKnow(1,2)', '//# sourceMappingURL=a.js.map', 'process.env.JELLYFIN_API_KEY', 'SITE_PASSWORD', 'TURNSTILE_SECRET_KEY', 'env.FEEDBACK_WEBHOOK', 'const p="/Us' + 'ers/me/pcode/x"', 'exposeDebug(a)', '"Dev tools"']) {
       expect(fails(checkText('a.js', t)), t).toHaveLength(1);
     }
   });
@@ -49,7 +49,7 @@ describe('deploy checks: the rest', () => {
   const REQUIRED = [...SITE_PAGES.map(p => `${p.slice(1)}index.html`), 'play/afu/index.html', 'sw.js', 'au-manifest.json', '_headers'];
   it('needs every site page, the game, the worker, manifest and headers', () => {
     expect(checkRequired(REQUIRED.map(p => f(p)))).toEqual([]);
-    expect(checkRequired([f('index.html')]).map(i => i.message).join()).toMatch(/engineering\/index\.html.*sw\.js.*au-manifest.*_headers/);
+    expect(checkRequired([f('index.html')]).map(i => i.message).join()).toMatch(/engineering\/engine\/index\.html.*sw\.js.*au-manifest.*_headers/);
     expect(checkRequired(REQUIRED.filter(p => p !== 'play/afu/index.html').map(p => f(p))).map(i => i.message).join()).toMatch(/play\/afu\/index\.html/);
   });
   it('fails a build that lacks one site page', () => {

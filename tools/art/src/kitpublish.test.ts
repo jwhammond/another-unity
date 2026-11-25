@@ -50,6 +50,17 @@ describe('publishKit', () => {
     expect(doc.art.rooms['lab.s01'].plate).toBe('art/rooms/lab/s01/plate.webp');
   });
 
+  it('records an icon under each game object that shows it, one file for all of them', async () => {
+    const { src, game } = await setup();
+    await writeFile(join(src, 'item.sample_tube.png'), encodePng(px(5)));
+    const kit = await findKit(src, [], ['sample_tube', 'tricorder'], {}, { sample_tube: ['zoo.edlen_sample', 'zoo.kordic_sample'], tricorder: ['x'] });
+    expect(kit.iconObjects).toEqual({ sample_tube: ['zoo.edlen_sample', 'zoo.kordic_sample'] });
+    const files = await publishKit(game, kit, copyCodec);
+    expect(files).toEqual(['art/icons/sample_tube.webp']);
+    const doc = parse(await readFile(join(game, 'presentation.yaml'), 'utf8'));
+    expect(doc.art.icons).toEqual({ sample_tube: 'art/icons/sample_tube.webp', 'zoo.edlen_sample': 'art/icons/sample_tube.webp', 'zoo.kordic_sample': 'art/icons/sample_tube.webp' });
+  });
+
   it('records a portrait under each object that shows it, one file for all of them', async () => {
     const { src, game } = await setup();
     const kit = await findKit(src, ['picard', 'riker'], [], { picard: ['ship.t_bak.0401', 'ship.t_bak.0402'], riker: ['x'] });

@@ -207,7 +207,9 @@ export function makeDissolvable(object: Mesh | Sprite): void {
       .replace('void main() {', `${SHADER_HEAD}\nvoid main() {`)
       .replace('#include <opaque_fragment>', `${SHADER_TEST}\n#include <opaque_fragment>`);
   };
-  material.customProgramCacheKey = () => 'dissolve';
+  // (on top of any change the material already has, as a card's look: cardLook.ts)
+  const key = material.customProgramCacheKey.bind(material);
+  material.customProgramCacheKey = () => `${key()}|dissolve`;
   material.needsUpdate = true;
   const before = object.onBeforeRender;
   object.onBeforeRender = (renderer: WebGLRenderer, ...rest: unknown[]) => {

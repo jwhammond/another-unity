@@ -55,12 +55,14 @@ export interface UiState {
   message: string | null;
   /** Bumped on every sim change the HUD shows (inventory, team, flags). */
   revision: number;
+  /** The page the admin console opens on, when something other than its own button opened it (the bar's Feedback); it takes it and clears it. */
+  adminStart: 'feedback' | null;
 }
 
 export const TRANSCRIPT_LIMIT = 200;
 
 const INITIAL: UiState = {
-  mode: 'walk', held: null, dragging: null, hover: null, hoverFloor: false, phaserHover: null, subtitle: null, transcript: [], dialog: null, screenTexts: [], panel: 'none', message: null, revision: 0,
+  mode: 'walk', held: null, dragging: null, hover: null, hoverFloor: false, phaserHover: null, subtitle: null, transcript: [], dialog: null, screenTexts: [], panel: 'none', message: null, revision: 0, adminStart: null,
 };
 
 /** The overlay's state. The presenter and input controller write it; the Preact components read it. */

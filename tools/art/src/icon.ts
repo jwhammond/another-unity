@@ -39,8 +39,13 @@ export const iconRecipe = z
   .object({
     id: z.string().regex(/^icon\.[a-z0-9_]+$/),
     kind: z.literal('icon'),
-    /** The item object's id. */
+    /** The item object's id (a kit item), or the icon's own name when it is for `objects`. */
     object: z.string().regex(/^[a-z0-9_]+$/),
+    /**
+     * The game's objects that show this icon too, by their ids (icon.map gives one picture to several: the zoo's sample tubes, Unity's disk
+     * halves). publish-kit records the icon under each.
+     */
+    objects: z.array(z.string().regex(/^[a-z0-9_.]+$/)).default([]),
     /**
      * The game's icon: a sprite of the images export (`sprite`, its frame-th picture), or a part of an MRG picture decoded from the game
      * zip (`mrg`: the entry, [x, y, w, h] in its pixels, coloured with standard.pal in the palette's upper half; index 0 transparent).
